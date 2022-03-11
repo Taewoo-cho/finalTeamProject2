@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bitc.wub.dto.ArticleDto;
@@ -25,10 +26,16 @@ public class WubArticleController {
 	// 글 쓰기 페이지 이동
 	@RequestMapping(value="/article/write", method=RequestMethod.GET)
 	public String articleWrite() throws Exception {
-		return "/article/write";
+		return "board/article/write";
 	}
 	
 	// 글쓰기 페이지에서 DB로 INSERT(이미지 첨부)
+	@RequestMapping(value="/article/write", method=RequestMethod.POST)
+	public String insertArticle(ArticleDto articleDto, MultipartHttpServletRequest multiFile) { 
+		
+		//articleService.insertArticle(articleDto, multiFile);
+		return "redirect:/mypage";
+	}
 
 	// 상세 글 읽기
 	@RequestMapping(value = "/article/{articleIdx}", method=RequestMethod.GET)
@@ -60,9 +67,27 @@ public class WubArticleController {
 	}
 	
 	// 글 수정하기
+	@RequestMapping(value="/article/{articleIdx}/edit", method=RequestMethod.PUT)
+	public String editArticle(ArticleDto articleDto) throws Exception {
+		
+		//articleService.editArticle(articleDto);
+		return "redirect:/article/{articleIdx}";
+	}
 	
 	// 글 삭제하기
+	@RequestMapping(value="/article/{articleIdx}/delete", method=RequestMethod.DELETE)
+	public String deleteArticle(@PathVariable("articleIdx") int articleIdx) throws Exception {
+		
+		//articleService.deleteArticle(articleIdx);
+		return "/myPage";
+	}
 	
 	// 판매완료, 구매완료, 취소
+	
+	// article html 확인용
+	@RequestMapping(value="/article", method=RequestMethod.GET)
+	public String articleView() throws Exception {
+		return "/board/article";
+	}
 	
 }

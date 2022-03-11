@@ -3,11 +3,13 @@ package com.bitc.wub.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.bitc.wub.dto.ArticleDto;
 import com.bitc.wub.dto.CommentDto;
 import com.bitc.wub.mapper.ArticleMapper;
 
+@Service
 public class ArticleServiceImpl implements ArticleService {
 	
 	@Autowired
