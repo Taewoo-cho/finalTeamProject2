@@ -9,10 +9,16 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+<style>
+	textarea {
+		resize:none;
+	}
+</style>
+
 </head>
 <body>
 	<header>
-	<h1 class="container">article 페이지</h1>
+	
 	
 	</header>
 	
@@ -47,20 +53,26 @@
 						<span class="visually-hidden">Next</span>
 					</button>
 				</div>
-				<!-- 제목 글쓴이 내용 태그 등등 -->
-				<div class="form-floating my-2">
+				
+				<!-- 제목 가격 주소 -->
+				<div class="form-floating my-3">
 					<input type="text" class="form-control" id="title" name="title" placeholder="제목">
 					<label for="title" class="form-label">제목</label>
 				</div>
-				<div class="form-floating my-2">
+				<div class="form-floating my-3">
 					<input type="text" class="form-control" id="price" name="price" placeholder="₩ 가격">
 					<label for="price" class="form-label">₩ 가격</label>
 				</div>
+				<div class="form-floating my-3">
+					<input type="text" class="form-control" id="local" name="local" placeholder="주소">
+					<label for="price" class="form-label">주소</label>
+				</div>
 				
+				<!-- 회원 닉네임, 올린날짜(끌어올림), 조회수 -->
 				<div class="row my-3">
 					<div class="col-sm-4">
 						<input type="text" class="form-control" name="creatorId" 
-						readonly value="추천">
+						readonly value="회원 닉네임">
 					</div>
 					<div class="col-sm-4">
 						<input type="text" class="form-control" name="createdDt" 
@@ -68,17 +80,87 @@
 					</div>
 					<div class="col-sm-4">
 						<input type="text" class="form-control" name="hitCnt" 
-						readonly value="0">
-					</div>
-				</div>
-				<div class="row my-3">
-					<div class="col-sm">
-						<textarea rows="10" class="form-control" name="contents" ></textarea>
+						readonly value="조회수">
 					</div>
 				</div>
 				
+				<!-- 분류 -->
+				<div class="row my-3">
+					<div class="col-lg-6 col-sm-6">
+						<input type="text" class="form-control" id="area1" name="area1" readonly value="도서 대분류">
+					</div>
+					<div class="col-lg-6 col-sm-6">
+						<input type="text" class="form-control" id="area2" name="area2" readonly value="도서 세부분류">
+					</div>
+				</div>
+				
+				<!-- 글 내용 -->
+				<div class="form-floating my-2">
+					<textarea rows="10" class="form-control h-25" id="contents" name="contents"></textarea>
+					<label for="contents" class="form-label">내용</label>
+				</div>
+				
+				<!-- 뒤로 가기, 찜 -->
+				<div class="my-3 clearFix">
+					<button type="button" class="btn btn-warning float-start" id="btn-back">뒤로</button>
+					<button type="button" class="btn btn-primary float-end" id="btn-follow">찜하기</button>
+				</div>
+				
+				<!-- 댓글 -->
+				
 			</div>
 		</div>
+		
+		<div class="row my-3">
+			<div class="col-lg-6 col-sm-12 mx-auto">
+				<form id="comment" method="POST">
+					<table class="table table-hover table-striped">
+						<colgroup>
+							<col width="15%" />
+							<col width="60%" />
+							<col width="20%" />
+							<col width="5%" />
+						</colgroup>
+						<thead>
+							<tr>
+								<th>전체댓글</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>그림쟁</td>
+								<td>네고 가능할까요?</td>
+								<td><h6>2022-03-13</h6></td>
+								<td><button type="button" class="btn-close btn-delete"></button></td>
+							</tr>
+							<tr>
+								<td>글쓴이</td>
+								<td>ㄴ 안됩니다</td>
+								<td><h6>2022-03-13</h6></td>
+								<td><button type="button" class="btn-close btn-delete"></button></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+				<!-- 댓글 입력칸 -->
+				<form action="" method="POST">
+					<div class="row">
+						<div class="col-lg-10 col-sm-12">
+							<div class="form-floating">
+								<input type="text" class="form-control" id="comment-contents" name="commentContents"
+									placeholder="내용을 입력해주세요">
+								<label for="commentContents">Comment</label>
+							</div>
+						</div>
+						<div class="col-lg-2 d-grid">
+							<button type="button" id="commentary" class="btn btn-secondary">등록</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		
 		<!-- <div class="col-sm-3"></div> -->
 	</main>
 	
