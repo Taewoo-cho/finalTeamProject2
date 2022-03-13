@@ -1,0 +1,93 @@
+package com.bitc.wub.common;
+
+import java.io.File;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.bitc.wub.dto.ImgDto;
+
+@Component
+public class FileUtils {
+	
+	public List<ImgDto> parseFileInfo(int articleIdx, MultipartHttpServletRequest multiFiles) throws Exception {
+		
+		if (ObjectUtils.isEmpty(multiFiles)) {
+			return null;
+		}
+		
+		List<ImgDto> fileList = new ArrayList<>();
+		
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
+		ZonedDateTime current = ZonedDateTime.now();
+		
+		String path = "/img/" + current.format(format);
+		
+		File file = new File(path);
+		
+		// 폴더가 존재하지 않을 시 폴더 생성
+		if(file.exists() == false) {
+			file.mkdirs();
+		}
+		
+		Iterator<String> iterator = multiFiles.getFileNames();
+		String newFileName;
+		String originalFileExtension;
+		String contentType;
+		
+		while(iterator.hasNext()) {
+			String name = iterator.next();
+			List<MultipartFile> list = multiFiles.getFiles(name);
+			
+			for (MultipartFile mFile : list) {
+				if (mFile.isEmpty() == false) {
+					contentType = mFile.getContentType();
+					
+					if(ObjectUtils.isEmpty(contentType)) {
+						break;
+					} else {
+						if (contentType.contains("img/jpeg")) {
+							originalFileExtension = ".jpg";
+						} else if (contentType.contains("img/png")) {
+							originalFileExtension = ".png";
+						} else if (contentType.contains("img/gif")) {
+							originalFileExtension = ".gif";
+						} else {
+							break;
+						}
+					}
+					
+					newFileName = Long.toString(System.nanoTime()) + originalFileExtension;
+					
+					ImgDto imgDto = new ImgDto();
+					
+					// imgDto에 idx, 파일크기, 업로드시 이름, 실제저장 되는 경로 + 파일이름 
+					imgDto.setArticleIdx(articleIdx);
+					imgDto.setFileSize(Long.toString(mFile.getSize()));
+					imgDto.setOriginalFileName(mFile.getOriginalFilename());
+					imgDto.setStoredFilePath(path + "/" + newFileName);
+					
+					// 데이터베이스에 저장할 목록에 저장
+					fileList.add(imgDto);
+					
+					// 현재 파일(메모리에만 존재함)을 지정한 위치에 이동하여 저장
+					mFile.transferTo(file);
+					
+					
+				}
+			}
+		}
+		
+		
+		
+		return fileList;
+	}
+
+}

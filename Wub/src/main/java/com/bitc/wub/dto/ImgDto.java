@@ -6,11 +6,11 @@ import lombok.Data;
 public class ImgDto {
 	
 	private int fileIdx;
-	private int bookIdx;
+	private int articleIdx;
 	
 	private String originalFileName;
 	private String storedFilePath;
-	private int fileSize;
+	private String fileSize;
 	private char deletedYn;
 	
 
