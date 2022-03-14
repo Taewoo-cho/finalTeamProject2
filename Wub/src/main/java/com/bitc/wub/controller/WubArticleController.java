@@ -7,13 +7,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bitc.wub.dto.ArticleDto;
 import com.bitc.wub.dto.CommentDto;
+import com.bitc.wub.dto.TagDto;
 import com.bitc.wub.service.ArticleService;
 
 
@@ -25,34 +28,66 @@ public class WubArticleController {
 
 	// 글 쓰기 페이지 이동
 	@RequestMapping(value="/article/write", method=RequestMethod.GET)
-	public String articleWrite() throws Exception {
-		return "board/write";
+	public ModelAndView articleWrite() throws Exception {
+		ModelAndView mv = new ModelAndView("board/write");
+		
+		List<TagDto> tagList = articleService.tagMainCategori();
+		
+		mv.addObject("tagList", tagList);
+		
+		return mv;
 	}
 	
+	// 세부 분류
+/*	@ResponseBody
+	@RequestMapping(value="/article/write/detailCategori", method=RequestMethod.POST)
+	public Object detailCategori(@RequestParam("tagIdx") String tagIdx) throws Exception {
+		
+		int mainCategori = Integer.parseInt(tagIdx);
+		//int mainCategori = tagIdx;
+		List<TagDto> tagList = articleService.tagDetailCategori(mainCategori);
+		
+		return tagList;
+	}*/
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/article/write/detailCategori", method=RequestMethod.POST)
+	public List<TagDto> detailCategori(@RequestBody TagDto tagDto) throws Exception {
+		
+		int mainCategori = Integer.parseInt(tagDto.getTagIdx());
+		
+		List<TagDto> tagList = articleService.tagDetailCategori(mainCategori);
+		
+		return tagList;
+	}
+	
+	
 	// 글쓰기 페이지에서 DB로 INSERT(이미지 첨부)
-	
 	@RequestMapping(value="/article/write", method=RequestMethod.POST) 
-	public String insertArticle(ArticleDto articleDto, MultipartHttpServletRequest multiFile) {
+	public String insertArticle(ArticleDto articleDto, MultipartHttpServletRequest multiFile) throws Exception {
 	
-		//articleService.insertArticle(articleDto, multiFile); 
-		//int idx = articleService.selectIdx() -> 멤버 dto의 아이디를 받아와서 가장 최신글로 리다이렉트
-		return "redirect:/mypage"; 
+		articleService.insertArticle(articleDto, multiFile); 
+		
+		return "redirect:/article/write"; // / + 메인페이지 혹은 다른페이지로 리다이렉트
 	}
 	
 
 	// 상세 글 읽기
-	@RequestMapping(value = "/article/{articleIdx}", method=RequestMethod.GET)
-	public ModelAndView article(@PathVariable("articleIdx") int articleIdx) throws Exception {
+	@RequestMapping(value = "/article/{BookIdx}", method=RequestMethod.GET)
+	public ModelAndView article(@PathVariable("BookIdx") int BookIdx) throws Exception {
 		ModelAndView mv = new ModelAndView("/board/article");
 		
 		// 조회수 상승
-		articleService.countHitCnt(articleIdx);
+		articleService.countHitCnt(BookIdx);
 		
-		// 게시글 조회
-		ArticleDto article = articleService.selectArticleDetail(articleIdx);
+		// 게시글(이미지 조회)
+		ArticleDto article = articleService.selectArticleDetail(BookIdx);
+		
 		
 		// 댓글 리스트 조회
-		List<CommentDto> commentList = articleService.selectCommentList(articleIdx);
+		List<CommentDto> commentList = articleService.selectCommentList(BookIdx);
+		
 		
 		mv.addObject("commentList", commentList);
 		mv.addObject("article", article);
@@ -61,11 +96,12 @@ public class WubArticleController {
 	}
 	
 	// 댓글 쓰기
-	@RequestMapping(value="/article/{articleIdx}", method=RequestMethod.POST)
+	@RequestMapping(value="/article/{BookIdx}", method=RequestMethod.POST)
 	public String writeComment(CommentDto commentDto) throws Exception {
 		
 		articleService.insertComment(commentDto);
-		return "redirect:/article/{articleIdx}";
+		String bookIdx = Integer.toString(commentDto.getBookIdx());
+		return "redirect:/article/" + bookIdx;
 		
 	}
 	
@@ -74,7 +110,8 @@ public class WubArticleController {
 	public String editArticle(ArticleDto articleDto) throws Exception {
 		
 		//articleService.editArticle(articleDto);
-		return "redirect:/article/{articleIdx}";
+		String bookIdx = Integer.toString(articleDto.getBookIdx());
+		return "redirect:/article/" + bookIdx;
 	}
 	
 	// 글 삭제하기
@@ -82,15 +119,15 @@ public class WubArticleController {
 	public String deleteArticle(@PathVariable("articleIdx") int articleIdx) throws Exception {
 		
 		//articleService.deleteArticle(articleIdx);
-		return "/myPage";
+		return "/main";
 	}
 	
 	// 판매완료, 구매완료, 취소
 	
-	// article html 확인용
+	// article html 확인용 구현 후 삭제
 	@RequestMapping(value="/article", method=RequestMethod.GET)
 	public String articleView() throws Exception {
-		return "/board/article";
+		return "board/article";
 	}
 	
 	

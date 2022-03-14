@@ -54,17 +54,31 @@
 					</button>
 				</div>
 				
-				<!-- 제목 가격 주소 -->
+				<!-- 제목 -->
 				<div class="form-floating my-3">
-					<input type="text" class="form-control" id="title" name="title" placeholder="제목">
+					<input type="text" class="form-control" id="book-title" name="bookTitle" placeholder="제목">
 					<label for="title" class="form-label">제목</label>
 				</div>
-				<div class="form-floating my-3">
-					<input type="text" class="form-control" id="price" name="price" placeholder="₩ 가격">
-					<label for="price" class="form-label">₩ 가격</label>
+				
+				<!-- 가격 -->
+				<div class="row">
+					<div class="col-lg-8 col-sm-6">
+						<div class="form-floating my-2">
+							<input type="text" class="form-control" id="book-price" name="bookPrice" placeholder="가격을 입력하세요">
+							<label for="title" class="form-label">₩ 가격</label>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-6">
+						<div class="form-check my-4">
+							<input class="form-check-input" type="checkbox" value="" id="book-negotiation" name="bookNegotiation" disabled>
+							<label class="form-check-label" for="bookNegotiation">가격제안 받기</label>
+						</div>
+					</div>
 				</div>
+				
+				<!-- 주소 -->
 				<div class="form-floating my-3">
-					<input type="text" class="form-control" id="local" name="local" placeholder="주소">
+					<input type="text" class="form-control" id="user-local" name="userLocal" placeholder="주소">
 					<label for="price" class="form-label">주소</label>
 				</div>
 				
@@ -102,15 +116,20 @@
 				
 				<!-- 뒤로 가기, 찜 -->
 				<div class="my-3 clearFix">
-					<button type="button" class="btn btn-warning float-start" id="btn-back">뒤로</button>
+					<button type="button" class="btn btn-secondary float-start" id="btn-back">뒤로</button>
 					<button type="button" class="btn btn-primary float-end" id="btn-follow">찜하기</button>
 				</div>
 				
-				<!-- 댓글 -->
+				<!-- 게시글 idx 정보 -->
+				<div>
+					<input type="hidden" id="idx" name="idx" value="1" th:value="${article}">
+					<input type="hidden" id="method" name="_method">
+				</div>
+				
 				
 			</div>
 		</div>
-		
+		<!-- 댓글 -->
 		<div class="row my-3">
 			<div class="col-lg-6 col-sm-12 mx-auto">
 				<form id="comment" method="POST">

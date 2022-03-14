@@ -15,46 +15,84 @@
 	}
 </style>
 
+<script>
+	$(document).ready(function() {
+		
+		$("#main-categori").on("change", function() {
+			var mainCategori = $("#main-categori option:selected").val();
+			//var datas = {tagIdx: mainCategori};
+			
+			$.ajax({
+				url: "/article/write/detailCategori",
+				type: "post",
+				contentType: "application/json; charset=UTF-8",
+				data: JSON.stringify({
+					tagIdx: mainCategori
+				}),
+				
+				success: function(data) {
+					var detailCategori = $("#detail-categori");
+					detailCategori.empty();
+					detailCategori.append("<option value=''>도서 세부 분류</option>");
+					
+					$.each(data, function(index, item){
+						detailCategori.append("<option value="+ item.tagIdx +">" + item.tagContent +"</option>" );
+						
+					});
+					
+				}, error: function() {
+					alert("ajax 통신 실패");
+				}
+			});
+		});
+		
+		if(document.getElementById("book-negotiation").checked) {
+			document.getElementById("book-negotiation-hidden").disabled = true;
+		}
+	});
+</script>
+
 </head>
 <body>
 
 	<main class="container py-5">
 		<div class="row">
 			<div class="col-lg-6 col-sm-10 mx-auto">
-			<form action="" method="post" enctype="multipart/form-data">
+			<form action="/article/write" th:action="@{/article/write}" method="post" enctype="multipart/form-data">
 				
 				<!-- 팝니다 and 삽니다 -->
 				<div class="row my-2">
 					<div class="col-6">
 						<div class="form-check">
-							<input class="form-check-input" type="radio" name="trading" id="tag_sale" th:value="sale">
-							<label class="form-check-label" for="">팝니다</label>
+							<input class="form-check-input" type="radio" name="bookTap" id="tag-sale" value="S">
+							<label class="form-check-label" for="tag-sale">팝니다</label>
 						</div>
 					</div>
 					<div class="col-6">
 						<div class="form-check">
-							<input class="form-check-input" type="radio" name="trading" id="tag_buy" th:value="buy">
-							<label class="form-check-label" for="authority">삽니다</label>
+							<input class="form-check-input" type="radio" name="bookTap" id="tag-buy" value="B">
+							<label class="form-check-label" for="tag-buy">삽니다</label>
 						</div>
 					</div>
 				</div>
 				
 				<!-- 첨부파일 올리기 -->
-				<div class="my-3">
+				<div class="">
 					<!-- input 태그의 multiple 속성은 파일의 다중 선택 기능 -->
+					<label for="files">파일 : </label>
 					<input type="file" class="form-control" id="files" name="files" multiple>
-					<!-- <label for="files">* 한번에 선택해주세요.</label> -->
 				</div>
 					
 				<!-- 카테고리 분류선택 *db 작업 필수 -->
 				<div class="row my-3">
 					<div class="col-lg-6 col-sm-6">
-						<select class="form-control" id="area" name="area">
+						<select class="form-control" id="main-categori" name="mainCategori">
 							<option value="" selected>도서 대분류</option>
+							<option th:each="tag : ${tagList}" th:value="${tag.tagIdx}" th:text="${tag.tagContent}"></option>
 						</select>
 					</div>
 					<div class="col-lg-6 col-sm-6">
-						<select class="form-control" id="area2" name="area2">
+						<select class="form-control" id="detail-categori" name="detailCategori">
 							<option value="" selected>도서 세부 분류</option>
 						</select>
 					</div>
@@ -62,7 +100,7 @@
 				
 				<!-- 제목 -->
 				<div class="form-floating my-2">
-					<input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요">
+					<input type="text" class="form-control" id="book-title" name="bookTitle" placeholder="제목을 입력하세요">
 					<label for="title" class="form-label">제목</label>
 				</div>
 				
@@ -70,30 +108,38 @@
 				<div class="row">
 					<div class="col-lg-8 col-sm-6">
 						<div class="form-floating my-2">
-							<input type="text" class="form-control" id="price" name="price" placeholder="가격을 입력하세요">
-							<label for="title" class="form-label">가격</label>
+							<input type="number" class="form-control" id="book-price" name="bookPrice" placeholder="가격을 입력하세요">
+							<label for="bookPrice" class="form-label">₩ 가격</label>
 						</div>
 					</div>
 					<div class="col-lg-4 col-sm-6">
 						<div class="form-check my-4">
-							<input class="form-check-input" type="checkbox" value="" id="negoation">
-							<label class="form-check-label" for="negoation">가격제안 받기</label>
+							<input class="form-check-input" type="checkbox" value="Y" id="book-negotiation" name="bookNegotiation">
+							<label class="form-check-label" for="bookNegotiation">가격제안 받기</label>
+							<input type="hidden" name="bookNegotiation" value="N" id="book-negotiation-hidden" />
+							<input type="hidden" name="userIdx" value="1" id="user-idx" />
 						</div>
 					</div>
 				</div>
 				
 				<!-- 게시글 작성 text area -->
 				<div class="form-floating my-2">
-					<textarea rows="10" class="form-control h-25" id="contents" name="contents"></textarea>
+					<textarea rows="10" class="form-control h-25" id="book-contents" name="bookContents"></textarea>
 					<label for="contents" class="form-label">내용</label>
 				</div>
 				
 				<!-- 글쓰기 취소 버튼 -->
-				<div class="my-3 clearFix">
-					<button type="button" class="btn btn-warning float-start" id="btn-reset">취소</button>
-					<button type="button" class="btn btn-primary float-end" id="btn-submit">등록</button>
+				
+				<div class="row my-4">
+					<div class="col-lg-6 col-sm-6 d-grid">
+						<button type="submit" class="btn btn-primary float-end" id="btn-submit">등록</button>
+					</div>
+					<div class="col-lg-6 col-sm-6 d-grid">
+						<button type="button" class="btn btn-secondary float-start" id="btn-reset">취소</button>
+					</div>
 				</div>
-				</form>
+				
+			</form>
 			</div>
 		</div>
 	</main>

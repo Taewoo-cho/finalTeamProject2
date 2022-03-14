@@ -6,7 +6,7 @@ import lombok.Data;
 public class CommentDto {
 
 	private int commentIdx;
-	private int bookidx;
+	private int bookIdx;
 	private int userIdx;
 	private String commentContent;
 	private String createDt;

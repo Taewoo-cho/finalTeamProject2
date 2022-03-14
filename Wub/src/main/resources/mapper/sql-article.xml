@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bitc.wub.mapper.ArticleMapper">
+
+	<!-- 도서 대분류 -->
+	<select id="tagMainCategori" resultType="com.bitc.wub.dto.TagDto">
+		<![CDATA[ 
+			SELECT 
+				tag_idx, tag_content 
+			FROM 
+				tag 
+			WHERE 
+				tag_idx LIKE '%00' 
+			OR 
+				tag_idx = 0 
+			ORDER BY 
+				tag_idx ASC
+		]]>
+	</select>
+	
+	<!-- 도서 세부분류 -->
+	<select id="tagDetailCategori" resultType="com.bitc.wub.dto.TagDto">
+		<![CDATA[ 
+			SELECT
+				tag_idx, tag_content
+			FROM
+				tag
+			WHERE
+				tag_idx > #{tagIdx} AND tag_idx < #{tagIdx2}
+			ORDER BY 
+				tag_idx ASC
+		]]>
+	</select>
+	
+	<insert id="insertArticle" parameterType="com.bitc.wub.dto.ArticleDto">
+		<![CDATA[ 
+			INSERT INTO book
+				(book_title, book_contents, user_idx, book_price, create_date, book_tab, book_negotiation, main_categori, detail_categori)
+			VALUES
+				(#{bookTitle}, #{bookContents}, #{userIdx}, #{bookPrice}, NOW(), #{bookTab}, #{bookNegotiation}, #{mainCategori}, #{detailCategori})
+		]]>
+	</insert>
+	
+	<insert id="insertArticleFileList" parameterType="com.bitc.wub.dto.ImgDto">
+		<![CDATA[ 
+			INSERT INTO book_file 
+				(book_idx, original_file_name, stored_file_path, file_size) 
+			VALUES 
+		]]>
+		<foreach collection="imgList" item="item" separator=",">
+			(
+			#{item.articleIdx},
+			#{item.originalFileName},
+			#{item.storedFilePath},
+			#{item.fileSize},
+			)
+		</foreach>
+	</insert>
+
+</mapper>
