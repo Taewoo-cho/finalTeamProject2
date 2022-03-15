@@ -34,6 +34,7 @@
 		]]>
 	</select>
 	
+	<!-- 글쓰기 -->
 	<insert id="insertArticle" parameterType="com.bitc.wub.dto.ArticleDto" useGeneratedKeys="true" keyProperty="bookIdx">
 		<![CDATA[ 
 			INSERT INTO book
@@ -43,6 +44,7 @@
 		]]>
 	</insert>
 	
+	<!-- 글쓰기(이미지) -->
 	<insert id="insertArticleFileList" parameterType="com.bitc.wub.dto.ImgDto">
 		<![CDATA[ 
 			INSERT INTO book_file 
@@ -58,5 +60,81 @@
 			)
 		</foreach>
 	</insert>
+	
+	<!-- 글 상세보기 -->
+	<select id="selectArticleDetail" resultType="com.bitc.wub.dto.ArticleDto">
+		<![CDATA[ 
+			SELECT
+				book_idx, book_title, book_contents, user_idx, 
+				create_date, book_price, hit_cnt, book_tab, sold_yn, 
+				book_negotiation, main_categori, detail_categori 
+			FROM 
+				book 
+			WHERE 
+				book_idx= #{bookIdx} AND deleted_yn = 'N' 
+		]]>
+	</select>
+	
+	<!-- 도서 메인분류 String -->
+	<select id="selectMainCategori" resultType="String">
+		<![CDATA[ 
+			SELECT 
+				tag_content 
+			FROM 
+				tag 
+			WHERE 
+				tag_idx = #{mainCategori}
+		]]>
+	</select>
+	
+	<!-- 도서 세부분류 String -->
+	<select id="selectDetailCategori" resultType="String">
+		<![CDATA[ 
+			SELECT 
+				tag_content 
+			FROM 
+				tag 
+			WHERE 
+				tag_idx = #{detailCategori}
+		]]>
+	</select>
+	
+	<!-- 댓글 쓰기 -->
+	<insert id="insertComment" parameterType="com.bitc.wub.dto.commentDto">
+		<![CDATA[ 
+			INSERT INTO comment 
+				(book_idx, user_idx, comment_content, create_date) 
+			VALUES 
+				(#{bookIdx}, #{userIdx}, #{commentContent}, NOW()) 
+				
+		]]>
+	</insert>
+	
+	<!-- 댓글 읽기 -->
+	<select id="selectCommentList" resultType="com.bitc.wub.dto.commentDto">
+		<![CDATA[ 
+			SELECT 
+				comment_idx, book_idx ,user_idx, comment_content, create_date
+			FROM
+				comment
+			WHERE
+				book_idx = #{bookIdx} and deleted_yn = 'N'
+			
+		]]>
+	</select>
+	
+	<!-- 조회수 상승 -->
+	<update id="countHitCnt" parameterType="int">
+		<![CDATA[ 
+			UPDATE
+				book 
+			SET 
+				hit_cnt = hit_cnt + 1 
+			WHERE 
+				book_idx = #{book_idx} 
+			AND 
+				deleted_yn = 'N' 
+		]]>
+	</update>
 
 </mapper>

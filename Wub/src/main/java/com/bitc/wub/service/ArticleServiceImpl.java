@@ -25,18 +25,24 @@ public class ArticleServiceImpl implements ArticleService {
 
 	// 상세 글 보기
 	@Override
-	public ArticleDto selectArticleDetail(int BookIdx) throws Exception {
+	public ArticleDto selectArticleDetail(int bookIdx) throws Exception {
 		
 		// 내부에 userIdx 존재
-		ArticleDto article = articleMapper.selectArticleDetail(BookIdx);
+		ArticleDto article = articleMapper.selectArticleDetail(bookIdx);
 		
+		article.setMainCategori(articleMapper.selectMainCategori(article.getMainCategori()));
+		article.setDetailCategori(articleMapper.selectDetailCategori(article.getDetailCategori()));
+		
+		
+		// 조회수 상승
+		articleMapper.countHitCnt(bookIdx);
 		// 다른 테이블 참조
 		//userDto user = articleMapper.selectUserLocal(article.getUserIdx());
 		//article.setUserName(user.getUserName);
 		//article.setUserLocal(user.getUserLocal);
 		
-		List<ImgDto> imgList = articleMapper.selectArticleImgList(BookIdx);
-		article.setImgList(imgList);
+		//List<ImgDto> imgList = articleMapper.selectArticleImgList(bookIdx);
+		//article.setImgList(imgList);
 		
 		return article;
 		
@@ -44,22 +50,15 @@ public class ArticleServiceImpl implements ArticleService {
 
 	// 댓글 리스트
 	@Override
-	public List<CommentDto> selectCommentList(int BookIdx) throws Exception {
+	public List<CommentDto> selectCommentList(int bookIdx) throws Exception {
 		
-		return articleMapper.selectCommentList(BookIdx);
+		return articleMapper.selectCommentList(bookIdx);
 	}
 	
 	// 댓글 쓰기
 	@Override
 	public void insertComment(CommentDto commentDto) throws Exception {
 		articleMapper.insertComment(commentDto);
-		
-	}
-	
-	// 조회수 상승
-	@Override
-	public void countHitCnt(int BookIdx) throws Exception {
-		articleMapper.countHitCnt(BookIdx);
 		
 	}
 

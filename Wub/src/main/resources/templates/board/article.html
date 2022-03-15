@@ -25,7 +25,7 @@
 	<main class="container mt-5">
 		<!-- <div class="col-sm-3"></div> -->
 		<div class="row">
-			<div class="col-lg-6 col-sm-10 mx-auto">
+			<div class="col-lg-7 col-sm-10 mx-auto">
 				<!-- 캐러셀 방식으로 이미지 출력 -->
 				<div id="articleImg" class="carousel slide" data-bs-ride="carousel">
 					<div class="carousel-indicators">
@@ -56,7 +56,7 @@
 				
 				<!-- 제목 -->
 				<div class="form-floating my-3">
-					<input type="text" class="form-control" id="book-title" name="bookTitle" placeholder="제목">
+					<input type="text" class="form-control" id="book-title" name="bookTitle" placeholder="제목" th:value="${article.bookTitle}">
 					<label for="title" class="form-label">제목</label>
 				</div>
 				
@@ -64,13 +64,13 @@
 				<div class="row">
 					<div class="col-lg-8 col-sm-6">
 						<div class="form-floating my-2">
-							<input type="text" class="form-control" id="book-price" name="bookPrice" placeholder="가격을 입력하세요">
+							<input type="text" class="form-control" id="book-price" name="bookPrice" placeholder="가격을 입력하세요" th:value="${article.bookPrice}">
 							<label for="title" class="form-label">₩ 가격</label>
 						</div>
 					</div>
 					<div class="col-lg-4 col-sm-6">
 						<div class="form-check my-4">
-							<input class="form-check-input" type="checkbox" value="" id="book-negotiation" name="bookNegotiation" disabled>
+							<input class="form-check-input" type="checkbox" value="" id="book-negotiation" name="bookNegotiation" disabled th:value="${article.bookNegotiation}">
 							<label class="form-check-label" for="bookNegotiation">가격제안 받기</label>
 						</div>
 					</div>
@@ -85,15 +85,15 @@
 				<!-- 회원 닉네임, 올린날짜(끌어올림), 조회수 -->
 				<div class="row my-3">
 					<div class="col-sm-4">
-						<input type="text" class="form-control" name="creatorId" 
+						<input type="text" class="form-control" id="user-id" name="userId" 
 						readonly value="회원 닉네임">
 					</div>
 					<div class="col-sm-4">
-						<input type="text" class="form-control" name="createdDt" 
+						<input type="text" class="form-control" id="create-date" name="createDate" th:value="${article.createDate}"
 						readonly value="2022-01-11">
 					</div>
 					<div class="col-sm-4">
-						<input type="text" class="form-control" name="hitCnt" 
+						<input type="text" class="form-control" id="hit-cnt" name="hitCnt" th:value="${article.hitCnt}"
 						readonly value="조회수">
 					</div>
 				</div>
@@ -101,16 +101,16 @@
 				<!-- 분류 -->
 				<div class="row my-3">
 					<div class="col-lg-6 col-sm-6">
-						<input type="text" class="form-control" id="area1" name="area1" readonly value="도서 대분류">
+						<input type="text" class="form-control" id="area1" name="MainCategori" readonly value="도서 대분류" th:value="${article.MainCategori}">
 					</div>
 					<div class="col-lg-6 col-sm-6">
-						<input type="text" class="form-control" id="area2" name="area2" readonly value="도서 세부분류">
+						<input type="text" class="form-control" id="area2" name="detailCategori" readonly value="도서 세부분류" th:value="${article.detailCategori}">
 					</div>
 				</div>
 				
 				<!-- 글 내용 -->
 				<div class="form-floating my-2">
-					<textarea rows="10" class="form-control h-25" id="contents" name="contents"></textarea>
+					<textarea rows="10" class="form-control h-25" id="book-contents" name="bookContents" th:text="${article.bookContents}"></textarea>
 					<label for="contents" class="form-label">내용</label>
 				</div>
 				
@@ -120,9 +120,10 @@
 					<button type="button" class="btn btn-primary float-end" id="btn-follow">찜하기</button>
 				</div>
 				
-				<!-- 게시글 idx 정보 -->
+				<!-- 게시글 idx 정보, 유저정보(삭제) -->
 				<div>
-					<input type="hidden" id="idx" name="idx" value="1" th:value="${article}">
+					<input type="hidden" id="user-idx" name="userIdx" value="1" th:value="${userIdx}">
+					<input type="hidden" id="book-idx" name="bookIdx" value="1" th:value="${bookIdx}">
 					<input type="hidden" id="method" name="_method">
 				</div>
 				
@@ -131,12 +132,12 @@
 		</div>
 		<!-- 댓글 -->
 		<div class="row my-3">
-			<div class="col-lg-6 col-sm-12 mx-auto">
+			<div class="col-lg-7 col-sm-12 mx-auto">
 				<form id="comment" method="POST">
 					<table class="table table-hover table-striped">
 						<colgroup>
-							<col width="15%" />
-							<col width="60%" />
+							<col width="20%" />
+							<col width="55%" />
 							<col width="20%" />
 							<col width="5%" />
 						</colgroup>

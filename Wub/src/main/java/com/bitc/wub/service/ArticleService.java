@@ -10,13 +10,12 @@ import com.bitc.wub.dto.TagDto;
 
 public interface ArticleService {
 
-	ArticleDto selectArticleDetail(int BookIdx) throws Exception;
+	ArticleDto selectArticleDetail(int bookIdx) throws Exception;
 
-	List<CommentDto> selectCommentList(int BookIdx) throws Exception;
+	List<CommentDto> selectCommentList(int bookIdx) throws Exception;
 
 	void insertComment(CommentDto commentDto) throws Exception;
 
-	void countHitCnt(int BookIdx) throws Exception;
 
 	void insertArticle(ArticleDto articleDto, MultipartHttpServletRequest multiFile) throws Exception;
 
