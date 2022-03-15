@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -65,17 +66,17 @@ public class WubArticleController {
 	
 	// 글쓰기 페이지에서 DB로 INSERT(이미지 첨부)
 	@RequestMapping(value="/article/write", method=RequestMethod.POST) 
-	public String insertArticle(ArticleDto articleDto, MultipartHttpServletRequest multiFile) throws Exception {
+	public String insertArticle(ArticleDto articleDto, MultipartHttpServletRequest multiFiles) throws Exception {
 	
-		articleService.insertArticle(articleDto, multiFile); 
+		articleService.insertArticle(articleDto, multiFiles); 
 		
 		return "redirect:/article/write"; // / + 메인페이지 혹은 다른페이지로 리다이렉트
 	}
 	
 
 	// 상세 글 읽기
-	@RequestMapping(value = "/article/{BookIdx}", method=RequestMethod.GET)
-	public ModelAndView article(@PathVariable("BookIdx") int BookIdx) throws Exception {
+	@RequestMapping(value = "/article/openArticle", method=RequestMethod.GET)
+	public ModelAndView article(@RequestParam("BookIdx") int BookIdx) throws Exception {
 		ModelAndView mv = new ModelAndView("/board/article");
 		
 		// 조회수 상승

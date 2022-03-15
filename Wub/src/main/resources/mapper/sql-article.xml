@@ -34,7 +34,7 @@
 		]]>
 	</select>
 	
-	<insert id="insertArticle" parameterType="com.bitc.wub.dto.ArticleDto">
+	<insert id="insertArticle" parameterType="com.bitc.wub.dto.ArticleDto" useGeneratedKeys="true" keyProperty="bookIdx">
 		<![CDATA[ 
 			INSERT INTO book
 				(book_title, book_contents, user_idx, book_price, create_date, book_tab, book_negotiation, main_categori, detail_categori)
@@ -49,12 +49,12 @@
 				(book_idx, original_file_name, stored_file_path, file_size) 
 			VALUES 
 		]]>
-		<foreach collection="imgList" item="item" separator=",">
+		<foreach collection="list" item="item" separator=",">
 			(
-			#{item.articleIdx},
+			#{item.bookIdx},
 			#{item.originalFileName},
 			#{item.storedFilePath},
-			#{item.fileSize},
+			#{item.fileSize}
 			)
 		</foreach>
 	</insert>

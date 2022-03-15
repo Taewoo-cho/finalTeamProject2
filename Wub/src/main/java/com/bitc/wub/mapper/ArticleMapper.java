@@ -32,7 +32,7 @@ public interface ArticleMapper {
 	void insertArticle(ArticleDto articleDto) throws Exception;
 
 	// 게시글 작성(이미지)
-	void insertArticleFileList(List<ImgDto> imgList) throws Exception;
+	void insertArticleFileList(List<ImgDto> list) throws Exception;
 
 	List<TagDto> tagMainCategori() throws Exception;
 

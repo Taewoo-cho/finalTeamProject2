@@ -27,7 +27,7 @@ public class ArticleDto {
 	private String MainCategori;
 	private String detailCategori;
 	
-	// 이미지에 대한 정보를 저장하기 위한 멤버 변수
+	// 이미지에 대한 정보를 저장하기 위한 멤버 변수 추가
 	private List<ImgDto> ImgList;
 
 }

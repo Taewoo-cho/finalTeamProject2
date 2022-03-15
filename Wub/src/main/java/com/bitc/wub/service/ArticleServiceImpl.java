@@ -65,16 +65,15 @@ public class ArticleServiceImpl implements ArticleService {
 
 	// 글쓰기
 	@Override
-	public void insertArticle(ArticleDto articleDto, MultipartHttpServletRequest multiFile) throws Exception {
+	public void insertArticle(ArticleDto articleDto, MultipartHttpServletRequest multiFiles) throws Exception {
 		
 		articleMapper.insertArticle(articleDto);
 		
-		List<ImgDto> imgList = fileUtils.parseFileInfo(articleDto.getBookIdx(), multiFile);
+		List<ImgDto> list = fileUtils.parseFileInfo(articleDto.getBookIdx(), multiFiles);
 		
-		if(CollectionUtils.isEmpty(imgList) == false) {
-			articleMapper.insertArticleFileList(imgList);
+		if(CollectionUtils.isEmpty(list) == false) {
+			articleMapper.insertArticleFileList(list);
 		}
-		
 	}
 
 	// 도서 대 분류
