@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bitc.wub.mapper.UserMapper">
+
+	<select id="selectMemberInfoYn" resultType="com.bitc.wub.dto.UserDto">
+		<![CDATA[
+			SELECT count(*) AS cnt
+			FROM java404_team2_final_db.user
+			WHERE user_id = #{userId}
+			AND user_pw = #{userPw}
+		]]>
+	</select>
+	
+	<insert id="insertUser" parameterType="com.bitc.wub.dto.UserDto">
+		<![CDATA[
+			INSERT INTO java404_team2_final_db.user (user_id, user_pw, user_email, user_name, user_local)
+			VALUES (#{userId}, #{userPw}, #{userEmail}, #{userName}, #{userLocal});
+		]]>
+	</insert>
+	
+	<update id="deleteUser" parameterType="int">
+		<![CDATA[
+			UPDATE java404_team2_final_db.user
+			SET deleted_yn = 'Y'
+			WHERE user_idx = #{userIdx}
+		]]>
+	</update>
+	
+	<select id="idCheck" resultType="int">
+		SELECT count(*) AS cnt
+		FROM java404_team2_final_db.user
+		WHERE user_id = #{userId}
+	</select>
+
+</mapper>
