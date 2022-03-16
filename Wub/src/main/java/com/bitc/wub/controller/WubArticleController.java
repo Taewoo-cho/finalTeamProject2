@@ -59,7 +59,9 @@ public class WubArticleController {
 	
 		articleService.insertArticle(articleDto, multiFiles); 
 		
-		return "redirect:/article/write"; // / + 메인페이지 혹은 다른페이지로 리다이렉트
+		String bookIdx = Integer.toString(articleDto.getBookIdx());
+		
+		return "redirect:/article/openArticle?bookIdx=" + bookIdx ; // / + 메인페이지 혹은 다른페이지로 리다이렉트
 	}
 	
 

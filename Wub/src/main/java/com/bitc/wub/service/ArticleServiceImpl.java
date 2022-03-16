@@ -27,6 +27,9 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public ArticleDto selectArticleDetail(int bookIdx) throws Exception {
 		
+		// 조회수 상승
+		articleMapper.countHitCnt(bookIdx);
+		
 		// 내부에 userIdx 존재
 		ArticleDto article = articleMapper.selectArticleDetail(bookIdx);
 		
@@ -34,15 +37,14 @@ public class ArticleServiceImpl implements ArticleService {
 		article.setDetailCategori(articleMapper.selectDetailCategori(article.getDetailCategori()));
 		
 		
-		// 조회수 상승
-		articleMapper.countHitCnt(bookIdx);
+		
 		// 다른 테이블 참조
 		//userDto user = articleMapper.selectUserLocal(article.getUserIdx());
 		//article.setUserName(user.getUserName);
 		//article.setUserLocal(user.getUserLocal);
 		
-		//List<ImgDto> imgList = articleMapper.selectArticleImgList(bookIdx);
-		//article.setImgList(imgList);
+		List<ImgDto> imgList = articleMapper.selectArticleImgList(bookIdx);
+		article.setImgList(imgList);
 		
 		return article;
 		

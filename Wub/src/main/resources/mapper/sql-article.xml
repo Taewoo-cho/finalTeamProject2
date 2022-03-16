@@ -75,6 +75,18 @@
 		]]>
 	</select>
 	
+	<!-- 글에 첨부된 이미지 정보 -->
+	<select id="selectArticleImgList" resultType="com.bitc.wub.dto.ImgDto">
+		<![CDATA[ 
+			SELECT
+				file_idx, book_idx, original_file_name, stored_file_path, file_size
+			FROM
+				book_file
+			WHERE
+				book_idx= #{bookIdx} AND deleted_yn = 'N'
+		]]>
+	</select>
+	
 	<!-- 도서 메인분류 String -->
 	<select id="selectMainCategori" resultType="String">
 		<![CDATA[ 
@@ -136,5 +148,7 @@
 				deleted_yn = 'N' 
 		]]>
 	</update>
+	
+	
 
 </mapper>
