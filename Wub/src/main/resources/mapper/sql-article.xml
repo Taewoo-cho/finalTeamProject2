@@ -100,7 +100,7 @@
 	</select>
 	
 	<!-- 댓글 쓰기 -->
-	<insert id="insertComment" parameterType="com.bitc.wub.dto.commentDto">
+	<insert id="insertComment" parameterType="com.bitc.wub.dto.CommentDto">
 		<![CDATA[ 
 			INSERT INTO comment 
 				(book_idx, user_idx, comment_content, create_date) 
@@ -111,7 +111,7 @@
 	</insert>
 	
 	<!-- 댓글 읽기 -->
-	<select id="selectCommentList" resultType="com.bitc.wub.dto.commentDto">
+	<select id="selectCommentList" resultType="com.bitc.wub.dto.CommentDto">
 		<![CDATA[ 
 			SELECT 
 				comment_idx, book_idx ,user_idx, comment_content, create_date
