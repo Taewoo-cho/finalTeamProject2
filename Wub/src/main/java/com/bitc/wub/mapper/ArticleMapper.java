@@ -13,6 +13,7 @@ import com.bitc.wub.dto.TagDto;
 @Mapper
 public interface ArticleMapper {
 
+	
 	// 상세 글 보기
 	ArticleDto selectArticleDetail(int bookIdx) throws Exception;
 
@@ -23,7 +24,7 @@ public interface ArticleMapper {
 	void insertComment(CommentDto commentDto) throws Exception;
 
 	// 조회수 상승
-	void countHitCnt(int BookIdx) throws Exception;
+	void countHitCnt(int bookIdx) throws Exception;
 
 	// 게시글의 이미지 정보를 가져옴
 	List<ImgDto> selectArticleImgList(int bookIdx) throws Exception;
@@ -35,12 +36,22 @@ public interface ArticleMapper {
 	void insertArticleFileList(List<ImgDto> list) throws Exception;
 
 	// 도서 분류
-	List<TagDto> tagMainCategori() throws Exception;
-	List<TagDto> tagDetailCategori(@Param("tagIdx") int tagIdx, @Param("tagIdx2") int tagIdx2) throws Exception;
+	List<TagDto> tagMainCategory() throws Exception;
+	List<TagDto> tagDetailCategory(@Param("tagIdx") int tagIdx, @Param("tagIdx2") int tagIdx2) throws Exception;
 
 	// idx -> String 바꾸기
-	String selectMainCategori(String mainCategori) throws Exception;
-	String selectDetailCategori(String detailCategori) throws Exception;
+	String selectMainCategory(String mainCategory) throws Exception;
+	String selectDetailCategory(String detailCategory) throws Exception;
+
+	// 글 수정
+	void editArticle(ArticleDto articleDto) throws Exception;
+	void editImgArticle(int bookIdx) throws Exception;
+
+	// 유저닉네임 
+	String selectUserInfo(int userIdx) throws Exception;
+
+	// 유저 주소
+	String selectUserLocalInfo(int userIdx)  throws Exception;
 	
 	
 

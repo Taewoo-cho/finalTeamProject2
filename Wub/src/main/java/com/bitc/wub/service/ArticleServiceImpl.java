@@ -33,10 +33,11 @@ public class ArticleServiceImpl implements ArticleService {
 		// 내부에 userIdx 존재
 		ArticleDto article = articleMapper.selectArticleDetail(bookIdx);
 		
-		article.setMainCategori(articleMapper.selectMainCategori(article.getMainCategori()));
-		article.setDetailCategori(articleMapper.selectDetailCategori(article.getDetailCategori()));
+		article.setMainCategory(articleMapper.selectMainCategory(article.getMainCategory()));
+		article.setDetailCategory(articleMapper.selectDetailCategory(article.getDetailCategory()));
 		
-		
+		article.setUserLocal(articleMapper.selectUserLocalInfo(article.getUserIdx()));
+		article.setUserName(articleMapper.selectUserInfo(article.getUserIdx()));
 		
 		// 다른 테이블 참조
 		//userDto user = articleMapper.selectUserLocal(article.getUserIdx());
@@ -54,7 +55,13 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public List<CommentDto> selectCommentList(int bookIdx) throws Exception {
 		
-		return articleMapper.selectCommentList(bookIdx);
+		List<CommentDto> commentList = articleMapper.selectCommentList(bookIdx);
+		
+		for(CommentDto name : commentList){
+			name.setUserName(articleMapper.selectUserInfo(name.getUserIdx()));
+		}
+
+		return commentList;
 	}
 	
 	// 댓글 쓰기
@@ -79,17 +86,32 @@ public class ArticleServiceImpl implements ArticleService {
 
 	// 도서 대 분류
 	@Override
-	public List<TagDto> tagMainCategori() throws Exception {
+	public List<TagDto> tagMainCategory() throws Exception {
 	
-		return articleMapper.tagMainCategori();
+		return articleMapper.tagMainCategory();
 	}
 
 	// 도서 세부 분류
 	@Override
-	public List<TagDto> tagDetailCategori(int tagIdx) throws Exception {
+	public List<TagDto> tagDetailCategory(int tagIdx) throws Exception {
 		
 		int tagIdx2 = tagIdx + 100;
-		return articleMapper.tagDetailCategori(tagIdx, tagIdx2);
+		return articleMapper.tagDetailCategory(tagIdx, tagIdx2);
+	}
+
+	// 글 수정
+	@Override
+	public void editArticle(ArticleDto articleDto, MultipartHttpServletRequest multiFiles) throws Exception {
+		
+		articleMapper.editArticle(articleDto);
+		articleMapper.editImgArticle(articleDto.getBookIdx());
+		
+		List<ImgDto> list = fileUtils.parseFileInfo(articleDto.getBookIdx(), multiFiles);
+		
+		if(CollectionUtils.isEmpty(list) == false) {
+			articleMapper.insertArticleFileList(list);
+		}
+		
 	}
 
 	

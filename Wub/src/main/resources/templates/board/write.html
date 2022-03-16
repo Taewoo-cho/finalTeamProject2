@@ -18,25 +18,25 @@
 <script>
 	$(document).ready(function() {
 		
-		$("#main-categori").on("change", function() {
-			var mainCategori = $("#main-categori option:selected").val();
-			//var datas = {tagIdx: mainCategori};
+		$("#main-category").on("change", function() {
+			var mainCategory = $("#main-category option:selected").val();
+			//var datas = {tagIdx: mainCategory};
 			
 			$.ajax({
-				url: "/article/write/detailCategori",
+				url: "/article/write/detailCategory",
 				type: "post",
 				contentType: "application/json; charset=UTF-8",
 				data: JSON.stringify({
-					tagIdx: mainCategori
+					tagIdx: mainCategory
 				}),
 				
 				success: function(data) {
-					var detailCategori = $("#detail-categori");
-					detailCategori.empty();
-					detailCategori.append("<option value=''>도서 세부 분류</option>");
+					var detailCategory = $("#detail-category");
+					detailCategory.empty();
+					detailCategory.append("<option value=''>도서 세부 분류</option>");
 					
 					$.each(data, function(index, item){
-						detailCategori.append("<option value="+ item.tagIdx +">" + item.tagContent +"</option>" );
+						detailCategory.append("<option value="+ item.tagIdx +">" + item.tagContent +"</option>" );
 						
 					});
 					
@@ -64,13 +64,13 @@
 				<div class="row my-2">
 					<div class="col-6">
 						<div class="form-check">
-							<input class="form-check-input" type="radio" name="bookTab" id="tag-sale" th:value="S">
+							<input class="form-check-input" type="radio" name="bookTab" id="tag-sale" value="S">
 							<label class="form-check-label" for="tag-sale">팝니다</label>
 						</div>
 					</div>
 					<div class="col-6">
 						<div class="form-check">
-							<input class="form-check-input" type="radio" name="bookTab" id="tag-buy" th:value="B">
+							<input class="form-check-input" type="radio" name="bookTab" id="tag-buy" value="B">
 							<label class="form-check-label" for="tag-buy">삽니다</label>
 						</div>
 					</div>
@@ -86,13 +86,13 @@
 				<!-- 카테고리 분류선택 *db 작업 필수 -->
 				<div class="row my-3">
 					<div class="col-lg-6 col-sm-6">
-						<select class="form-control" id="main-categori" name="mainCategori">
+						<select class="form-control" id="main-category" name="mainCategory">
 							<option value="" selected>도서 대분류</option>
 							<option th:each="tag : ${tagList}" th:value="${tag.tagIdx}" th:text="${tag.tagContent}"></option>
 						</select>
 					</div>
 					<div class="col-lg-6 col-sm-6">
-						<select class="form-control" id="detail-categori" name="detailCategori">
+						<select class="form-control" id="detail-category" name="detailCategory">
 							<option value="" selected>도서 세부 분류</option>
 						</select>
 					</div>

@@ -7,8 +7,12 @@ public class CommentDto {
 
 	private int commentIdx;
 	private int bookIdx;
-	private int userIdx;
+
 	private String commentContent;
-	private String createDt;
+	private String createDate;
 	private char deletedYn;
+	
+	private int userIdx;
+	private String userName;
+	
 }

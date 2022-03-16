@@ -24,8 +24,8 @@ public class ArticleDto {
 	private char bookNegotiation;
 	
 	// 태그 리스트
-	private String MainCategori;
-	private String detailCategori;
+	private String mainCategory;
+	private String detailCategory;
 	
 	
 	// 이미지에 대한 정보를 저장하기 위한 멤버 변수 추가

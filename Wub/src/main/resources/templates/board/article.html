@@ -15,6 +15,53 @@
 	}
 </style>
 
+<script>
+	$(document).ready(function() {
+		/* 가격협상여부 체크확인 */
+		var priceNego = $("#book-negotiation").val();
+		if(priceNego == 'Y') {
+			$("input:checkbox[id='book-negotiation']").prop("checked", true);
+		}
+		
+		var sold = $("#sold-yn").val();
+		if(sold == 'Y') {
+			$("input[id='sold-yn']").empty();;
+			$("input[id='sold-yn']").attr("value", "판매완료");
+
+		} else if(sold == 'N') {
+			$("input[id='sold-yn']").empty();;
+			$("input[id='sold-yn']").attr("value", "판매중");
+		}
+		
+		$("#commentary").on("click", function() {
+			var idx = $("#book-idx").val();
+			var commentContent = $("#comment-contents").val();
+			var userIdx = $("#user-idx").val();
+			var datas = { bookIdx: idx, commentContent: commentContent, userIdx: userIdx };
+			
+			$.ajax({
+				url: "/article/comment",
+				type: "POST",
+				contentType: "application/json; charset=UTF-8",
+				data: datas,
+				
+				success: function(data) {
+					alert("통신성공");
+				}, error: function() {
+					alert(commentContent);
+					alert(userIdx);
+					
+				}
+				
+			});
+		});
+		
+		
+		$('.commentIdx').attr('style', "display:none;");
+
+	});
+</script>
+
 </head>
 <body>
 	<header>
@@ -26,6 +73,8 @@
 		<!-- <div class="col-sm-3"></div> -->
 		<div class="row">
 			<div class="col-lg-7 col-sm-10 mx-auto">
+				
+			
 				<!-- 캐러셀 방식으로 이미지 출력 -->
 				<div id="articleImg" class="carousel slide" data-bs-ride="carousel">
 					<div class="carousel-indicators">
@@ -56,62 +105,81 @@
 				
 				<!-- 제목 -->
 				<div class="form-floating my-3">
-					<input type="text" class="form-control" id="book-title" name="bookTitle" placeholder="제목" th:value="${article.bookTitle}">
-					<label for="title" class="form-label">제목</label>
+					<input type="text" class="form-control" id="book-title" name="bookTitle" placeholder="제목" readonly th:value="${article.bookTitle}">
+					<label for="book-title" class="form-label">제목</label>
+				</div>
+				
+				<!-- 거래상태 -->
+				<div class="form-floating my-3">
+					<input type="text" class="form-control" id="sold-yn" name="soldYn" placeholder="거래상태" readonly th:value="${article.soldYn}">
+					<label for="sold-yn" class="form-label">거래상태</label>
 				</div>
 				
 				<!-- 가격 -->
 				<div class="row">
 					<div class="col-lg-8 col-sm-6">
-						<div class="form-floating my-2">
-							<input type="text" class="form-control" id="book-price" name="bookPrice" placeholder="가격을 입력하세요" th:value="${article.bookPrice}">
-							<label for="title" class="form-label">₩ 가격</label>
+						<div class="form-floating my-1">
+							<input type="text" class="form-control" id="book-price" name="bookPrice" placeholder="가격을 입력하세요" readonly th:value="${article.bookPrice}">
+							<label for="book-price" class="form-label">₩ 가격</label>
 						</div>
 					</div>
 					<div class="col-lg-4 col-sm-6">
-						<div class="form-check my-4">
+						<div class="form-check my-3">
 							<input class="form-check-input" type="checkbox" value="" id="book-negotiation" name="bookNegotiation" disabled th:value="${article.bookNegotiation}">
-							<label class="form-check-label" for="bookNegotiation">가격제안 받기</label>
+							<label class="form-check-label" for="book-negotiation">가격제안 받기</label>
 						</div>
 					</div>
 				</div>
 				
 				<!-- 주소 -->
 				<div class="form-floating my-3">
-					<input type="text" class="form-control" id="user-local" name="userLocal" placeholder="주소">
-					<label for="price" class="form-label">주소</label>
+					<input type="text" class="form-control" id="user-local" name="userLocal" placeholder="주소" readonly th:value="${article.userLocal}">
+					<label for="user-local" class="form-label">주소</label>
 				</div>
 				
 				<!-- 회원 닉네임, 올린날짜(끌어올림), 조회수 -->
-				<div class="row my-3">
+				<div class="row">
 					<div class="col-sm-4">
-						<input type="text" class="form-control" id="user-id" name="userId" 
-						readonly value="회원 닉네임">
+						<div class="form-floating">
+							<input type="text" class="form-control" id="user-name" name="userName" placeholder="닉네임" readonly th:value="${article.userName}">
+							<label for="user-name" class="form-label">닉네임</label>
+						</div>
 					</div>
 					<div class="col-sm-4">
-						<input type="text" class="form-control" id="create-date" name="createDate" th:value="${article.createDate}"
-						readonly value="2022-01-11">
+						<div class="form-floating">
+							<input type="text" class="form-control" id="create-date" name="createDate" placeholder="작성날짜" readonly th:value="${article.createDate}">
+							<label for="create-date" class="form-label">작성날짜</label>
+						</div>
 					</div>
 					<div class="col-sm-4">
-						<input type="text" class="form-control" id="hit-cnt" name="hitCnt" th:value="${article.hitCnt}"
-						readonly value="조회수">
+						<div class="form-floating">
+							<input type="text" class="form-control" id="hit-cnt" name="hitCnt" placeholder="조회수" readonly th:value="${article.hitCnt}">
+							<label for="create-date" class="form-label">조회수</label>
+						</div>
 					</div>
 				</div>
 				
 				<!-- 분류 -->
 				<div class="row my-3">
 					<div class="col-lg-6 col-sm-6">
-						<input type="text" class="form-control" id="area1" name="MainCategori" readonly value="도서 대분류" th:value="${article.MainCategori}">
+						<div class="form-floating">
+							<input type="text" class="form-control" id="main-category" name="mainCategory" placeholder="도서 대분류" readonly th:value="${article.mainCategory}">
+							<label for="create-date" class="form-label">도서 대분류</label>
+						</div>
 					</div>
 					<div class="col-lg-6 col-sm-6">
-						<input type="text" class="form-control" id="area2" name="detailCategori" readonly value="도서 세부분류" th:value="${article.detailCategori}">
+						<div class="form-floating">
+							<input type="text" class="form-control" id="detail-category" name="detailCategory" placeholder="도서 세부분류" readonly th:value="${article.detailCategory}">
+							<label for="create-date" class="form-label">도서 세부분류</label>
+						</div>
+						
 					</div>
 				</div>
 				
 				<!-- 글 내용 -->
 				<div class="form-floating my-2">
-					<textarea rows="10" class="form-control h-25" id="book-contents" name="bookContents" th:text="${article.bookContents}"></textarea>
-					<label for="contents" class="form-label">내용</label>
+					<textarea rows="10" class="form-control h-25" id="book-contents" name="bookContents" readonly th:text="${article.bookContents}"></textarea>
+					<label for="book-contents" class="form-label">내용</label>
 				</div>
 				
 				<!-- 뒤로 가기, 찜 -->
@@ -122,11 +190,10 @@
 				
 				<!-- 게시글 idx 정보, 유저정보(삭제) -->
 				<div>
-					<input type="hidden" id="user-idx" name="userIdx" value="1" th:value="${userIdx}">
-					<input type="hidden" id="book-idx" name="bookIdx" value="1" th:value="${bookIdx}">
+					<input type="hidden" name="userIdx" value="1" id="user-idx" />
+					<input type="hidden" id="book-idx" name="bookIdx" value="1" th:value="${article.bookIdx}">
 					<input type="hidden" id="method" name="_method">
 				</div>
-				
 				
 			</div>
 		</div>
@@ -147,36 +214,33 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>그림쟁</td>
-								<td>네고 가능할까요?</td>
-								<td><h6>2022-03-13</h6></td>
+							<tr th:if="${#lists.size(commentList)} > 0" th:each="list : ${commentList}">
+								<td th:text="${list.userName}"></td>
+								<td th:text="${list.commentContent}"></td>
+								<td th:text="${list.createDate}"></td>
 								<td><button type="button" class="btn-close btn-delete"></button></td>
+								<!-- td 숨기는법? -->
+								<td th:text="${list.userIdx}" id="user-idx-comment" class="commentIdx"></td>
 							</tr>
-							<tr>
-								<td>글쓴이</td>
-								<td>ㄴ 안됩니다</td>
-								<td><h6>2022-03-13</h6></td>
-								<td><button type="button" class="btn-close btn-delete"></button></td>
-							</tr>
+							<tr th:unless="${#lists.size(commentList)} > 0">
+								<td colspan="4">댓글이 없습니다</td>
+						</tr>
 						</tbody>
 					</table>
 				</form>
 				<!-- 댓글 입력칸 -->
-				<form action="" method="POST">
-					<div class="row">
-						<div class="col-lg-10 col-sm-12">
-							<div class="form-floating">
-								<input type="text" class="form-control" id="comment-contents" name="commentContents"
-									placeholder="내용을 입력해주세요">
-								<label for="commentContents">Comment</label>
-							</div>
-						</div>
-						<div class="col-lg-2 d-grid">
-							<button type="button" id="commentary" class="btn btn-secondary">등록</button>
+				<div class="row">
+					<div class="col-lg-10 col-sm-12">
+						<div class="form-floating">
+							<input type="text" class="form-control" id="comment-contents" name="commentContents"
+								placeholder="내용을 입력해주세요">
+							<label for="comment-contents">Comment</label>
 						</div>
 					</div>
-				</form>
+					<div class="col-lg-2 d-grid">
+						<button type="button" id="commentary" class="btn btn-secondary">등록</button>
+					</div>
+				</div>
 			</div>
 		</div>
 		
