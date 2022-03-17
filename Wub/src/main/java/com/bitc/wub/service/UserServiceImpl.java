@@ -15,8 +15,8 @@ public class UserServiceImpl implements UserService {
 	
 //	로그인 체크
 	@Override
-	public int selectuserInfoYn(String userId, String userPw) throws Exception {
-		return userMapper.selectMemberInfoYn(userId, userPw);
+	public int selectUserInfoYn(UserDto user) throws Exception {
+		return userMapper.selectMemberInfoYn(user);
 	}
 
 	

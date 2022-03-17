@@ -5,7 +5,7 @@ import com.bitc.wub.dto.UserDto;
 public interface UserService {
 
 //	로그인 체크
-	int selectuserInfoYn(String userId, String userPw) throws Exception;
+	int selectUserInfoYn(UserDto user) throws Exception;
 	
 //	회원 가입
 	void insertUser(UserDto user) throws Exception;

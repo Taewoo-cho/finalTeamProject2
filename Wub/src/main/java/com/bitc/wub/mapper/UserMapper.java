@@ -9,7 +9,7 @@ import com.bitc.wub.dto.UserDto;
 public interface UserMapper {
 	
 //	로그인 체크
-	int selectMemberInfoYn(@Param("userId") String userId, @Param("userPw") String userPw) throws Exception;
+	int selectMemberInfoYn(UserDto user) throws Exception;
 
 //	회원 가입
 	public void insertUser(UserDto user) throws Exception;

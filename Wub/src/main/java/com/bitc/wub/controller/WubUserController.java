@@ -32,7 +32,7 @@ public class WubUserController {
 //	입력정보 바탕으로 DB에서 정보 있는지 확인
 	@RequestMapping(value="/user/loginCheck", method=RequestMethod.POST)
 	public String loginCheck(UserDto user, HttpServletRequest request) throws Exception {
-		int count = userService.selectuserInfoYn(user.getUserId(), user.getUserPw());
+		int count = userService.selectUserInfoYn(user);
 		
 		// 정보 있으면 세션에 저장
 		if (count == 1) {
@@ -41,7 +41,7 @@ public class WubUserController {
 			session.setMaxInactiveInterval(30*60);
 			
 			// 로그인 성공
-			return "redirect:/main";
+			return "/board/write";
 		}
 		
 		else {

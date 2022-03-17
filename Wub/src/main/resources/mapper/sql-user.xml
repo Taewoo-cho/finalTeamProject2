@@ -4,9 +4,9 @@
 
 <mapper namespace="com.bitc.wub.mapper.UserMapper">
 
-	<select id="selectMemberInfoYn" resultType="com.bitc.wub.dto.UserDto">
+	<select id="selectMemberInfoYn" resultType="int" parameterType="com.bitc.wub.dto.UserDto">
 		<![CDATA[
-			SELECT count(*) AS cnt
+			SELECT count(*)
 			FROM user
 			WHERE user_id = #{userId}
 			AND user_pw = #{userPw}
@@ -29,7 +29,7 @@
 	</update>
 	
 	<select id="idCheck" resultType="int">
-		SELECT count(*) AS cnt
+		SELECT count(*)
 		FROM user
 		WHERE user_id = #{userId}
 	</select>
