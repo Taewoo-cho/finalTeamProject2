@@ -24,5 +24,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/img/**").addResourceLocations("file:///C:/WakeUpBooks/img/");
+		registry.addResourceHandler("/WakeUpBooks/img/**").addResourceLocations("file:///C:/WakeUpBooks/img/");
 	}
 }

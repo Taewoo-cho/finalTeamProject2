@@ -26,6 +26,9 @@ public class ArticleDto {
 	// 태그 리스트
 	private String mainCategory;
 	private String detailCategory;
+
+	// 추천 수
+	private int bookRecommend;
 	
 	
 	// 이미지에 대한 정보를 저장하기 위한 멤버 변수 추가

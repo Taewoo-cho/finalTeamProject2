@@ -2,13 +2,9 @@ package com.bitc.wub.mapper;
 
 import java.util.List;
 
+import com.bitc.wub.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import com.bitc.wub.dto.ArticleDto;
-import com.bitc.wub.dto.CommentDto;
-import com.bitc.wub.dto.ImgDto;
-import com.bitc.wub.dto.TagDto;
 
 @Mapper
 public interface ArticleMapper {
@@ -51,8 +47,17 @@ public interface ArticleMapper {
 	String selectUserInfo(int userIdx) throws Exception;
 
 	// 유저 주소
-	String selectUserLocalInfo(int userIdx)  throws Exception;
-	
-	
+	String selectUserLocalInfo(int userIdx) throws Exception;
 
+	// 게시글, 코멘트 삭제
+	void deleteArticle(int bookIdx) throws Exception;
+	void deleteComment(int bookIdx) throws Exception;
+
+	// 게시글이 받은 추천 수(article)
+	int selectCountRecommend(int bookIdx) throws Exception;
+
+	// 추천 조작 방지 1회만 적용
+	int selectRecommend(RecommendDto recommend) throws Exception;
+	// 추천
+	void insertRecommend(RecommendDto recommend) throws Exception;
 }

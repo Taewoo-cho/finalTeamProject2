@@ -183,7 +183,8 @@
 				book_contents = #{bookContents},
 				create_date = NOW(),
 				book_price = #{bookPrice},
-				book_tab = #{bookTab}
+				book_tab = #{bookTab},
+				book_negotiation = #{bookNegotiation}
 			WHERE
 				book_idx = #{bookIdx}
 		]]>
@@ -201,6 +202,62 @@
 		]]>
 	</update>
 	
-	
+	<!-- 게시글 삭제 -->
+	<update id="deleteArticle" parameterType="int">
+		<![CDATA[
+			UPDATE
+				book
+			SET
+				deleted_yn = 'Y'
+			WHERE
+				book_idx = #{bookIdx}
+		]]>
+	</update>
+
+	<update id="deleteComment" parameterType="int">
+		<![CDATA[
+		UPDATE
+			comment
+		SET
+			deleted_yn = 'Y'
+		WHERE
+			book_idx = #{bookIdx}
+		]]>
+	</update>
+
+	<!-- 게시글이 받은 추천 수 -->
+	<select id="selectCountRecommend" resultType="int" parameterType="com.bitc.wub.dto.RecommendDto" >
+		<![CDATA[
+			SELECT
+			    COUNT(*)
+			FROM
+			    book_recommend
+			WHERE
+			    book_idx = #{bookIdx}
+		]]>
+	</select>
+
+	<select id="selectRecommend" parameterType="com.bitc.wub.dto.RecommendDto" resultType="int" >
+		<![CDATA[
+			SELECT
+				COUNT(*)
+			FROM
+				book_recommend
+			WHERE
+				book_idx = #{bookIdx} AND user_idx = #{userIdx}
+		]]>
+	</select>
+
+	<insert id="insertRecommend" parameterType="com.bitc.wub.dto.RecommendDto">
+		<![CDATA[
+		INSERT INTO book_recommend
+			(book_idx, user_idx)
+		VALUES
+			(#{bookIdx}, #{userIdx})
+
+		]]>
+	</insert>
+
+
 
 </mapper>

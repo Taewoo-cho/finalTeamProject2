@@ -32,29 +32,41 @@
 			$("input[id='sold-yn']").empty();;
 			$("input[id='sold-yn']").attr("value", "판매중");
 		}
-		
-		$("#commentary").on("click", function() {
+
+		$("#btn-follow").on("click", function() {
 			var idx = $("#book-idx").val();
-			var commentContent = $("#comment-contents").val();
-			var userIdx = $("#user-idx").val();
-			var datas = { bookIdx: idx, commentContent: commentContent, userIdx: userIdx };
-			
+			var uidx = $("#user-idx").val();
+
 			$.ajax({
-				url: "/article/comment",
-				type: "POST",
-				contentType: "application/json; charset=UTF-8",
-				data: datas,
-				
-				success: function(data) {
-					alert("통신성공");
-				}, error: function() {
-					alert(commentContent);
-					alert(userIdx);
-					
+				url: "/article/recommend",
+				type: "post",
+				data: {
+					bookIdx: idx, userIdx: uidx
+				},
+				success: function (data) {
+					if(data == "S") {
+						alert("추천 완료");
+						$("#btn-follow").load(window.location.href + "#btn-follow");
+					} else {
+						alert("좋아요는 한번만 하실 수 있습니다.");
+					}
+				}, error: function () {
+					alert("통신실패");
 				}
-				
-			});
+			})
 		});
+
+
+		/*$("#comment-content").keypress(function(event){
+			if(event.which == 13) {
+				$("#commentary").click();
+				return false;
+			}
+		});
+
+		$("#commentary").on("click", function() {
+			$("#comment-list").load(window.location.href + "#comment-list");
+		});*/
 		
 		
 		$('.commentIdx').attr('style', "display:none;");
@@ -62,35 +74,61 @@
 	});
 </script>
 
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #F7E2E2;
+
+		}
+		header {
+			background-color: #1A132F;
+		}
+		main {
+			color: #5B7DB1;
+			height: 100%;
+		}
+
+		footer {
+
+			background-color: #1A132F;
+		}
+	</style>
+
 </head>
+
 <body>
-	<header>
-	
-	
+
+	<header th:replace="layout/header :: header">
 	</header>
-	
+
 	<main class="container mt-5">
 		<!-- <div class="col-sm-3"></div> -->
+		<article></article>
+
 		<div class="row">
 			<div class="col-lg-7 col-sm-10 mx-auto">
-				
-			
 				<!-- 캐러셀 방식으로 이미지 출력 -->
 				<div id="articleImg" class="carousel slide" data-bs-ride="carousel">
-					<div class="carousel-indicators">
-						<button type="button" data-bs-target="#articleImg" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-						<button type="button" data-bs-target="#articleImg" data-bs-slide-to="1" aria-label="Slide 2"></button>
-						<button type="button" data-bs-target="#articleImg" data-bs-slide-to="2" aria-label="Slide 3"></button>
+					<div th:if="${#lists.size(article.imgList)} > 0">
+						<div class="carousel-indicators" >
+							<button type="button" data-bs-target="#articleImg"
+									th:each="list : ${article.imgList}" th:if="${listStat.index} == 0"
+									th:data-bs-slide-to="${listStat.index}" class="active" aria-current="true"
+									aria-label="Slide 1"></button>
+							<button type="button" data-bs-target="#articleImg"
+									th:each="list : ${article.imgList}" th:if="${listStat.index} != 0"
+									th:data-bs-slide-to="${listStat.index}"
+									aria-label="Slide" th:attrappend="aria-label=${listStat.count}"></button>
+						</div>
 					</div>
-					<div class="carousel-inner">
-						<div class="carousel-item active">
-							<img th:src="@{/img/03.png}" class="d-block w-30" alt="...">
+					<div class="carousel-inner" th:if="${#lists.size(article.imgList)} > 0">
+						<div class="carousel-item active" th:each="list : ${article.imgList}" th:if="${listStat.index} == 0">
+							<img th:src="${list.storedFilePath}" class="d-block w-30 rounded mx-auto d-block" alt="...">
 						</div>
-						<div class="carousel-item">
-							<img th:src="@{/img/04.png}" class="d-block w-30" alt="...">
-						</div>
-						<div class="carousel-item">
-							<img th:src="@{/img/05.png}" class="d-block w-30" alt="...">
+						<div class="carousel-item" th:each="list : ${article.imgList}" th:if="${listStat.index} != 0">
+							<img th:src="${list.storedFilePath}" class="d-block w-30 rounded mx-auto d-block" alt="...">
 						</div>
 					</div>
 					<button class="carousel-control-prev" type="button" data-bs-target="#articleImg" data-bs-slide="prev">
@@ -102,9 +140,9 @@
 						<span class="visually-hidden">Next</span>
 					</button>
 				</div>
-				
+
 				<!-- 제목 -->
-				<div class="form-floating my-3">
+				<div class="form-floating my-3 mt-5">
 					<input type="text" class="form-control" id="book-title" name="bookTitle" placeholder="제목" readonly th:value="${article.bookTitle}">
 					<label for="book-title" class="form-label">제목</label>
 				</div>
@@ -123,8 +161,9 @@
 							<label for="book-price" class="form-label">₩ 가격</label>
 						</div>
 					</div>
+					<!--<div class="col-lg-1 col-sm-1"></div>-->
 					<div class="col-lg-4 col-sm-6">
-						<div class="form-check my-3">
+						<div class="form-check my-3 pt-1 ps-5">
 							<input class="form-check-input" type="checkbox" value="" id="book-negotiation" name="bookNegotiation" disabled th:value="${article.bookNegotiation}">
 							<label class="form-check-label" for="book-negotiation">가격제안 받기</label>
 						</div>
@@ -185,70 +224,85 @@
 				<!-- 뒤로 가기, 찜 -->
 				<div class="my-3 clearFix">
 					<button type="button" class="btn btn-secondary float-start" id="btn-back">뒤로</button>
-					<button type="button" class="btn btn-primary float-end" id="btn-follow">찜하기</button>
+					<button type="button" class="btn btn-primary float-end" id="btn-follow">좋아요
+						<span th:if="${article.bookRecommend} >= 0" th:text="${article.bookRecommend}"></span>
+					</button>
 				</div>
 				
 				<!-- 게시글 idx 정보, 유저정보(삭제) -->
 				<div>
-					<input type="hidden" name="userIdx" value="1" id="user-idx" />
+					<input type="hidden" id="user-idx" name="userIdx" value="1"  />
 					<input type="hidden" id="book-idx" name="bookIdx" value="1" th:value="${article.bookIdx}">
 					<input type="hidden" id="method" name="_method">
 				</div>
 				
 			</div>
 		</div>
+		</article>
 		<!-- 댓글 -->
-		<div class="row my-3">
-			<div class="col-lg-7 col-sm-12 mx-auto">
-				<form id="comment" method="POST">
-					<table class="table table-hover table-striped">
-						<colgroup>
-							<col width="20%" />
-							<col width="55%" />
-							<col width="20%" />
-							<col width="5%" />
-						</colgroup>
-						<thead>
-							<tr>
-								<th>전체댓글</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:if="${#lists.size(commentList)} > 0" th:each="list : ${commentList}">
-								<td th:text="${list.userName}"></td>
-								<td th:text="${list.commentContent}"></td>
-								<td th:text="${list.createDate}"></td>
-								<td><button type="button" class="btn-close btn-delete"></button></td>
-								<!-- td 숨기는법? -->
-								<td th:text="${list.userIdx}" id="user-idx-comment" class="commentIdx"></td>
-							</tr>
-							<tr th:unless="${#lists.size(commentList)} > 0">
-								<td colspan="4">댓글이 없습니다</td>
-						</tr>
-						</tbody>
-					</table>
-				</form>
-				<!-- 댓글 입력칸 -->
-				<div class="row">
-					<div class="col-lg-10 col-sm-12">
-						<div class="form-floating">
-							<input type="text" class="form-control" id="comment-contents" name="commentContents"
-								placeholder="내용을 입력해주세요">
-							<label for="comment-contents">Comment</label>
+		<comment id="comment-list">
+			<div class="row my-3">
+				<div class="col-lg-7 col-sm-12 mx-auto">
+					<form id="comment" method="POST">
+						<table class="table table-hover table-striped" style="background-color: aliceblue">
+							<colgroup>
+								<col width="20%" />
+								<col width="55%" />
+								<col width="20%" />
+								<col width="5%" />
+							</colgroup>
+							<thead>
+								<tr th:if="${#lists.size(commentList)} > 0">
+									<th class="ps-3"><span>전체댓글</span><span class="ps-1" th:text="${#lists.size(commentList)}" style="font-size: small" /><span style="font-size: small">개</span></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:if="${#lists.size(commentList)} > 0" th:each="list : ${commentList}">
+									<td th:text="${list.userName}"></td>
+									<td th:text="${list.commentContent}"></td>
+									<td th:text="${list.createDate}" style="font-size: smaller"></td>
+									<td><button type="button" class="btn-close btn-delete"></button></td>
+									<!-- td 숨기는법? -->
+									<td th:text="${list.userIdx}" id="user-idx-comment" class="commentIdx"></td>
+								</tr>
+								<tr th:unless="${#lists.size(commentList)} > 0">
+									<td colspan="4">댓글이 없습니다</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+
+					<!-- 댓글 입력칸 -->
+					<form action="/article/comment" th:action="@{/article/comment}" method="post">
+						<div class="row">
+							<div class="col-lg-10 col-sm-12">
+								<div class="form-floating mb-2">
+									<input type="text" class="form-control" id="comment-content" name="commentContent"
+										placeholder="내용을 입력해주세요">
+									<label for="comment-content">Comment</label>
+								</div>
+							</div>
+							<div class="col-lg-2 d-grid">
+								<button type="submit" id="commentary" class="btn btn-secondary">등록</button>
+							</div>
+							<div>
+								<input type="hidden" id="user-idx2" name="userIdx" value="1"  />
+								<input type="hidden" id="book-idx2" name="bookIdx" value="1" th:value="${article.bookIdx}">
+								<input type="hidden" id="method2" name="_method">
+							</div>
 						</div>
-					</div>
-					<div class="col-lg-2 d-grid">
-						<button type="button" id="commentary" class="btn btn-secondary">등록</button>
-					</div>
+
+					</form>
+
 				</div>
 			</div>
-		</div>
-		
+		</comment>
 		
 		<!-- <div class="col-sm-3"></div> -->
 	</main>
-	
-	<footer></footer>
+
+	<footer th:replace="layout/footer :: footer">
+	</footer>
 
 </body>
 </html>

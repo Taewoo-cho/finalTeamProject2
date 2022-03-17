@@ -52,8 +52,30 @@
 	});
 </script>
 
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #F7E2E2;
+
+		}
+		header {
+			background-color: #1A132F;
+		}
+		main {
+			color: #5B7DB1;
+			height: 100%;
+		}
+		footer {
+
+			background-color: #1A132F;
+		}
+	</style>
+
 </head>
 <body>
+	<header th:replace="layout/header :: header">
+</header>
 
 	<main class="container py-5">
 		<div class="row">
@@ -79,7 +101,7 @@
 				<!-- 첨부파일 올리기 -->
 				<div class="">
 					<!-- input 태그의 multiple 속성은 파일의 다중 선택 기능 -->
-					<label for="files">파일 : </label>
+
 					<input type="file" class="form-control" id="files" name="files" multiple>
 				</div>
 					
@@ -101,7 +123,7 @@
 				<!-- 제목 -->
 				<div class="form-floating my-2">
 					<input type="text" class="form-control" id="book-title" name="bookTitle" placeholder="제목을 입력하세요">
-					<label for="title" class="form-label">제목</label>
+					<label for="book-title" class="form-label">제목</label>
 				</div>
 				
 				<!-- 가격 and 협상체크 -->
@@ -109,13 +131,13 @@
 					<div class="col-lg-8 col-sm-6">
 						<div class="form-floating my-2">
 							<input type="number" class="form-control" id="book-price" name="bookPrice" placeholder="가격을 입력하세요">
-							<label for="bookPrice" class="form-label">₩ 가격</label>
+							<label for="book-price" class="form-label">₩ 가격</label>
 						</div>
 					</div>
 					<div class="col-lg-4 col-sm-6">
 						<div class="form-check my-4">
 							<input class="form-check-input" type="checkbox" value="Y" id="book-negotiation" name="bookNegotiation">
-							<label class="form-check-label" for="bookNegotiation">가격제안 받기</label>
+							<label class="form-check-label" for="book-negotiation">가격제안 받기</label>
 							<input type="hidden" name="bookNegotiation" value="N" id="book-negotiation-hidden" />
 							<input type="hidden" name="userIdx" value="1" id="user-idx" />
 						</div>
@@ -125,7 +147,7 @@
 				<!-- 게시글 작성 text area -->
 				<div class="form-floating my-2">
 					<textarea rows="10" class="form-control h-25" id="book-contents" name="bookContents"></textarea>
-					<label for="contents" class="form-label">내용</label>
+					<label for="book-contents" class="form-label">내용</label>
 				</div>
 				
 				<!-- 글쓰기 취소 버튼 -->
@@ -143,5 +165,8 @@
 			</div>
 		</div>
 	</main>
+
+	<footer th:replace="layout/footer :: footer">
+	</footer>
 </body>
 </html>

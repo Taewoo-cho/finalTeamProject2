@@ -4,6 +4,7 @@ package com.bitc.wub.controller;
 
 import java.util.List;
 
+import com.bitc.wub.dto.RecommendDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -86,10 +87,10 @@ public class WubArticleController {
 	// 댓글 쓰기
 	@RequestMapping(value="/article/comment", method=RequestMethod.POST)
 	public String writeComment(CommentDto commentDto) throws Exception {
-		
+
 		articleService.insertComment(commentDto);
-		String bookIdx = Integer.toString(commentDto.getBookIdx());
-		return "redirect:/article/openArticle?bookIdx=" + bookIdx;
+		String bIdx = Integer.toString(commentDto.getBookIdx());
+		return "redirect:/article/openArticle?bookIdx=" + bIdx;
 		
 	}
 	
@@ -122,17 +123,22 @@ public class WubArticleController {
 	@RequestMapping(value="/article/delete", method=RequestMethod.DELETE)
 	public String deleteArticle(@RequestParam("bookIdx") int bookIdx) throws Exception {
 		
-		//articleService.deleteArticle(articleIdx);
-		return "/board/article";
+		articleService.deleteArticle(bookIdx);
+		return "board/write";
 	}
-	
+
+	// 추천
+	@RequestMapping(value = "/article/recommend", method=RequestMethod.POST)
+	@ResponseBody
+	public String recommendArticle(RecommendDto recommend) throws Exception {
+		String flag = articleService.recommendArticle(recommend);
+		return flag;
+
+	}
 	// 판매완료, 구매완료, 취소
 	
-	// article html 확인용 구현 후 삭제
-	@RequestMapping(value="/article", method=RequestMethod.GET)
-	public String articleView() throws Exception {
-		return "board/article";
-	}
+
+
 	
 	
 }
