@@ -5,7 +5,7 @@
 <mapper namespace="com.bitc.wub.mapper.ArticleMapper">
 
 	<!-- 도서 대분류 -->
-	<select id="tagMainCategori" resultType="com.bitc.wub.dto.TagDto">
+	<select id="tagMainCategory" resultType="com.bitc.wub.dto.TagDto">
 		<![CDATA[ 
 			SELECT 
 				tag_idx, tag_content 
@@ -21,7 +21,7 @@
 	</select>
 	
 	<!-- 도서 세부분류 -->
-	<select id="tagDetailCategori" resultType="com.bitc.wub.dto.TagDto">
+	<select id="tagDetailCategory" resultType="com.bitc.wub.dto.TagDto">
 		<![CDATA[ 
 			SELECT
 				tag_idx, tag_content
@@ -38,9 +38,9 @@
 	<insert id="insertArticle" parameterType="com.bitc.wub.dto.ArticleDto" useGeneratedKeys="true" keyProperty="bookIdx">
 		<![CDATA[ 
 			INSERT INTO book
-				(book_title, book_contents, user_idx, book_price, create_date, book_tab, book_negotiation, main_categori, detail_categori)
+				(book_title, book_contents, user_idx, book_price, create_date, book_tab, book_negotiation, main_category, detail_category)
 			VALUES
-				(#{bookTitle}, #{bookContents}, #{userIdx}, #{bookPrice}, NOW(), #{bookTab}, #{bookNegotiation}, #{mainCategori}, #{detailCategori})
+				(#{bookTitle}, #{bookContents}, #{userIdx}, #{bookPrice}, NOW(), #{bookTab}, #{bookNegotiation}, #{mainCategory}, #{detailCategory})
 		]]>
 	</insert>
 	
@@ -67,7 +67,7 @@
 			SELECT
 				book_idx, book_title, book_contents, user_idx, 
 				create_date, book_price, hit_cnt, book_tab, sold_yn, 
-				book_negotiation, main_categori, detail_categori 
+				book_negotiation, main_category, detail_category
 			FROM 
 				book 
 			WHERE 
@@ -75,32 +75,44 @@
 		]]>
 	</select>
 	
+	<!-- 글에 첨부된 이미지 정보 -->
+	<select id="selectArticleImgList" resultType="com.bitc.wub.dto.ImgDto">
+		<![CDATA[ 
+			SELECT
+				file_idx, book_idx, original_file_name, stored_file_path, file_size
+			FROM
+				book_file
+			WHERE
+				book_idx= #{bookIdx} AND deleted_yn = 'N'
+		]]>
+	</select>
+	
 	<!-- 도서 메인분류 String -->
-	<select id="selectMainCategori" resultType="String">
+	<select id="selectMainCategory" resultType="String">
 		<![CDATA[ 
 			SELECT 
 				tag_content 
 			FROM 
 				tag 
 			WHERE 
-				tag_idx = #{mainCategori}
+				tag_idx = #{mainCategory}
 		]]>
 	</select>
 	
 	<!-- 도서 세부분류 String -->
-	<select id="selectDetailCategori" resultType="String">
+	<select id="selectDetailCategory" resultType="String">
 		<![CDATA[ 
 			SELECT 
 				tag_content 
 			FROM 
 				tag 
 			WHERE 
-				tag_idx = #{detailCategori}
+				tag_idx = #{detailCategory}
 		]]>
 	</select>
 	
 	<!-- 댓글 쓰기 -->
-	<insert id="insertComment" parameterType="com.bitc.wub.dto.commentDto">
+	<insert id="insertComment" parameterType="com.bitc.wub.dto.CommentDto">
 		<![CDATA[ 
 			INSERT INTO comment 
 				(book_idx, user_idx, comment_content, create_date) 
@@ -111,7 +123,7 @@
 	</insert>
 	
 	<!-- 댓글 읽기 -->
-	<select id="selectCommentList" resultType="com.bitc.wub.dto.commentDto">
+	<select id="selectCommentList" resultType="com.bitc.wub.dto.CommentDto">
 		<![CDATA[ 
 			SELECT 
 				comment_idx, book_idx ,user_idx, comment_content, create_date
@@ -123,18 +135,129 @@
 		]]>
 	</select>
 	
+	<!-- 유저 닉네임 찾기 -->
+	<select id="selectUserInfo" parameterType="int" resultType="String">
+		<![CDATA[ 
+			SELECT
+				user_name 
+			FROM
+				user 
+			WHERE
+				user_idx = #{userIdx} 
+		]]>
+	</select>
+	
+	<!-- 유저 주소 찾기 -->
+	<select id="selectUserLocalInfo" parameterType="int" resultType="String">
+		<![CDATA[ 
+			SELECT
+				user_local 
+			FROM
+				user 
+			WHERE
+				user_idx = #{userIdx} 
+		]]>
+	</select>
+	
 	<!-- 조회수 상승 -->
-	<update id="countHitCnt" parameterType="int">
+	<update id="countHitCnt" parameterType="com.bitc.wub.dto.ArticleDto">
 		<![CDATA[ 
 			UPDATE
 				book 
 			SET 
 				hit_cnt = hit_cnt + 1 
 			WHERE 
-				book_idx = #{book_idx} 
+				book_idx = #{bookIdx} 
 			AND 
 				deleted_yn = 'N' 
 		]]>
 	</update>
+	
+	<!-- 게시글 수정 -->
+	<update id="editArticle" parameterType="com.bitc.wub.dto.ArticleDto">
+		<![CDATA[ 
+			UPDATE
+				book
+			SET
+				book_title = #{bookTitle},
+				book_contents = #{bookContents},
+				create_date = NOW(),
+				book_price = #{bookPrice},
+				book_tab = #{bookTab},
+				book_negotiation = #{bookNegotiation}
+			WHERE
+				book_idx = #{bookIdx}
+		]]>
+	</update>
+	
+	<!-- 게시글 이미지 비활성화 -->
+	<update id="editImgArticle" parameterType="com.bitc.wub.dto.ImgDto">
+		<![CDATA[ 
+			UPDATE
+				book_file
+			SET
+				deleted_yn = 'Y'
+			WHERE
+				book_idx = #{bookIdx}
+		]]>
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<update id="deleteArticle" parameterType="int">
+		<![CDATA[
+			UPDATE
+				book
+			SET
+				deleted_yn = 'Y'
+			WHERE
+				book_idx = #{bookIdx}
+		]]>
+	</update>
+
+	<update id="deleteComment" parameterType="int">
+		<![CDATA[
+		UPDATE
+			comment
+		SET
+			deleted_yn = 'Y'
+		WHERE
+			book_idx = #{bookIdx}
+		]]>
+	</update>
+
+	<!-- 게시글이 받은 추천 수 -->
+	<select id="selectCountRecommend" resultType="int" parameterType="com.bitc.wub.dto.RecommendDto" >
+		<![CDATA[
+			SELECT
+			    COUNT(*)
+			FROM
+			    book_recommend
+			WHERE
+			    book_idx = #{bookIdx}
+		]]>
+	</select>
+
+	<select id="selectRecommend" parameterType="com.bitc.wub.dto.RecommendDto" resultType="int" >
+		<![CDATA[
+			SELECT
+				COUNT(*)
+			FROM
+				book_recommend
+			WHERE
+				book_idx = #{bookIdx} AND user_idx = #{userIdx}
+		]]>
+	</select>
+
+	<insert id="insertRecommend" parameterType="com.bitc.wub.dto.RecommendDto">
+		<![CDATA[
+		INSERT INTO book_recommend
+			(book_idx, user_idx)
+		VALUES
+			(#{bookIdx}, #{userIdx})
+
+		]]>
+	</insert>
+
+
 
 </mapper>

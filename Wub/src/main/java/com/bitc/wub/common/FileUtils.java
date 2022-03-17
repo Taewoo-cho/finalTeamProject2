@@ -80,6 +80,7 @@ public class FileUtils {
 					// 데이터베이스에 저장할 목록에 저장
 					fileList.add(imgDto);
 					
+					file = new File(path + "/" + newFileName);
 					// 현재 파일(메모리에만 존재함)을 지정한 위치에 이동하여 저장
 					mFile.transferTo(file);
 					

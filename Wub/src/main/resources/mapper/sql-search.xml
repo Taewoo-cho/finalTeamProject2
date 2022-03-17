@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bitc.mapper.SearchMapper">
+	<select id="openSearchResult" resultType="com.bitc.wub.dto.SearchDto">
+		<![CDATA[ 
+			SELECT
+				b.book_idx, b.book_title, b.book_contents, t.tag_content, b.user_idx, u.user_local, f.stored_file_path
+			FROM
+				book b
+			JOIN
+				tag t
+			ON
+				b.detail_category = t.tag_idx
+			JOIN
+				book_file f
+			ON
+				b.book_idx = f.book_idx
+			JOIN
+				user u
+			ON
+				b.user_idx = u.user_idx	
+			WHERE
+				b.deleted_yn = 'N'
+			AND
+				b.book_title LIKE CONCAT('%', #{searchContent}, '%')
+			OR
+				b.book_contents LIKE CONCAT('%', #{searchContent}, '%')
+			OR
+				t.tag_content LIKE CONCAT('%', #{searchContent}, '%')
+			OR
+				u.user_local LIKE CONCAT('%', #{searchContent}, '%')
+			ORDER BY
+				create_date DESC;
+		]]>
+	</select>
+</mapper>

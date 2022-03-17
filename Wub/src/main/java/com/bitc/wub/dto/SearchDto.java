@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class ArticleDto {
+public class SearchDto {
 	private int bookIdx;
 	private String bookTitle;
 	private String bookContents;
@@ -16,25 +16,23 @@ public class ArticleDto {
 	
 	private String bookPrice;
 	private int hitCnt;
-	private String createDate;
+	private String createdDt;
 	
 	private char bookTab;
 	private char soldYn;
 	private char deletedYn;
 	private char bookNegotiation;
 	
-	// 태그 리스트
-	private String mainCategory;
+	private String MainCategory;
 	private String detailCategory;
-
-	// 추천 수
-	private int bookRecommend;
 	
+	private String tagIdx;
+	private String tagContent;
 	
-	// 이미지에 대한 정보를 저장하기 위한 멤버 변수 추가
-	private List<ImgDto> ImgList;
+	private int fileIdx;
+	private String originalFileName;
+	private String storedFilePath;
+	private String fileSize;
 	
-	// 유저 정보를 저장하기 위한 멤버 변수
-	
-
+	private List<SearchDto> searchImgList;
 }
