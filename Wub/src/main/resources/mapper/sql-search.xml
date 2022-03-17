@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.bitc.mapper.SearchMapper">
-	<select id="openSearchResult" resultType="com.bitc.dto.SearchDto">
+	<select id="openSearchResult" resultType="com.bitc.wub.dto.SearchDto">
 		<![CDATA[ 
 			SELECT
 				b.book_idx, b.book_title, b.book_contents, t.tag_content, b.user_idx, u.user_local, f.stored_file_path
