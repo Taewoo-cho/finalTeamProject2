@@ -20,18 +20,33 @@
 		// 판매완료 제외
 	});
 </script>
+<style>
+      body {
+         margin: 0;
+         padding: 0;
+         background-color: #F7E2E2;
 
+      }
+      header {
+         background-color: #1A132F;
+      }
+      main {
+         color: #5B7DB1;
+      }
+      footer {
+         height: 100px;
+         background-color: #1A132F;
+      }
+   </style>
 </head>
 <body>
-	<header>
-	</header>
-	<!-- 테이블 빼고 카드형으로 변경하기 -->
-	<!-- 책 이미지 추가 -->
-	<!-- 페이지 추가 -->
+	<header th:replace="layout/header :: header">
+    </header>
+    
 	<main>
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-8 mx-auto">
+				<div class="col-lg-7 col-sm-10 mx-auto mt-3">
 					<div>
 						<button type="button" id="goBack" name="goBack" class="btn btn-warning">Back</button>
 						<button type="button" id="orderByPop" name="orderByPop" class="btn btn-secondary float-end">인기순</button>
@@ -64,27 +79,18 @@
 						</table>
 					</div> -->
 					
-					<!-- 카드형 -->
-					<!-- <div>
-						<div class="card" style="width: 200px;">
-							<img src="https://via.placeholder.com/50" alt="https://via.placeholder.com/50" class="card-img-bottom w-100">
-			                <div class="card-body">
-			                    <h4 class="card-title">타이틀</h4>
-			                    <p class="card-text">내용</p>
-			                    <a href="#" class="btn btn-secondary">클릭 시 이동</a>
-			                </div>
-			            </div>
-					</div> -->
 					
-					<!-- 카드형 -->
-					<div class="row">
-						<div class="col-sm-3 d-flex" th:if="${#lists.size(searchArticle)} > 0" th:each="list : ${searchArticle}">
+					
+					
+					<!-- 페이징 -->
+					<!-- <div class="row">
+						<div class="col-sm-3 d-flex mt-3" th:if="${#lists.size(searchArticle)} > 0" th:each="list : ${searchArticle.getList()}">
 	            			<div class="card shadow-sm" style="width: 300px;">
-	              				<img src="photo-3.jpg"  th:src="${list.storedFilePath}" alt="이미지 없음"> 
+	              				<img src="photo-3.jpg"  th:src="${list.storedFilePath}" alt="불러오지 못한 이미지"> 
 	              				<div class="card-body">
-	                 				<a href="#"  class="card-text nav-link link-dark" th:text="${list.bookTitle}" th:attrappend="href=${list.bookIdx}"></a>
-	              					<p class="card-text" th:text="${list.bookContents}"></p>
-									<p class="card-text" th:text="${list.tagContent}"></p>
+	                 				<a href="/article/openArticle" class="card-text nav-link link-dark" th:text="${list.bookTitle}" th:attrappend="href=${list.bookIdx}"></a>
+	              					<p class="card-text" th:text="${list.tagContent}"></p>
+									<p class="card-text" th:text="${list.userLocal}"></p>
 	              				</div>
 	            			</div>
 	          			</div>
@@ -93,12 +99,42 @@
 	          			</div>
 					</div>
 					
+					<div>
+						<ul class="pagination justify-content-center">
+							<li class="page-item" th:classappend="${searchArticle.getPrePage() == 0} ? 'disabled'">
+								<a class="page-link" th:href="@{|/jr41/list/${productCategoryIdx}|(pageNum=${MenuList.getPrePage()})}">Prev</a>
+							</li>
+							<li class="page-item" th:each="page : ${#numbers.sequence(MenuList.getNavigateFirstPage(), MenuList.getNavigateLastPage())}" th:classappend="${page == MenuList.getPageNum()} ? 'active'">
+								<a class="page-link" th:text="${page}" th:href="@{|/jr41/list/${productCategoryIdx}|(pageNum=${page})}"></a>
+							</li>
+							<li class="page-item" th:classappend="${MenuList.getNextPage() == 0} ? 'disabled'">
+								<a class="page-link" th:href="@{|/jr41/list/${productCategoryIdx}|(pageNum=${MenuList.getNextPage()})}">Next</a>
+							</li>
+						</ul>
+					</div> -->
+					
+					<!-- 카드형 -->
+					<div class="row">
+						<div class="col-6 col-lg-4 d-flex mt-3" th:if="${#lists.size(searchArticle)} > 0" th:each="list : ${searchArticle}">
+	            			<div class="card shadow-sm" style="width: 300px;">
+	              				<img src="photo-3.jpg"  th:src="${list.storedFilePath}" alt="불러오지 못한 이미지"> 
+	              				<div class="card-body">
+	                 				<a href="/article/openArticle" class="card-text nav-link link-dark" th:text="${list.bookTitle}" th:attrappend="href=${list.bookIdx}"></a>
+	              					<p class="card-text" th:text="${list.tagContent}"></p>
+									<p class="card-text" th:text="${list.userLocal}"></p>
+	              				</div>
+	            			</div>
+	          			</div>
+	          			<div th:unless="${#lists.size(searchArticle)} > 0 ">
+	          				<h1>검색결과가 없습니다</h1>
+	          			</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</main>
 	
-	<footer>
-	</footer>
+	<footer th:replace="layout/footer :: footer">
+    </footer>
 </body>
 </html>

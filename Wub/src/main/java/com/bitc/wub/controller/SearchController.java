@@ -24,7 +24,7 @@ public class SearchController {
 	}
 	
 //	검색 결과 페이지(최신순 정렬)
-	@RequestMapping(value="/search", method=RequestMethod.POST)
+	@RequestMapping(value="/search", method=RequestMethod.GET)
 	public ModelAndView openSearchResult(String searchContent) throws Exception {
 		ModelAndView mv = new ModelAndView("/search/searchResult");
 		List<SearchDto> searchArticle = searchService.openSearchResult(searchContent);
@@ -35,7 +35,14 @@ public class SearchController {
 //	책 상세 페이지로 이동
 //	인기순 정렬
 //	최신순 정렬
-//	우리 동네만 보기(세션 필요)
 //	판매완료 제외
-//	페이지
+	
+//	페이징
+//	@RequestMapping(value="/search", method=RequestMethod.GET)
+//	public ModelAndView openSearchResult(@RequestParam(required = false, defaultValue = "1") int pageNum, String searchContent) throws Exception {
+//		ModelAndView mv = new ModelAndView("/search/searchResult");
+//		PageInfo<SearchDto> searchArticle = new PageInfo<>(searchService.openSearchResult(pageNum, searchContent), 5);
+//		mv.addObject("searchArticle", searchArticle);
+//		return mv;
+//	}
 }
