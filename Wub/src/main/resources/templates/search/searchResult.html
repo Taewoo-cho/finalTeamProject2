@@ -119,7 +119,7 @@
 	            			<div class="card shadow-sm" style="width: 300px;">
 	              				<img src="photo-3.jpg"  th:src="${list.storedFilePath}" alt="불러오지 못한 이미지"> 
 	              				<div class="card-body">
-	                 				<a href="/article/openArticle" class="card-text nav-link link-dark" th:text="${list.bookTitle}" th:attrappend="href=${list.bookIdx}"></a>
+	                 				<a href="/article/openArticle?bookIdx=" class="card-text nav-link link-dark" th:text="${list.bookTitle}" th:attrappend="href=${list.bookIdx}"></a>
 	              					<p class="card-text" th:text="${list.tagContent}"></p>
 									<p class="card-text" th:text="${list.userLocal}"></p>
 	              				</div>
