@@ -30,6 +30,8 @@
 				t.tag_content LIKE CONCAT('%', #{searchContent}, '%')
 			OR
 				u.user_local LIKE CONCAT('%', #{searchContent}, '%')
+			GROUP BY
+				b.book_title
 			ORDER BY
 				create_date DESC;
 		]]>
