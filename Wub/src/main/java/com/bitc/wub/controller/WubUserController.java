@@ -37,7 +37,7 @@ public class WubUserController {
 		// 정보 있으면 세션에 저장
 		if (count == 1) {
 			HttpSession session = request.getSession();
-			session.setAttribute("userId", user.getUserId());
+			session.setAttribute("userIdx", user.getUserIdx());
 			session.setMaxInactiveInterval(30*60);
 			
 			// 로그인 성공
