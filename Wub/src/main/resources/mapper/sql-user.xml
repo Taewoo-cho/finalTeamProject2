@@ -20,6 +20,31 @@
 		]]>
 	</insert>
 	
+	<select id="idCheck" resultType="int">
+		SELECT count(*)
+		FROM user
+		WHERE user_id = #{userId}
+	</select>
+	
+	<!-- profile -->
+	<select id="profile" parameterType="int" resultType="com.bitc.wub.dto.UserDto">
+		<![CDATA[
+			SELECT user_idx, user_id, user_pw, user_email, user_name, user_local
+			FROM user
+			WHERE user_idx = #{userIdx}
+		]]>
+	</select>
+	
+	<!-- updateUser -->
+	<update id="updateUser" parameterType="com.bitc.wub.dto.UserDto">
+		<![CDATA[
+			UPDATE user
+			SET WHERE user_pw = #{userPw}, user_email = #{userEmail}, user_name = #{userName}, user_local = #{userLocal}
+			where user_idx = #{userIdx}
+		]]>
+	</update>
+	
+	<!-- deleteUser -->
 	<update id="deleteUser" parameterType="int">
 		<![CDATA[
 			UPDATE user
@@ -28,10 +53,26 @@
 		]]>
 	</update>
 	
-	<select id="idCheck" resultType="int">
-		SELECT count(*)
-		FROM user
-		WHERE user_id = #{userId}
+	<!-- myBoardList -->
+	<select id="myBoardList">
+		<![CDATA[
+			SELECT *
+			FROM user, book
+			WHERE user.user_idx = book.user_idx = #{userIdx}
+			AND book.deleted_yn = 'N'
+			ORDER BY book_idx
+		]]>
+	</select>
+	
+	<!-- myRecommend -->
+	<select id="myRecommend">
+		<![CDATA[
+			SELECT user.user_idx, book.*, book_recommend.*
+			FROM user, book, book_recommend
+			WHERE user.user_idx = book_recommend.user_idx = #{userIdx}
+			AND book.book_idx = book_recommend.book_idx
+			AND book.deleted_yn='N';
+		]]>
 	</select>
 
 </mapper>
