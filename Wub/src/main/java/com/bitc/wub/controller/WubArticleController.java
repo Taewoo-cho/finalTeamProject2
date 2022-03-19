@@ -63,7 +63,49 @@ public class WubArticleController {
 		
 		return "redirect:/article/openArticle?bookIdx=" + bookIdx ; // / + 메인페이지 혹은 다른페이지로 리다이렉트
 	}
-	
+
+	//메인페이지
+	@RequestMapping(value="/main", method=RequestMethod.GET)
+	public ModelAndView mainPage() throws Exception {
+		ModelAndView mv = new ModelAndView("board/main");
+
+		// 최신글 리스트
+		List<ArticleDto> latestPostList = articleService.selectLatestPost();
+
+		// 조회수 리스트
+		List<ArticleDto> hitPostList = articleService.selectHitPost();
+
+		// 좋아요 리스트
+		List<ArticleDto> followPostList = articleService.selectFollowPost();
+
+		mv.addObject("latestPost", latestPostList);
+		mv.addObject("hitPost", hitPostList);
+		mv.addObject("followPost", followPostList);
+
+		return mv;
+	}
+
+	// 주제별 메인 페이지
+	@RequestMapping(value="/main/list", method=RequestMethod.GET)
+	public ModelAndView mainPostPage(@RequestParam("post") String post) throws Exception {
+		ModelAndView mv = new ModelAndView("/board/mainList");
+
+		List<ArticleDto> list = null;
+		switch(post) {
+			case "latest":
+				list = articleService.selectLatestPosts();
+				break;
+			case "hit":
+				list = articleService.selectHitPosts();
+				break;
+			case "follow" :
+				list = articleService.selectFollowPosts();
+				break;
+		}
+		mv.addObject("list", list);
+		return mv;
+
+	}
 
 	// 상세 글 읽기
 	@RequestMapping(value = "/article/openArticle", method=RequestMethod.GET)
@@ -135,7 +177,15 @@ public class WubArticleController {
 		return flag;
 
 	}
-	// 판매완료, 구매완료, 취소
+
+	// 판매완료, 구매완료
+	@RequestMapping(value="/article/soldYn", method=RequestMethod.PUT)
+	@ResponseBody
+	public void soldYn(int bookIdx) throws Exception {
+		articleService.articleSoldYn(bookIdx);
+	}
+
+
 	
 
 

@@ -58,6 +58,21 @@ public interface ArticleMapper {
 
 	// 추천 조작 방지 1회만 적용
 	int selectRecommend(RecommendDto recommend) throws Exception;
+
 	// 추천
 	void insertRecommend(RecommendDto recommend) throws Exception;
+	void updateRecommend(RecommendDto recommend) throws Exception;
+
+	// 거래완료
+	void articleSoldYn(int bookIdx) throws Exception;
+
+	// 메인페이지
+    List<ArticleDto> selectLatestPost() throws Exception;
+	List<ArticleDto> selectHitPost() throws Exception;
+	List<ArticleDto> selectFollowPost() throws Exception;
+
+	// 리스트 페이지
+	List<ArticleDto> selectLatestPosts() throws Exception;
+	List<ArticleDto> selectHitPosts() throws Exception;
+	List<ArticleDto> selectFollowPosts() throws Exception;
 }

@@ -214,6 +214,7 @@
 		]]>
 	</update>
 
+	<!-- 댓글삭제 -->
 	<update id="deleteComment" parameterType="int">
 		<![CDATA[
 		UPDATE
@@ -237,6 +238,7 @@
 		]]>
 	</select>
 
+	<!-- 추천수 찾기 -->
 	<select id="selectRecommend" parameterType="com.bitc.wub.dto.RecommendDto" resultType="int" >
 		<![CDATA[
 			SELECT
@@ -248,16 +250,241 @@
 		]]>
 	</select>
 
+	<!-- 추천하기 -->
 	<insert id="insertRecommend" parameterType="com.bitc.wub.dto.RecommendDto">
 		<![CDATA[
-		INSERT INTO book_recommend
-			(book_idx, user_idx)
-		VALUES
-			(#{bookIdx}, #{userIdx})
+			INSERT INTO book_recommend
+				(book_idx, user_idx)
+			VALUES
+				(#{bookIdx}, #{userIdx})
 
 		]]>
 	</insert>
 
+	<!-- 추천수 업데이트 -->
+	<update id="updateRecommend" parameterType="com.bitc.wub.dto.RecommendDto">
+		<![CDATA[
+			UPDATE
+				book
+			SET
+				book_recommend = book_recommend + 1
+			WHERE
+				book_idx = #{bookIdx}
+		]]>
+	</update>
 
+	<!-- 거래완료 -->
+	<update id="articleSoldYn" parameterType="int">
+		<![CDATA[
+		UPDATE
+			book
+		SET
+			sold_yn = 'Y'
+		WHERE
+			book_idx = #{bookIdx}
+		]]>
+	</update>
+
+	<!-- 최신 게시글 -->
+	<select id="selectLatestPost" resultType="com.bitc.wub.dto.ArticleDto">
+		<![CDATA[
+			SELECT
+				b.book_idx, SUBSTRING(b.book_title, 1, 10) AS book_title, SUBSTRING(b.book_contents, 1, 15) AS book_contents, b.create_date,
+			    t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path
+			FROM
+				book b
+			JOIN
+				tag t
+			ON
+				b.detail_category = t.tag_idx
+			JOIN
+				book_file f
+			ON
+				b.book_idx = f.book_idx
+			JOIN
+				user u
+			ON
+				b.user_idx = u.user_idx
+			WHERE
+				b.deleted_yn = 'N'
+			AND
+			    f.deleted_yn = 'N'
+			AND
+			    b.sold_yn = 'N'
+			GROUP BY
+				b.book_idx
+			ORDER BY
+				create_date DESC
+			LIMIT 3
+
+		]]>
+	</select>
+
+	<!-- 최신 게시글 리스트 -->
+	<select id="selectLatestPosts" resultType="com.bitc.wub.dto.ArticleDto">
+		<![CDATA[
+		SELECT
+			b.book_idx, SUBSTRING(b.book_title, 1, 10) AS book_title, SUBSTRING(b.book_contents, 1, 15) AS book_contents, b.create_date,
+			t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path
+		FROM
+			book b
+		JOIN
+			tag t
+		ON
+			b.detail_category = t.tag_idx
+		JOIN
+			book_file f
+		ON
+			b.book_idx = f.book_idx
+		JOIN
+			user u
+		ON
+				b.user_idx = u.user_idx
+		WHERE
+			b.deleted_yn = 'N'
+		  AND
+			f.deleted_yn = 'N'
+		  AND
+			b.sold_yn = 'N'
+		GROUP BY
+			b.book_idx
+		ORDER BY
+			create_date DESC
+		]]>
+	</select>
+
+	<!-- 조회수 높은 게시물 -->
+	<select id="selectHitPost" resultType="com.bitc.wub.dto.ArticleDto">
+		<![CDATA[
+		SELECT
+			b.book_idx, SUBSTRING(b.book_title, 1, 10) AS book_title, SUBSTRING(b.book_contents, 1, 15) AS book_contents, b.create_date,
+			t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path, b.hit_cnt
+		FROM
+			book b
+		JOIN
+			tag t
+		ON
+			b.detail_category = t.tag_idx
+		JOIN
+			book_file f
+		ON
+			b.book_idx = f.book_idx
+		JOIN
+			user u
+		ON
+			b.user_idx = u.user_idx
+		WHERE
+			b.deleted_yn = 'N'
+		  AND
+			f.deleted_yn = 'N'
+		  AND
+			b.sold_yn = 'N'
+		GROUP BY
+			b.book_idx
+		ORDER BY
+			b.hit_cnt DESC
+		LIMIT 3
+		]]>
+	</select>
+
+	<!-- 조회수 높은 게시물리스트 -->
+	<select id="selectHitPosts" resultType="com.bitc.wub.dto.ArticleDto">
+		<![CDATA[
+		SELECT
+			b.book_idx, SUBSTRING(b.book_title, 1, 10) AS book_title, SUBSTRING(b.book_contents, 1, 15) AS book_contents, b.create_date,
+			t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path, b.hit_cnt
+		FROM
+			book b
+		JOIN
+			tag t
+		ON
+			b.detail_category = t.tag_idx
+		JOIN
+			book_file f
+		ON
+			b.book_idx = f.book_idx
+		JOIN
+			user u
+		ON
+				b.user_idx = u.user_idx
+		WHERE
+			b.deleted_yn = 'N'
+		  AND
+			f.deleted_yn = 'N'
+		  AND
+			b.sold_yn = 'N'
+		GROUP BY
+			b.book_idx
+		ORDER BY
+			b.hit_cnt DESC
+		]]>
+	</select>
+
+	<!-- 좋아요 높은 게시물 -->
+	<select id="selectFollowPost" resultType="com.bitc.wub.dto.ArticleDto">
+		<![CDATA[
+		SELECT
+			b.book_idx, SUBSTRING(b.book_title, 1, 10) AS book_title, SUBSTRING(b.book_contents, 1, 15) AS book_contents, b.create_date,
+			t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path, b.hit_cnt
+		FROM
+			book b
+		JOIN
+			tag t
+		ON
+			b.detail_category = t.tag_idx
+		JOIN
+			book_file f
+		ON
+			b.book_idx = f.book_idx
+		JOIN
+			user u
+		ON
+			b.user_idx = u.user_idx
+		WHERE
+			b.deleted_yn = 'N'
+		  AND
+			f.deleted_yn = 'N'
+		  AND
+			b.sold_yn = 'N'
+		GROUP BY
+			b.book_idx
+		ORDER BY
+			b.book_recommend DESC
+		LIMIT 3
+		]]>
+	</select>
+
+	<!-- 좋아요 높은 게시물 리스트 -->
+	<select id="selectFollowPosts" resultType="com.bitc.wub.dto.ArticleDto">
+		<![CDATA[
+		SELECT
+			b.book_idx, SUBSTRING(b.book_title, 1, 10) AS book_title, SUBSTRING(b.book_contents, 1, 15) AS book_contents, b.create_date,
+			t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path, b.hit_cnt
+		FROM
+			book b
+		JOIN
+			tag t
+		ON
+			b.detail_category = t.tag_idx
+		JOIN
+			book_file f
+		ON
+			b.book_idx = f.book_idx
+		JOIN
+			user u
+		ON
+			b.user_idx = u.user_idx
+		WHERE
+			b.deleted_yn = 'N'
+		  AND
+			f.deleted_yn = 'N'
+		  AND
+			b.sold_yn = 'N'
+		GROUP BY
+			b.book_idx
+		ORDER BY
+			b.book_recommend DESC
+		]]>
+	</select>
 
 </mapper>

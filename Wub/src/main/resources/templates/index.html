@@ -1,20 +1,112 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>인덱스 페이지</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>인덱스 페이지</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" >
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f7e2e2;
+      }
+      header {
+        background-color: #1a132f;
+      }
+      main {
+        color: #5b7db1;
+      }
+      footer {
+        height: 100px;
+        background-color: #1a132f;
+      }
+    </style>
+  </head>
+  <body>
+    <header th:fragment="header">
+      <nav
+        class="navbar navbar-expand-md navbar-dark fixed-top pe-1 ps-1"
+        style="background-color: #1a132f"
+      >
+        <div class="container-fluid">
+          <a href="#" class="navbar-brand">
+            <img src="/img/logo.png" style="width: 230px" />
+          </a>
 
-</head>
-<body>
+          <button
+            class="navbar-toggler collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapsibleNavbar"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-	<main class="container mt-5">
-		<h1>인덱스 페이지</h1>
-	</main>
+          <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item">
+                <a href="#" class="nav-link">로그인</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">회원가입</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">글쓰기</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">채팅(DM)</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">마이페이지</a>
+              </li>
+            </ul>
+            <form class="d-flex w-auto" action="#">
+              <input
+                class="form-control me-2"
+                type="search"
+                aria-label="Search"
+                placeholder="책제목, 동네이름 등을 검색하세요"
+              />
+              <button class="btn btn-primary" type="submit">
+                <img src="/img/search.png" width="25px" />
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </header>
 
-</body>
+    <main class="container">
+      <div class="row">
+        <div>
+          <br /><br /><br /><br />
+          <h2>따끈따끈 방금 올라온 책 ></h2>
+          <br /><br /><br /><br />
+          <br /><br /><br /><br />
+
+          <h2>우리동네에 이런 책이 ></h2>
+          <br /><br /><br /><br />
+          <br /><br /><br /><br />
+
+          <h2>검색순위가 높은 책 ></h2>
+          <br /><br /><br /><br />
+          <br /><br /><br /><br />
+        </div>
+      </div>
+    </main>
+
+    <footer th:fragment="footer" class="text-center p-3">
+      <p style="color: #acb0f2">
+        E-mail : app.lnob@gmail.com<br /><br />
+        ⓒ Wake up Books. All Rights Reserved.
+      </p>
+    </footer>
+  </body>
 </html>

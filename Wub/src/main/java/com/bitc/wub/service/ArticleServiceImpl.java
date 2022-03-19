@@ -132,7 +132,42 @@ public class ArticleServiceImpl implements ArticleService {
 			return "F";
 		} else {
 			articleMapper.insertRecommend(recommend);
+			articleMapper.updateRecommend(recommend);
 			return "S";
 		}
+	}
+
+	// 판매완료
+	@Override
+	public void articleSoldYn(int bookIdx) throws Exception {
+		articleMapper.articleSoldYn(bookIdx);
+	}
+
+	// 메인페이지
+	@Override
+	public List<ArticleDto> selectLatestPost() throws Exception {
+		return articleMapper.selectLatestPost();
+	}
+	@Override
+	public List<ArticleDto> selectHitPost() throws Exception {
+		return articleMapper.selectHitPost();
+	}
+	@Override
+	public List<ArticleDto> selectFollowPost() throws Exception {
+		return articleMapper.selectFollowPost();
+	}
+
+	// 리스트 페이지
+	@Override
+	public List<ArticleDto> selectLatestPosts() throws Exception {
+		return articleMapper.selectLatestPosts();
+	}
+	@Override
+	public List<ArticleDto> selectHitPosts() throws Exception {
+		return articleMapper.selectHitPosts();
+	}
+	@Override
+	public List<ArticleDto> selectFollowPosts() throws Exception {
+		return articleMapper.selectFollowPosts();
 	}
 }

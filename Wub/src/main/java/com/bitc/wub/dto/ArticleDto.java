@@ -29,12 +29,17 @@ public class ArticleDto {
 
 	// 추천 수
 	private int bookRecommend;
-	
-	
-	// 이미지에 대한 정보를 저장하기 위한 멤버 변수 추가
-	private List<ImgDto> ImgList;
-	
-	// 유저 정보를 저장하기 위한 멤버 변수
+
+	// 메인 페이지 이미지에 대한 정보를 저장하기 위한 멤버 변수 추가
+	private int fileIdx;
+	private String originalFileName;
+	private String storedFilePath;
+	private String fileSize;
+
+	private List<ImgDto> imgList;
+
+	// 리스트
+	private List<ArticleDto> articleList;
 	
 
 }

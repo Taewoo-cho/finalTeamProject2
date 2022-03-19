@@ -36,4 +36,17 @@ public interface ArticleService {
 
 	// 추천
 	String recommendArticle(RecommendDto recommend) throws Exception;
+
+	// 거래완료
+	void articleSoldYn(int bookIdx) throws Exception;
+
+	// 메인 페이지
+    List<ArticleDto> selectLatestPost() throws Exception;
+	List<ArticleDto> selectHitPost() throws Exception;
+	List<ArticleDto> selectFollowPost() throws Exception;
+
+	// 리스트 페이지
+	List<ArticleDto> selectLatestPosts() throws Exception;
+	List<ArticleDto> selectHitPosts() throws Exception;
+	List<ArticleDto> selectFollowPosts() throws Exception;
 }

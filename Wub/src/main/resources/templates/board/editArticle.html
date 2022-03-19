@@ -26,30 +26,33 @@
 		$("#main-category").on("change", function() {
 			var mainCategory = $("#main-category option:selected").val();
 			//var datas = {tagIdx: mainCategory};
-			
-			$.ajax({
-				url: "/article/write/detailCategory",
-				type: "post",
-				contentType: "application/json; charset=UTF-8",
-				data: JSON.stringify({
-					tagIdx: mainCategory
-				}),
-				
-				success: function(data) {
-					var detailCategory = $("#detail-category");
-					detailCategory.empty();
-					detailCategory.append("<option value=''>도서 세부 분류</option>");
-					
-					$.each(data, function(index, item){
-						detailCategory.append("<option value="+ item.tagIdx +">" + item.tagContent +"</option>" );
-						
-					});
-					
-				}, error: function() {
-					alert("ajax 통신 실패");
-				}
-			});
+
+			if(mainCategory != "") {
+				$.ajax({
+					url: "/article/write/detailCategory",
+					type: "post",
+					contentType: "application/json; charset=UTF-8",
+					data: JSON.stringify({
+						tagIdx: mainCategory
+					}),
+
+					success: function (data) {
+						var detailCategory = $("#detail-category");
+						detailCategory.empty();
+						detailCategory.append("<option value=''>도서 세부 분류</option>");
+
+						$.each(data, function (index, item) {
+							detailCategory.append("<option value=" + item.tagIdx + ">" + item.tagContent + "</option>");
+
+						});
+
+					}, error: function () {
+						alert("ajax 통신 실패");
+					}
+				});
+			}
 		});
+
 
 		$("#book-negotiation").change(function(){
 			if($("#book-negotiation").is(":checked")){
@@ -69,7 +72,11 @@
 		if (tab == 'B') {
 			$("input:radio[id='tag-buy']").prop("checked", true)
 		}
-		
+
+		$("#btn-back").on("click", function() {
+			window.history.back();
+		});
+
 	});
 </script>
 	<style>
@@ -181,7 +188,7 @@
 							<button type="submit" class="btn btn-primary float-end" id="btn-submit">수정</button>
 						</div>
 						<div class="col-lg-6 col-sm-6 d-grid">
-							<button type="button" class="btn btn-secondary float-start" id="btn-reset">취소</button>
+							<button type="button" class="btn btn-secondary float-start" id="btn-back">취소</button>
 						</div>
 					</div>
 				</form>
