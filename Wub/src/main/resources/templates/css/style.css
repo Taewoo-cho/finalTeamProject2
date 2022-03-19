@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #F7E2E2;
+}
+      
+header {
+	background-color: #1A132F;
+}
+
+main {
+	color: #5B7DB1;
+}
+      
+footer {
+	height: 100px;
+	background-color: #1A132F;
+      }
