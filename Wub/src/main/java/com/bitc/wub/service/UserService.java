@@ -7,15 +7,20 @@ public interface UserService {
 //	로그인 체크
 	int selectUserInfoYn(UserDto user) throws Exception;
 	
+	
 //	회원 가입
 	void insertUser(UserDto user) throws Exception;
 	
-//	회원 탈퇴
-	void deleteUser(int userIdx) throws Exception;
-
 //	아이디 중복 체크
 	int idCheck(String userId) throws Exception;
-
+	
+//	회원 정보 수정
+	void updateUser(UserDto user) throws Exception;
+	
+//	회원 탈퇴
+	void deleteUser(int userIdx) throws Exception;
+	
+//	관심 있는 판매글
 
 
 }

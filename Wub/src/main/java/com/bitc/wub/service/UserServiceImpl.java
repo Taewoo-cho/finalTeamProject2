@@ -26,6 +26,12 @@ public class UserServiceImpl implements UserService {
 		userMapper.insertUser(user);
 		
 	}
+	
+//	아이디 중복 체크
+	@Override
+	public int idCheck(String userId) throws Exception {
+		return userMapper.idCheck(userId);
+	}
 
 	
 //	회원 탈퇴
@@ -35,10 +41,11 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
-//	아이디 중복 체크
+//	회원 정보 수정
 	@Override
-	public int idCheck(String userId) throws Exception {
-		return userMapper.idCheck(userId);
+	public void updateUser(UserDto user) throws Exception {
+		userMapper.updateUser(user);
+		
 	}
 	
 
