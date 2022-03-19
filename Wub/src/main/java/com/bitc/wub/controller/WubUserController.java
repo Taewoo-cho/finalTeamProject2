@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,6 +44,7 @@ public class WubUserController {
 			session.setMaxInactiveInterval(30*60);
 			
 			// 로그인 성공
+			// 메인 페이지 접속 주소 보고 수정할 것
 			return "/board/write";
 		}
 		
@@ -51,6 +53,54 @@ public class WubUserController {
 			return "redirect:/user/login";
 		}
 	}
+	
+	
+//	로그아웃
+	@RequestMapping(value="/user/logout", method =  RequestMethod.GET)
+	public String logout(HttpSession session) throws Exception {
+		session.invalidate();
+		// 로그아웃시 메인 페이지 이동
+		return "redirect:/main";
+	}
+	
+	
+	
+//	마이페이지
+	@RequestMapping(value="/user/mypage", method=RequestMethod.GET)
+	public String mypage() throws Exception {
+		return "/user/mypage";
+	}
+	
+	
+//	회원 정보
+	@RequestMapping(value="/user/profile", method=RequestMethod.GET)
+	public String profile() throws Exception {
+		return "/user/profile";
+	}
+	
+	
+	
+//	회원 탈퇴
+	@RequestMapping(value="user/delete/{userIdx}", method=RequestMethod.DELETE)
+	public String deleteUser(@PathVariable("userIdx") int userIdx) throws Exception {
+		userService.deleteUser(userIdx);
+		return "redirect:/main";
+	}
+
+	
+//	나의 판매글
+	@RequestMapping(value="/user/myBoardList", method=RequestMethod.GET)
+	public String myBoardList() throws Exception {
+		return "/user/myBoardList";
+	}
+	
+	
+//	마음에 드는 판매글
+	@RequestMapping(value="/user/myRecommend", method=RequestMethod.GET)
+	public String myRecommend() throws Exception {
+		return "/user/myRecommend";
+	}
+	
 	
 	
 //	회원가입
