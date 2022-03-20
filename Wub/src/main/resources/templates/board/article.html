@@ -120,6 +120,10 @@
 			});
 		});
 
+		// 로그인 하지않으면 댓글 작성 불가
+		if($("#user-idx").val() == "") {
+			$("#comment-box").addClass('d-none');
+		}
 
 
 
@@ -192,10 +196,10 @@
 					</div>
 					<div class="carousel-inner" th:if="${#lists.size(article.imgList)} > 0">
 						<div class="carousel-item active" th:each="list : ${article.imgList}" th:if="${listStat.index} == 0">
-							<img th:src="${list.storedFilePath}" class="d-block w-30 rounded mx-auto" alt="...">
+							<img th:src="${list.storedFilePath}" class="d-block rounded mx-auto" style="width: 500px" alt="...">
 						</div>
 						<div class="carousel-item" th:each="list : ${article.imgList}" th:if="${listStat.index} != 0">
-							<img th:src="${list.storedFilePath}" class="d-block w-30 rounded mx-auto" alt="...">
+							<img th:src="${list.storedFilePath}" class="d-block rounded mx-auto" style="width: 500px" alt="...">
 						</div>
 					</div>
 					<button class="carousel-control-prev" type="button" data-bs-target="#articleImg" data-bs-slide="prev">
@@ -347,7 +351,7 @@
 
 					<!-- 댓글 입력칸 -->
 					<form action="/article/comment" th:action="@{/article/comment}" method="post">
-						<div class="row">
+						<div class="row" id="comment-box">
 							<div class="col-lg-10 col-sm-12">
 								<div class="form-floating mb-2">
 									<input type="text" class="form-control" id="comment-content" name="commentContent"
