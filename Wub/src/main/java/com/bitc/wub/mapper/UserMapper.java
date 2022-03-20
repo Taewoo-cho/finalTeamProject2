@@ -1,14 +1,17 @@
 package com.bitc.wub.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
+import com.bitc.wub.dto.UserArticleDto;
 import com.bitc.wub.dto.UserDto;
 
 @Mapper
 public interface UserMapper {
 	
-//	로그인 체크
-	int selectMemberInfoYn(UserDto user) throws Exception;
+//	로그인
+	int login(UserDto user) throws Exception;
 
 //	회원 가입
 	public void insertUser(UserDto user) throws Exception;
@@ -21,6 +24,9 @@ public interface UserMapper {
 	
 //	회원 정보 수정
 	public void updateUser(UserDto user) throws Exception;
+
+//	내가 작성한 판매글
+	public List<UserArticleDto> selectUserArticle() throws Exception;
 	
 	
 
