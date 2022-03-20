@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -9,7 +9,7 @@
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <!-- 로고 이미지 -->
-                <a href="#" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <a href="/main" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                     <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap">
                         <img src="/img/logo.png" style="width: 230px">
                     </svg>
@@ -29,8 +29,10 @@
 
                 <!-- 오른쪽 버튼, 세션 보유시 마이페이지, 로그아웃으로 변경 -->
                 <div class="text-end">
-                    <button type="button" id="login" class="btn btn-outline-light me-2">Login</button>
-                    <button type="button" id="sign-up" class="btn btn-warning">Sign-up</button>
+                    <button type="button" th:if="${session.userIdx} == null" id="login" class="btn btn-outline-light me-2">Login</button>
+                    <button type="button" th:if="${session.userIdx} == null" id="sign-up" class="btn btn-warning">Sign-up</button>
+                    <button tyoe="button" th:if="${session.userIdx} != null" id="logout" class="btn btn-outline-primary me-2">Logout</button>
+                    <button type="button" th:if="${session.userIdx} != null" id="my-page" class="btn btn-warning">My Page</button>
                 </div>
             </div>
         </div>
@@ -41,6 +43,14 @@
 
             $("#sign-up").on("click", function() {
                 location.href = "/user/signUp";
+            })
+
+            $("#logout").on("click", function() {
+                location.href = "/user/logout";
+            })
+
+            $("#my-page").on("click", function() {
+                location.href = "/user/mypage";
             })
         </script>
     </header>

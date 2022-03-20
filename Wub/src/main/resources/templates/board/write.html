@@ -17,7 +17,12 @@
 
 <script>
 	$(document).ready(function() {
-		
+		// 로그인 하지 않으면 접속불가
+		if($("#user-idx").val() == "") {
+			location.href = "/user/login";
+		}
+
+		// 도서 분류
 		$("#main-category").on("change", function() {
 			var mainCategory = $("#main-category option:selected").val();
 			//var datas = {tagIdx: mainCategory};
@@ -103,7 +108,6 @@
 				<!-- 첨부파일 올리기 -->
 				<div class="">
 					<!-- input 태그의 multiple 속성은 파일의 다중 선택 기능 -->
-
 					<input type="file" class="form-control" id="files" name="files" multiple>
 				</div>
 					
@@ -141,7 +145,7 @@
 							<input class="form-check-input" type="checkbox" value="Y" id="book-negotiation" name="bookNegotiation">
 							<label class="form-check-label" for="book-negotiation">가격제안 받기</label>
 							<input type="hidden" name="bookNegotiation" value="N" id="book-negotiation-hidden" />
-							<input type="hidden" name="userIdx" value="1" id="user-idx" />
+							<input type="hidden" name="userIdx" id="user-idx" th:value="${session.userIdx}" />
 						</div>
 					</div>
 				</div>
@@ -153,7 +157,6 @@
 				</div>
 				
 				<!-- 글쓰기 취소 버튼 -->
-				
 				<div class="row my-4">
 					<div class="col-lg-6 col-sm-6 d-grid">
 						<button type="submit" class="btn btn-primary float-end" id="btn-submit">등록</button>

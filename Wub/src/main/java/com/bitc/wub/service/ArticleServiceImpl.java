@@ -73,6 +73,10 @@ public class ArticleServiceImpl implements ArticleService {
 		articleMapper.insertComment(commentDto);
 		
 	}
+	// 댓글 삭제
+	public void deleteComment(CommentDto commentDto) throws Exception {
+		articleMapper.deleteComment(commentDto);
+	}
 
 	// 글쓰기
 	@Override
@@ -157,7 +161,7 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleMapper.selectFollowPost();
 	}
 
-	// 리스트 페이지
+	// 메인 주제별 리스트 페이지
 	@Override
 	public List<ArticleDto> selectLatestPosts() throws Exception {
 		return articleMapper.selectLatestPosts();

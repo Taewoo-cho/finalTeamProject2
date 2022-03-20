@@ -18,6 +18,8 @@ public interface ArticleMapper {
 
 	// 댓글 쓰기
 	void insertComment(CommentDto commentDto) throws Exception;
+	// 댓글 삭제
+	void deleteComment(CommentDto commentDto) throws Exception;
 
 	// 조회수 상승
 	void countHitCnt(int bookIdx) throws Exception;

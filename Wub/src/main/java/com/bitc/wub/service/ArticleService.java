@@ -20,12 +20,14 @@ public interface ArticleService {
 	// 댓글 쓰기
 	void insertComment(CommentDto commentDto) throws Exception;
 
+	// 댓글 삭제
+	void deleteComment(CommentDto commentDto) throws Exception;
+
 	// 게시글 쓰기
 	void insertArticle(ArticleDto articleDto, MultipartHttpServletRequest multiFile) throws Exception;
 
 	// 도서 분류
 	List<TagDto> tagMainCategory() throws Exception;
-
 	List<TagDto> tagDetailCategory(int tagIdx) throws Exception;
 
 	// 게시글 수정
@@ -49,4 +51,6 @@ public interface ArticleService {
 	List<ArticleDto> selectLatestPosts() throws Exception;
 	List<ArticleDto> selectHitPosts() throws Exception;
 	List<ArticleDto> selectFollowPosts() throws Exception;
+
+
 }

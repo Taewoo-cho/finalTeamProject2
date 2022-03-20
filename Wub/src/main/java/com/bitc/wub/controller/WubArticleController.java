@@ -135,6 +135,13 @@ public class WubArticleController {
 		return "redirect:/article/openArticle?bookIdx=" + bIdx;
 		
 	}
+
+	// 댓글 삭제
+	@RequestMapping(value="/article/comment/delete", method=RequestMethod.DELETE)
+	@ResponseBody
+	public void deleteComment(CommentDto commentDto) throws Exception {
+		articleService.deleteComment(commentDto);
+	}
 	
 	// 글 수정 페이지
 	@RequestMapping(value="/article/edit", method=RequestMethod.GET)

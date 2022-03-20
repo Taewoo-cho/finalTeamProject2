@@ -60,6 +60,7 @@
 			location.href = "/article/edit?bookIdx=" + $("#book-idx").val();
 		});
 
+		// 판매완료 (세션보유자와 글 작성자가 같은지 확인) -버튼 유무
 		$("#btn-sold").on("click", function() {
 			$.ajax({
 				url: "/article/soldYn",
@@ -69,13 +70,15 @@
 				},
 				success: function(data) {
 					alert("판매완료");
-					location.href = "/article/openArticle?bookIdx=" + $("#book-idx").val();
+					//location.href = "/article/openArticle?bookIdx=" + $("#book-idx").val();
+					location.reload();
 				}, error: function() {
 					alert($("#book-idx").val());
 				}
 			});
 		});
 
+		// 글삭제(세션보유자와 글 작성자가 같은지 확인) -버튼 유무
 		$("#btn-delete").on("click", function() {
 			$.ajax({
 				url: "/article/delete?bookIdx" + $("#book-idx").val(),
@@ -92,9 +95,29 @@
 			});
 		});
 
+		// 뒤로가기
 		$("#btn-back").on("click", function() {
 			//location.href = "/main";
 			window.history.back();
+		});
+
+		// 댓글 삭제
+		var commentIdx = 0;
+		$(".btn-delete").on("click", function () {
+			commentIdx = $(this).children("span").text();
+			$.ajax({
+				url: "/article/comment/delete",
+				type: "delete",
+				data: {
+					commentIdx: commentIdx, userIdx: $("#comment-insert-user-idx").val()
+				},
+				success: function(data) {
+					alert("댓글삭제");
+					location.reload();
+				}, error: function () {
+					alert("통신실패");
+				}
+			});
 		});
 
 
@@ -112,7 +135,8 @@
 		});*/
 
 
-		$('.commentIdx').attr('style', "display:none;");
+		//$('.commentUserIdx').attr('style', "display:none;");
+		//$('.commentIdx').attr('style', "display:none");
 
 	});
 </script>
@@ -267,19 +291,20 @@
 				<!-- 뒤로 가기, 찜 -->
 				<div class="my-3 clearFix">
 					<button type="button" class="btn btn-secondary float-start" id="btn-back">뒤로가기</button>
-					<button type="button" class="btn btn-warning float-start ms-2" id="btn-sold">판매완료</button>
+					<button type="button" th:if="${session.userIdx} == ${article.userIdx}" class="btn btn-warning float-start ms-2" id="btn-sold">판매완료</button>
 
 
-					<button type="button" class="btn btn-primary float-end" id="btn-follow">좋아요
+					<button type="button" th:if="${session.userIdx} != null" class="btn btn-primary float-end" id="btn-follow">좋아요
 						<span th:if="${article.bookRecommend} >= 0" th:text="${article.bookRecommend}"></span>
 					</button>
-					<button type="button" class="btn btn-success float-end me-2" id="btn-edit">수정</button>
-					<button type="button" class="btn btn-danger float-end me-2" id="btn-delete">삭제</button>
+					<button type="button" th:if="${session.userIdx} == ${article.userIdx}" class="btn btn-success float-end me-2" id="btn-edit">수정</button>
+					<button type="button" th:if="${session.userIdx} == ${article.userIdx}" class="btn btn-danger float-end me-2" id="btn-delete">삭제</button>
 				</div>
 				
 				<!-- 게시글 idx 정보, 유저정보(삭제) -->
 				<div>
-					<input type="hidden" id="user-idx" name="userIdx" value="1"  />
+					<!-- 게시글 작성자의 userIdx -->
+					<input type="hidden" id="user-idx" name="userIdx" th:value="${session.userIdx}"  />
 					<input type="hidden" id="book-idx" name="bookIdx" value="1" th:value="${article.bookIdx}">
 					<input type="hidden" id="method" name="_method">
 				</div>
@@ -304,14 +329,14 @@
 									<th class="ps-3"><span>전체댓글</span><span class="ps-1" th:text="${#lists.size(commentList)}" style="font-size: small" /><span style="font-size: small">개</span></th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="comment-list">
 								<tr th:if="${#lists.size(commentList)} > 0" th:each="list : ${commentList}">
 									<td th:text="${list.userName}"></td>
 									<td th:text="${list.commentContent}"></td>
 									<td th:text="${list.createDate}" style="font-size: smaller"></td>
-									<td><button type="button" class="btn-close btn-delete"></button></td>
-									<!-- td 숨기는법? -->
-									<td th:text="${list.userIdx}" id="user-idx-comment" class="commentIdx"></td>
+									<td><button type="button" th:if="${session.userIdx} == ${list.userIdx}" class="btn-close btn-delete" id="comment-delete"><span class="d-none" id="comment-idx" th:text="${list.commentIdx}"></span></button></td>
+									<!-- td 숨김법 -->
+									<td ><span class="d-none" id="user-idx-comment" th:text="${list.userIdx}"></span></td>
 								</tr>
 								<tr th:unless="${#lists.size(commentList)} > 0">
 									<td colspan="4">댓글이 없습니다</td>
@@ -334,8 +359,9 @@
 								<button type="submit" id="commentary" class="btn btn-secondary">등록</button>
 							</div>
 							<div>
-								<input type="hidden" id="user-idx2" name="userIdx" value="1"  />
-								<input type="hidden" id="book-idx2" name="bookIdx" value="1" th:value="${article.bookIdx}">
+								<!-- 로그인 세션 사용자 -->
+								<input type="hidden" id="comment-insert-user-idx" name="userIdx" th:value="${session.userIdx}"  />
+								<input type="hidden" id="comment-insert-book-idx" name="bookIdx" th:value="${article.bookIdx}">
 								<input type="hidden" id="method2" name="_method">
 							</div>
 						</div>

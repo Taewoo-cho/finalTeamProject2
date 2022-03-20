@@ -215,14 +215,16 @@
 	</update>
 
 	<!-- 댓글삭제 -->
-	<update id="deleteComment" parameterType="int">
+	<update id="deleteComment" parameterType="com.bitc.wub.dto.CommentDto">
 		<![CDATA[
 		UPDATE
 			comment
 		SET
 			deleted_yn = 'Y'
 		WHERE
-			book_idx = #{bookIdx}
+			comment_idx = #{commentIdx}
+		AND
+		    user_idx = #{userIdx}
 		]]>
 	</update>
 
