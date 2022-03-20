@@ -1,8 +1,11 @@
 package com.bitc.wub.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bitc.wub.dto.UserArticleDto;
 import com.bitc.wub.dto.UserDto;
 import com.bitc.wub.mapper.UserMapper;
 
@@ -11,12 +14,11 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserMapper userMapper;
-
 	
-//	로그인 체크
+//	로그인
 	@Override
-	public int selectUserInfoYn(UserDto user) throws Exception {
-		return userMapper.selectMemberInfoYn(user);
+	public int login(UserDto user) throws Exception {
+		return userMapper.login(user);
 	}
 
 	
@@ -47,6 +49,13 @@ public class UserServiceImpl implements UserService {
 		userMapper.updateUser(user);
 		
 	}
+
+//	내가 작성한 판매글
+	@Override
+	public List<UserArticleDto> selectUserArticle() throws Exception {
+		return userMapper.selectUserArticle();
+	}
+
 	
 
 	
