@@ -19,6 +19,7 @@
 	$(document).ready(function() {
 		// 로그인 하지 않으면 접속불가
 		if($("#user-idx").val() == "") {
+			alert("로그인 이후 작성이 가능합니다.");
 			location.href = "/user/login";
 		}
 
