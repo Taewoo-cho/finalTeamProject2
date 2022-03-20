@@ -1,5 +1,7 @@
 package com.bitc.wub.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,7 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.bitc.wub.dto.UserArticleDto;
 import com.bitc.wub.dto.UserDto;
 import com.bitc.wub.service.UserService;
 
@@ -29,31 +34,32 @@ public class WubUserController {
 	public String login() throws Exception {
 		return "/user/login";
 	}
-
-//	입력정보 바탕으로 DB에서 정보 있는지 확인
+	
+	//입력정보 바탕으로 DB에서 정보 있는지 확인
 	@RequestMapping(value="/user/loginCheck", method=RequestMethod.POST)
-	public String loginCheck(UserDto user, HttpServletRequest request) throws Exception {
-		int count = userService.selectUserInfoYn(user);
+	public String login(UserDto user, HttpServletRequest request, RedirectAttributes rttr) throws Exception {
+		int idx = userService.login(user);
+		System.out.println(idx);
 		
-		// 정보 있으면 세션에 저장
-		if (count == 1) {
-			HttpSession session = request.getSession();
-			session.setAttribute("userId", user.getUserId());
-			// 세션 id에서 idx로 수정
-			// session.setAttribute("userIdx", user.getUserIdx());
-			session.setMaxInactiveInterval(30*60);
-			
-			// 로그인 성공
-			// 메인 페이지 접속 주소 보고 수정할 것
-			return "/board/write";
+		if (idx == 0) {
+			// 로그인 실패
+			int result = 0;
+			rttr.addFlashAttribute("result", result);
+			return "redirect:/user/login";
 		}
 		
 		else {
-			// 로그인 실패
-			return "redirect:/user/login";
+			// 로그인 성공
+			HttpSession session = request.getSession();
+			session.setAttribute("userIdx", idx);
+			
+			System.out.println(session.getAttribute("userIdx"));
+			session.setMaxInactiveInterval(30*60);
+			
+			return "redirect:/main";
 		}
 	}
-	
+
 	
 //	로그아웃
 	@RequestMapping(value="/user/logout", method =  RequestMethod.GET)
@@ -89,9 +95,14 @@ public class WubUserController {
 
 	
 //	나의 판매글
-	@RequestMapping(value="/user/myBoardList", method=RequestMethod.GET)
-	public String myBoardList() throws Exception {
-		return "/user/myBoardList";
+	@RequestMapping(value="/user/myArticle", method=RequestMethod.GET)
+	public ModelAndView myArticle() throws Exception {
+		ModelAndView mv = new ModelAndView("user/myArticle");
+		
+		List<UserArticleDto> myArticle = userService.selectUserArticle();
+		mv.addObject("myArticle", myArticle);
+		
+		return mv;
 	}
 	
 	
