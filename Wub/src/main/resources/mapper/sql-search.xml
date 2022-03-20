@@ -23,6 +23,8 @@
 			WHERE
 				b.deleted_yn = 'N'
 			AND
+				f.deleted_yn = 'N'
+			AND
 				(b.book_title LIKE CONCAT('%', #{searchContent}, '%')
 			OR
 				b.book_contents LIKE CONCAT('%', #{searchContent}, '%')
