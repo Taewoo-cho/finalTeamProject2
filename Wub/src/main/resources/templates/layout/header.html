@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -9,14 +11,14 @@
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <!-- 로고 이미지 -->
-                <a href="/main" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <a href="/main" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none pe-5">
                     <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap">
                         <img src="/img/logo.png" style="width: 230px">
                     </svg>
                 </a>
 
                 <!-- 중앙 링크 -->
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 ps-5">
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/main" class="nav-link px-2 text-white">Home</a></li>
                     <li><a href="/article/write" class="nav-link px-2 text-white">글쓰기</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">채팅</a></li>
@@ -31,11 +33,20 @@
                 <div class="text-end">
                     <button type="button" th:if="${session.userIdx} == null" id="login" class="btn btn-outline-light me-2">Login</button>
                     <button type="button" th:if="${session.userIdx} == null" id="sign-up" class="btn btn-warning">Sign-up</button>
-                    <button tyoe="button" th:if="${session.userIdx} != null" id="logout" class="btn btn-outline-primary me-2">Logout</button>
+                    <button tyoe="button" th:if="${session.userIdx} != null" id="logout" class="btn btn-outline-danger me-2">Logout</button>
                     <button type="button" th:if="${session.userIdx} != null" id="my-page" class="btn btn-warning">My Page</button>
                 </div>
             </div>
         </div>
+        <style>
+            li {
+                font-family: 'Nanum Gothic'!important;
+                font-weight: 400;
+            }
+        </style>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
         <script>
             $("#login").on("click", function() {
                 location.href = "/user/login";

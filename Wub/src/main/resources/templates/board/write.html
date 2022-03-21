@@ -23,6 +23,20 @@
 			location.href = "/user/login";
 		}
 
+
+		$("#btn-submit").attr("disabled", true);
+
+		$("#book-title").on("change", function() {
+			if($("#book-title").val() != "") {
+				$("#btn-submit").attr("disabled", false);
+			}
+		});
+
+		$("#btn-main").on("click", function() {
+			location.href = "/main";
+		});
+
+
 		// 도서 분류
 		$("#main-category").on("change", function() {
 			var mainCategory = $("#main-category option:selected").val();
@@ -44,7 +58,6 @@
 
 						$.each(data, function (index, item) {
 							detailCategory.append("<option value=" + item.tagIdx + ">" + item.tagContent + "</option>");
-
 						});
 
 					}, error: function () {
@@ -78,6 +91,9 @@
 
 			background-color: #1A132F;
 		}
+		span {
+			color: red !important;
+		}
 	</style>
 
 </head>
@@ -107,9 +123,9 @@
 				</div>
 				
 				<!-- 첨부파일 올리기 -->
-				<div class="">
+				<div>
 					<!-- input 태그의 multiple 속성은 파일의 다중 선택 기능 -->
-					<input type="file" class="form-control" id="files" name="files" multiple>
+					<input type="file" class="form-control" id="files" name="files" accept=".gif, .jpg, .png" required multiple>
 				</div>
 					
 				<!-- 카테고리 분류선택 *db 작업 필수 -->
@@ -130,7 +146,7 @@
 				<!-- 제목 -->
 				<div class="form-floating my-2">
 					<input type="text" class="form-control" id="book-title" name="bookTitle" placeholder="제목을 입력하세요">
-					<label for="book-title" class="form-label">제목</label>
+					<label for="book-title" class="form-label">제목<span>*</span></label>
 				</div>
 				
 				<!-- 가격 and 협상체크 -->
@@ -163,7 +179,7 @@
 						<button type="submit" class="btn btn-primary float-end" id="btn-submit">등록</button>
 					</div>
 					<div class="col-lg-6 col-sm-6 d-grid">
-						<button type="button" class="btn btn-secondary float-start" id="btn-reset">취소</button>
+						<button type="button" class="btn btn-secondary float-start" id="btn-main">취소</button>
 					</div>
 				</div>
 				
