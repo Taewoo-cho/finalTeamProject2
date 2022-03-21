@@ -16,7 +16,7 @@ public class SearchDto {
 	
 	private String bookPrice;
 	private int hitCnt;
-	private String createdDt;
+	private String createDate;
 	
 	private char bookTab;
 	private char soldYn;

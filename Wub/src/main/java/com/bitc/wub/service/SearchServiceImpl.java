@@ -14,10 +14,16 @@ public class SearchServiceImpl implements SearchService {
 	@Autowired
 	private SearchMapper searchMapper;
 
-//	검색 결과 페이지(최신순 정렬)
+//	검색 결과 최신순 정렬
 	@Override
-	public List<SearchDto> openSearchResult(String searchContent) throws Exception {
-		return searchMapper.openSearchResult(searchContent);
+	public List<SearchDto> openSearchResultNew(String searchContent) throws Exception {
+		return searchMapper.openSearchResultNew(searchContent);
+	}
+	
+//	검색 결과 조회수 정렬
+	@Override
+	public List<SearchDto> openSearchResultHit(String searchContent) throws Exception {
+		return searchMapper.openSearchResultHit(searchContent);
 	}
 
 //	페이징

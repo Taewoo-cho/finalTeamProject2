@@ -14,9 +14,17 @@
 		$("#goBack").on("click", function() {
 			history.back();
 		});
+
+		// 조회수 정렬
+		$("#orderByHit").on("click", function() {
+			location.href="/searchorder?order=hit";
+		});
 		
-		// 인기순 정렬
 		// 최신순 정렬
+		$("#orderByNew").on("click", function() {
+			location.href="/searchorder?order=new";
+		});
+		
 		// 판매완료 제외
 	});
 </script>
@@ -49,48 +57,21 @@
 				<div class="col-lg-7 col-sm-10 mx-auto mt-3">
 					<div>
 						<button type="button" id="goBack" name="goBack" class="btn btn-warning">Back</button>
-						<button type="button" id="orderByPop" name="orderByPop" class="btn btn-secondary float-end">인기순</button>
+						<button type="button" id="orderByHit" name="orderByHit" class="btn btn-secondary float-end">조회수많은글</button>
 						<button type="button" id="orderByNew" name="orderByNew" class="btn btn-primary float-end me-2">최신순</button>
 					</div>
-					
-					<!-- 확인용 테이블 -->
-					<!-- <div>
-						<table class="table table-hover text-center">
-							<thead>
-								<tr>
-									<th>책제목</th>
-									<th>책설명</th>
-									<th>카테고리</th>
-								</tr>
-							</thead>
-							<tbody class="">
-								<tr th:if="${#lists.size(searchArticle)} > 0" th:each="list : ${searchArticle}">
-									<td th:text="${list.bookTitle}"></td>
-									<td th:text="${list.bookContents}"></td>
-									<td th:text="${list.tagContent}"></td>
-									<td>
-										<a href="/jr41/list/detail/" th:attrappend="href=${list.productIdx}" th:text="${list.productName}" class="text-decoration-none"></a>
-									</td>
-								</tr>
-								<tr th:unless="${#lists.size(searchArticle)} > 0 ">
-									<td colspan="3" class="text-center">검색결과가 없습니다.</td>
-								</tr>
-							</tbody>
-						</table>
-					</div> -->
-					
-					
-					
-					
-					<!-- 페이징 -->
-					<!-- <div class="row">
-						<div class="col-sm-3 d-flex mt-3" th:if="${#lists.size(searchArticle)} > 0" th:each="list : ${searchArticle.getList()}">
-	            			<div class="card shadow-sm" style="width: 300px;">
-	              				<img src="photo-3.jpg"  th:src="${list.storedFilePath}" alt="불러오지 못한 이미지"> 
+
+					<!-- 카드형 -->
+					<div class="row">
+						<div class="col-6 col-lg-4 d-flex mt-3" th:if="${#lists.size(searchArticle)} > 0" th:each="list : ${searchArticle}">
+	            			<div class="card" style="width: 300px;">
+	              				<img src="photo-3.jpg" th:src="${list.storedFilePath}" alt="불러오지 못한 이미지"> 
 	              				<div class="card-body">
-	                 				<a href="/article/openArticle" class="card-text nav-link link-dark" th:text="${list.bookTitle}" th:attrappend="href=${list.bookIdx}"></a>
+	                 				<a href="/article/openArticle?bookIdx=" class="card-text nav-link link-dark" th:text="${list.bookTitle}" th:attrappend="href=${list.bookIdx}"></a>
 	              					<p class="card-text" th:text="${list.tagContent}"></p>
 									<p class="card-text" th:text="${list.userLocal}"></p>
+									<p class="card-text" th:text="${list.createDate}"></p>
+									<p class="card-text" th:text="${list.hitCnt}"></p>
 	              				</div>
 	            			</div>
 	          			</div>
@@ -99,7 +80,9 @@
 	          			</div>
 					</div>
 					
-					<div>
+					
+					<!-- 페이징 -->
+					<!-- <div>
 						<ul class="pagination justify-content-center">
 							<li class="page-item" th:classappend="${searchArticle.getPrePage() == 0} ? 'disabled'">
 								<a class="page-link" th:href="@{|/jr41/list/${productCategoryIdx}|(pageNum=${MenuList.getPrePage()})}">Prev</a>
@@ -113,22 +96,7 @@
 						</ul>
 					</div> -->
 					
-					<!-- 카드형 -->
-					<div class="row">
-						<div class="col-6 col-lg-4 d-flex mt-3" th:if="${#lists.size(searchArticle)} > 0" th:each="list : ${searchArticle}">
-	            			<div class="card shadow-sm" style="width: 300px;">
-	              				<img src="photo-3.jpg"  th:src="${list.storedFilePath}" alt="불러오지 못한 이미지"> 
-	              				<div class="card-body">
-	                 				<a href="/article/openArticle?bookIdx=" class="card-text nav-link link-dark" th:text="${list.bookTitle}" th:attrappend="href=${list.bookIdx}"></a>
-	              					<p class="card-text" th:text="${list.tagContent}"></p>
-									<p class="card-text" th:text="${list.userLocal}"></p>
-	              				</div>
-	            			</div>
-	          			</div>
-	          			<div th:unless="${#lists.size(searchArticle)} > 0 ">
-	          				<h1>검색결과가 없습니다</h1>
-	          			</div>
-					</div>
+					
 				</div>
 			</div>
 		</div>
