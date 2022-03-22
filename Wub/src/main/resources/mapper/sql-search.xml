@@ -6,7 +6,8 @@
 	<select id="openSearchResultNew" parameterType="String" resultType="com.bitc.wub.dto.SearchDto">
 		<![CDATA[ 
 			SELECT
-				b.book_idx, b.book_title, b.book_contents, t.tag_content, b.user_idx, u.user_local, f.stored_file_path, b.hit_cnt, b.create_date
+				b.book_idx, SUBSTRING(b.book_title, 1, 12) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 15) AS book_contents,
+			    t.tag_content, b.user_idx, u.user_local, f.stored_file_path, b.hit_cnt, b.create_date, u.user_name
 			FROM
 				book b
 			JOIN
@@ -26,13 +27,17 @@
 			AND
 				f.deleted_yn = 'N'
 			AND
-				(b.book_title LIKE CONCAT('%', #{searchContent}, '%')
-			OR
-				b.book_contents LIKE CONCAT('%', #{searchContent}, '%')
-			OR
-				t.tag_content LIKE CONCAT('%', #{searchContent}, '%')
-			OR
-				u.user_local LIKE CONCAT('%', #{searchContent}, '%'))
+				(
+					b.book_title LIKE CONCAT('%', #{searchContent}, '%')
+				OR
+					b.book_contents LIKE CONCAT('%', #{searchContent}, '%')
+				OR
+					t.tag_content LIKE CONCAT('%', #{searchContent}, '%')
+				OR
+					u.user_local LIKE CONCAT('%', #{searchContent}, '%')
+				OR
+					u.user_name LIKE CONCAT('%', #{searchContent}, '%')
+				)
 			GROUP BY
 				b.book_title 
 			ORDER BY
@@ -44,7 +49,8 @@
 	<select id="openSearchResultHit" parameterType="String" resultType="com.bitc.wub.dto.SearchDto">
 		<![CDATA[ 
 			SELECT
-				b.book_idx, b.book_title, b.book_contents, t.tag_content, b.user_idx, u.user_local, f.stored_file_path, b.hit_cnt, b.create_date
+				b.book_idx, SUBSTRING(b.book_title, 1, 12) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 15) AS book_contents,
+			    t.tag_content, b.user_idx, u.user_local, f.stored_file_path, b.hit_cnt, b.create_date, u.user_name
 			FROM
 				book b
 			JOIN
@@ -64,13 +70,17 @@
 			AND
 				f.deleted_yn = 'N'
 			AND
-				(b.book_title LIKE CONCAT('%', #{searchContent}, '%')
-			OR
-				b.book_contents LIKE CONCAT('%', #{searchContent}, '%')
-			OR
-				t.tag_content LIKE CONCAT('%', #{searchContent}, '%')
-			OR
-				u.user_local LIKE CONCAT('%', #{searchContent}, '%'))
+				(
+					b.book_title LIKE CONCAT('%', #{searchContent}, '%')
+				OR
+					b.book_contents LIKE CONCAT('%', #{searchContent}, '%')
+				OR
+					t.tag_content LIKE CONCAT('%', #{searchContent}, '%')
+				OR
+					u.user_local LIKE CONCAT('%', #{searchContent}, '%')
+				OR
+					u.user_name LIKE CONCAT('%', #{searchContent}, '%')
+				)
 			GROUP BY
 				b.book_title 
 			ORDER BY

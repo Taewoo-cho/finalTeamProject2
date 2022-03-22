@@ -9,11 +9,11 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<style>
-	textarea {
-		resize:none;
-	}
-</style>
+<!-- 나눔고딕 폰트 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+
 
 <script>
 	$(document).ready(function() {
@@ -70,6 +70,8 @@
 		if(document.getElementById("book-negotiation").checked) {
 			document.getElementById("book-negotiation-hidden").disabled = true;
 		}
+
+
 	});
 </script>
 
@@ -78,6 +80,7 @@
 			margin: 0;
 			padding: 0;
 			background-color: #F7E2E2;
+			font-family: "Nanum Gothic";
 
 		}
 		header {
@@ -93,6 +96,10 @@
 		}
 		span {
 			color: red !important;
+		}
+
+		textarea {
+			resize:none;
 		}
 	</style>
 

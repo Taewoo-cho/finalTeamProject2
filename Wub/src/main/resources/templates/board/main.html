@@ -58,14 +58,14 @@
                     <!-- 게시글리스트 최신기준 링크 처리 -->
                     <h2><a href="/main/list?post=latest" style="text-decoration:none">따끈따끈 방금 올라온 책 ></a></h2>
                     <div class="row mt-3 mb-5">
-                        <div class="col-6 col-lg-4 d-flex mb-3" th:if="${#lists.size(latestPost)} > 0" th:each="list : ${latestPost}">
+                        <div class="col-6 col-lg-3 d-flex mb-3" th:if="${#lists.size(latestPost)} > 0" th:each="list : ${latestPost}">
                             <!--<a href="/article/openArticle?bookIdx=" th:attrappend="href=${list.bookIdx}"></a>-->
                             <!-- 상세페이지 영역 링크 -->
                             <div class="card" style="width: 18rem; cursor:pointer" th:onclick="|location.href='@{/article/openArticle?bookIdx={bookIdx}(bookIdx=${list.bookIdx})}'|">
                                 <img src="/img/03.png" th:src="${list.storedFilePath}" class="card-img-top d-block w-10 rounded mx-auto" alt="..."/>
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${list.bookTitle}">card title</h5>
-                                    <p class="card-text" th:text="${list.bookContents} + ..." ></p>
+                                    <small class="card-text" th:text="${list.bookContents} + ..." ></small>
                                     <div class="clearfix">
                                         <small class="text-muted float-start" th:text="${list.userName}">name</small>
                                         <br>
@@ -79,14 +79,14 @@
                     <!-- 게시글리스트 조회수 기준 링크 처리 -->
                     <h2><a href="/main/list?post=hit" style="text-decoration:none">사람들이 많이 찾는 책 ></a></h2>
                     <div class="row mt-3 mb-5">
-                        <div class="col-6 col-lg-4 d-flex mb-3" th:if="${#lists.size(hitPost)} > 0" th:each="list : ${hitPost}">
+                        <div class="col-6 col-lg-3 d-flex mb-3" th:if="${#lists.size(hitPost)} > 0" th:each="list : ${hitPost}">
                             <!--<a href="/article/openArticle?bookIdx=" th:attrappend="href=${list.bookIdx}"></a>-->
                             <!-- 상세페이지 영역 링크 -->
                             <div class="card" style="width: 18rem; cursor:pointer" th:onclick="|location.href='@{/article/openArticle?bookIdx={bookIdx}(bookIdx=${list.bookIdx})}'|">
                                 <img src="/img/03.png" th:src="${list.storedFilePath}" class="card-img-top d-block w-10 rounded mx-auto" alt="..."/>
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${list.bookTitle}">card title</h5>
-                                    <p class="card-text" th:text="${list.bookContents} + ..." ></p>
+                                    <small class="card-text" th:text="${list.bookContents} + ..." ></small>
                                     <div class="clearfix">
                                         <small class="text-muted float-start" th:text="${list.userName}">name</small>
                                         <br>
@@ -100,14 +100,14 @@
                     <!-- 게시글리스트 좋아요 기준 링크 처리 -->
                     <h2><a href="/main/list?post=follow" style="text-decoration:none">많은 사람들이 좋아하는 책 ></a></h2>
                     <div class="row mt-3 mb-5">
-                        <div class="col-6 col-lg-4 d-flex mb-3" th:if="${#lists.size(followPost)} > 0" th:each="list : ${followPost}">
+                        <div class="col-6 col-lg-3 d-flex mb-3" th:if="${#lists.size(followPost)} > 0" th:each="list : ${followPost}">
                             <!--<a href="/article/openArticle?bookIdx=" th:attrappend="href=${list.bookIdx}"></a>-->
                             <!-- 상세페이지 영역 링크 -->
                             <div class="card" style="width: 18rem; cursor:pointer" th:onclick="|location.href='@{/article/openArticle?bookIdx={bookIdx}(bookIdx=${list.bookIdx})}'|">
                                 <img src="/img/03.png" th:src="${list.storedFilePath}" class="card-img-top d-block w-10 rounded mx-auto" alt="..."/>
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${list.bookTitle}">card title</h5>
-                                    <p class="card-text" th:text="${list.bookContents} + ..." ></p>
+                                    <small class="card-text" th:text="${list.bookContents} + ..." ></small>
                                     <div class="clearfix">
                                         <small class="text-muted float-start" th:text="${list.userName}">name</small>
                                         <br>

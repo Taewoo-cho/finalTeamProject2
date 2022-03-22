@@ -9,11 +9,11 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<style>
-	textarea {
-		resize:none;
-	}
-</style>
+<!-- 나눔고딕 폰트 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+
 
 <script>
 	$(document).ready(function() {
@@ -126,22 +126,6 @@
 		}
 
 
-
-		/*$("#comment-content").keypress(function(event){
-			if(event.which == 13) {
-				$("#commentary").click();
-				return false;
-			}
-		});
-
-		$("#commentary").on("click", function() {
-			$("#comment-list").load(window.location.href + "#comment-list");
-		});*/
-
-
-		//$('.commentUserIdx').attr('style', "display:none;");
-		//$('.commentIdx').attr('style', "display:none");
-
 	});
 </script>
 
@@ -151,6 +135,7 @@
 			margin: 0;
 			padding: 0;
 			background-color: #F7E2E2;
+			font-family: "Nanum Gothic";
 
 		}
 		header {
@@ -164,6 +149,10 @@
 		footer {
 
 			background-color: #1A132F;
+		}
+
+		textarea {
+			resize:none;
 		}
 	</style>
 
@@ -294,7 +283,7 @@
 
 				<!-- 뒤로 가기, 찜 -->
 				<div class="my-3 clearFix">
-					<button type="button" class="btn btn-secondary float-start" id="btn-back">뒤로가기</button>
+					<button type="button" class="btn btn-secondary float-start" id="btn-back">메인</button>
 					<button type="button" th:if="${session.userIdx} == ${article.userIdx}" class="btn btn-warning float-start ms-2" id="btn-sold">판매완료</button>
 
 
