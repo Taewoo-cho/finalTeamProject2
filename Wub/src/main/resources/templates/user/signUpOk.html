@@ -27,22 +27,12 @@
 </script>
 	
 <style>
-      body {
-         margin: 0;
-         padding: 0;
-         background-color: #F7E2E2;
-
-      }
-      header {
-         background-color: #1A132F;
-      }
-      main {
-         color: #5B7DB1;
-      }
-      footer {
-         height: 100px;
-         background-color: #1A132F;
-      }
+    body {margin: 0; padding: 0; background-color: #F7E2E2;}
+    header {background-color: #1A132F;}
+    main {color: #5B7DB1;}
+    footer {height: 100px; background-color: #1A132F;}
+    .welcome1 {font-weight: bold;}
+    .welcome2 {font-size: 15px;}
  </style>
 
 </head>
@@ -52,20 +42,31 @@
 	
 	<main>
 		<div class="container my-5">
-            <div class="row">
+            <div class="row my-5">
                 <div class="col-auto my-5 mx-auto text-center">
+                    
                     <!-- 환영 멘트 -->
-                    <h1>환영합니다!</h1>
-                    <br><br>
-                    <p>회원가입이 성공적으로 이루어졌습니다. </p>
-                    <p><i class="bi bi-film"></i>Wake Up Books에서 마음에 드는 책을 만나보세요.</p>
+                    <div class="my-5 welcome1">
+                        <h1>환영합니다!</h1>
+                        <br>
+                        <p>회원가입이 성공적으로 이루어졌습니다. </p>
+                        <p>Wake Up Books에서 마음에 드는 책을 만나보세요.</p>
+                    </div>
+                    
+                    <div class="my-5 welcome2">
+                        <p>잠들어 있던 책장을 완성하세요!</p>
+                        <p>powered by Wake Up Books</p>
+                    </div>
                     
                     <!-- 버튼 -->
-                    <div class="d-grid my-5">
-                       <button type="submit" id="btn-login" class="btn btn-warning">로그인</button>
-                        <br>
-                       <button type="button" id="btn-main" class="btn btn-success">메인 페이지</button>
-                   </div>
+                    <div class="row my-5">
+                        <div class="col-lg-6 col-sm-6 d-grid">
+                            <button type="button" class="btn btn-secondary float-start" id="btn-main">메인</button>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 d-grid">
+                            <button type="submit" class="btn btn-primary float-end" id="btn-">로그인</button>
+                        </div>
+			        </div>
                 </div>
             </div>
         </div>

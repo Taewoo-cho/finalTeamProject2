@@ -14,29 +14,18 @@
 
 <script>
 	$(document).ready(function() {
-		$("btn-signup").on("click", function() {
+		$("#btn-signup").on("click", function() {
 			location.href="/user/signUp"
 		});
 	});
 </script>
 	
 <style>
-      body {
-         margin: 0;
-         padding: 0;
-         background-color: #F7E2E2;
-
-      }
-      header {
-         background-color: #1A132F;
-      }
-      main {
-         color: #5B7DB1;
-      }
-      footer {
-         height: 100px;
-         background-color: #1A132F;
-      }
+      body {margin: 0; padding: 0; background-color: #F7E2E2;}
+      header {background-color: #1A132F;}
+      main {color: #5B7DB1;}
+      footer {height: 100px; background-color: #1A132F;}
+      .login_warn {margin-top: 30px; text-align: center; color: red !important}
  </style>
 
 </head>
@@ -51,7 +40,7 @@
 	                <form action="/user/loginCheck" method="post">
 	                    <br><br>
                         <h1 class="text-center">로그인</h1>
-                        <br><br>
+                        <br>
 	                    <div class="my-3">
                             <label for="user-id" class="form-label">아이디</label>
                             <input type="text" class="form-control" id="user-id" name="userId" placeholder="아이디를 입력해주세요">
@@ -60,12 +49,20 @@
                             <label for="user-pw" class="form-label">비밀번호 </label>
                             <input type="password" class="form-control" id="user-pw" name="userPw" placeholder="비밀번호를 입력해주세요">
                         </div>
+                        
+                        <div class="login_warn" th:if="${result == 0}">아이디 또는 비밀번호를 잘못 입력하셨습니다.</div>
+                        
                         <br>
-	                    <div class="d-grid">
-	                        <button type="submit" class="btn btn-warning">로그인</button>
-                            <hr>
-	                        <button type="button" id="btn-signup" class="btn btn-success">회원가입</button>
-	                    </div>
+	                    
+                        <!-- 회원가입 버튼 -->
+                        <div class="row my-4">
+                            <div class="col-lg-6 col-sm-6 d-grid">
+                                <button type="button" id="btn-signup" class="btn btn-secondary float-start">회원가입</button>
+                            </div>
+                            <div class="col-lg-6 col-sm-6 d-grid">
+                                <button type="submit" id="btn-login" class="btn btn-primary float-end">로그인</button>
+                            </div>
+				        </div>
                         <br><br>
 	                </form>
 	            </div>

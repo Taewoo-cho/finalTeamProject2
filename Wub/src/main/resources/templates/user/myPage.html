@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>my page</title>
+<title>mypage</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -14,23 +14,43 @@
 
 <script>
 	$(document).ready(function() {
-		$("btn-profile").on("click", function() {
-			location.href="/user/profile"
+		$("#btn-profile").on("click", function() {
+			location.href="/user/profile/" + userIdx
+		});
+	});
+    
+    $(document).ready(function() {
+		$("#btn-delete").on("click", function() {
+			location.href="/user/delete"
 		});
 	});
 	
 	$(document).ready(function() {
-		$("btn-myBoardList").on("click", function() {
-			location.href="/user/myBookList"
+		$("#btn-myArticle").on("click", function() {
+			location.href="/user/myArticle"
 		});
 	});
 	
+    $(document).ready(function() {
+		$("#btn-myComment").on("click", function() {
+			location.href="/user/myComment"
+		});
+	});
+    
 	$(document).ready(function() {
-		$("btn-recommend").on("click", function() {
-			location.href="/user/recommendBook"
+		$("#btn-myRecommend").on("click", function() {
+			location.href="/user/myRecommend"
 		});
 	});
 </script>
+    
+<style>
+    body {margin: 0; padding: 0; background-color: #F7E2E2;}
+    header {background-color: #1A132F;}
+    main {color: #5B7DB1;}
+    footer {height: 100px; background-color: #1A132F;}
+    .profile {background-color: aliceblue;}
+ </style>
 
 </head>
 <body>
@@ -39,20 +59,47 @@
 
 	<main>
 		<div class="container my-5">
-			<div class="row">
+			<div class="mt-5 row profile text-center">
+				<input type="hidden" id="userIdx" class="userIdx" th:value="${session.userIdx}">
+                <input type="text" class="form-control" id="userId" th:value="${session.userId}">
+                <strong> 님, 안녕하세요!</strong>
+                <p></p>
+                <p>판매 중인 책은</p>
+                <p>새로운 주인을 찾아간 책은</p>
+                <!-- 판매 중인 책은 sold_yn=n 권입니다. -->
+        		<!-- 새로운 주인을 찾아간 책은 sold_yn=y 권입니다. -->
+                
 				<div class="col-5 mx-auto">
-					<div class="d-grid">
-						<!-- 회원정보 이동 -->
-						<button type="button" id="btn-profile" class="btn btn-warning">회원 정보 수정</button>
-						
-						<!-- 작성한 글 목록 이동 -->
-						<button type="button" id="btn-myBoardList" class="btn btn-warning">회원 정보 수정</button>
-						
-						<!-- 관심 태그 이동 -->
-						<button type="button" id="btn-myRecommend" class="btn btn-warning">관심 있는 판매글</button>
+				</div>
+			</div>
+            
+            <br><br>
+            
+            <div class="row">
+                <div class="my-5">
+					<div>
+                        
+                        <!-- 회원 정보 수정 버튼 -->
+                        <button type="button" id="btn-profile" class="btn btn-outline-dark me-2">
+                        <a href="/user/profile/" th:attrappend="href=${session.userIdx}" class="text-decoration-none"><i class="bi bi-box-arrow-right"></i> 정보 수정
+                        </a>
+                        </button>
+                        
+                        <!-- 회원 탈퇴 버튼 -->
+                        <button type="button" id="btn-delete" class="btn btn-outline-dark me-2"><i class="bi bi-box-arrow-left"></i> 회원 탈퇴</button>
+                        
+                        <!-- 작성한 판매글 갯수 -->
+                        <button type="button" id="btn-myArticle" class="btn btn-outline-dark me-2"><i class="bi bi-book-fill"></i> 판매글</button>
+                        
+                        <!-- 작성한 댓글 갯수 -->
+                        <button type="button" id="btn-myComment" class="btn btn-outline-dark me-2"><i class="bi bi-pen-fill"></i> 댓글</button>
+                        
+                        <!-- recommend 갯수 -->
+                        <button type="button" id="btn-myRecommend" class="btn btn-outline-dark me-2"><i class="bi bi-star-fill"></i> 좋아요</button>
 					</div>
 				</div>
 			</div>
+            
 		</div>
 	</main>
 
