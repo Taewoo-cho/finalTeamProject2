@@ -55,6 +55,10 @@
 						alert("ajax 통신 실패");
 					}
 				});
+			} else {
+				var detailCategory = $("#detail-category");
+				detailCategory.empty();
+				detailCategory.append("<option value=''>도서 세부 분류</option>");
 			}
 		});
 
