@@ -23,6 +23,15 @@
             font-family: 'Nanum Gothic'!important;
             font-weight: 400;
         }
+        #warp {
+            min-height: 100vh;
+            position: relative;
+
+        }
+        html {
+            margin: 0;
+            padding: 0;
+        }
         body {
             margin: 0;
             padding: 0;
@@ -33,12 +42,15 @@
             background-color: #1A132F;
         }
         main {
+            padding-bottom: 120px;
             color: #5B7DB1;
             height: 100%;
         }
-
         footer {
-
+            width: 100%;
+            height: 120px;
+            bottom: 0px;
+            position: absolute;
             background-color: #1A132F;
         }
     </style>
@@ -47,12 +59,13 @@
 </head>
 
 <body>
+<div id="warp">
 <header th:replace="layout/header :: header">
 </header>
 
     <main>
-        <div class="container mt-3">
-            <div class="row">
+        <div class="container">
+            <div class="row mt-3">
                 <div class="col-lg-8 col-sm-10 mx-auto my-3">
 
                     <!-- 게시글리스트 최신기준 링크 처리 -->
@@ -125,6 +138,7 @@
 
 <footer th:replace="layout/footer :: footer">
 </footer>
+</div>
 </body>
 
 </html>

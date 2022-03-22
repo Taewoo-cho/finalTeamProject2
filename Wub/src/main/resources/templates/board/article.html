@@ -319,7 +319,8 @@
 							</colgroup>
 							<thead>
 								<tr th:if="${#lists.size(commentList)} > 0">
-									<th class="ps-3"><span>전체댓글</span><span class="ps-1" th:text="${#lists.size(commentList)}" style="font-size: small" /><span style="font-size: small">개</span></th>
+									<th class="ps-3"><span>전체댓글</span></th>
+									<th><span class="ps-1" th:text="${#lists.size(commentList)}" style="font-size: small" /><span style="font-size: small">개</span></th>
 								</tr>
 							</thead>
 							<tbody id="comment-list">
