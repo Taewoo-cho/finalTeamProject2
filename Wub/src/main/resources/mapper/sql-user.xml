@@ -10,6 +10,15 @@
 			FROM user
 			WHERE user_id = #{userId}
 			AND user_pw = #{userPw}
+			AND deleted_yn = 'N'
+		]]>
+	</select>
+	
+	<select id="userInfo" resultType="com.bitc.wub.dto.UserDto">
+		<![CDATA[
+			SELECT user_idx, user_id, user_pw, user_email, user_name, user_local
+			FROM user
+			WHERE user_id = #{userId}
 		]]>
 	</select>
 	
@@ -28,11 +37,12 @@
 	</select>
 	
 	<!-- profile -->
-	<select id="profile" parameterType="int" resultType="com.bitc.wub.dto.UserDto">
+	<select id="openUser" parameterType="int" resultType="com.bitc.wub.dto.UserDto">
 		<![CDATA[
 			SELECT user_idx, user_id, user_pw, user_email, user_name, user_local
 			FROM user
 			WHERE user_idx = #{userIdx}
+			AND deleted_yn = 'N'
 		]]>
 	</select>
 	
@@ -42,6 +52,7 @@
 			UPDATE user
 			SET WHERE user_pw = #{userPw}, user_email = #{userEmail}, user_name = #{userName}, user_local = #{userLocal}
 			where user_idx = #{userIdx}
+			AND deleted_yn = 'N'
 		]]>
 	</update>
 	
@@ -57,39 +68,38 @@
 	<!-- 회원이 작성한 글 -->
 	<select id="selectUserArticle" resultType="com.bitc.wub.dto.UserArticleDto">
 		<![CDATA[
-			SELECT user.user_idx, book.book_idx, book.book_title, book.book_price, book.create_date, book.hit_cnt, book.sold_yn
-			FROM user, book
-			WHERE user.user_idx = book.user_idx = #{userIdx}
-			AND book.deleted_yn = 'N'
+			SELECT u.user_idx, b.book_idx, b.book_title, b.book_price, b.create_date, b.hit_cnt, b.sold_yn
+			FROM user u, book b
+			WHERE u.user_idx = b.user_idx
+			AND u.user_idx = #{userIdx}
+			AND b.deleted_yn = 'N'
 			ORDER BY book_idx DESC;
 		]]>
 	</select>
 	
 	<!-- 회원이 작성한 댓글 -->
-	<select id = "userComment">
+	<select id = "selectUserComment" resultType="com.bitc.wub.dto.UserArticleDto">
 		<![CDATA[
-			SELECT user.user_idx, 
-				book.book_idx, book.book_title, book.book_price, book.sold_yn, 
-				comment.comment_idx, comment.comment_content, comment.create_date
-			FROM user, book, comment
-			WHERE user.user_idx = comment.user_idx = #{userIdx}
-			AND book.book_idx = comment.book_idx
-			AND comment.deleted_yn = 'N'
-			ORDER BY comment.comment_idx DESC;
+			SELECT u.user_idx, b.book_idx, b.book_title, b.book_price, b.sold_yn, c.comment_idx, c.comment_content, c.create_date
+			FROM user u, book b, comment c
+			WHERE u.user_idx = c.user_idx
+			AND u.user_idx = #{userIdx}
+			AND b.book_idx = c.book_idx
+			AND c.deleted_yn = 'N'
+			ORDER BY c.comment_idx DESC;
 		]]>
 	</select>
 	
 	<!-- 회원이 좋아요 누른 판매글 -->
-	<select id="userRecommend">
+	<select id="selectUserRecommend" resultType="com.bitc.wub.dto.UserArticleDto">
 		<![CDATA[
-			SELECT DISTINCT user.user_idx, 
-				book.book_idx, book.book_title, book.book_price, book.deleted_yn, book.sold_yn,
-				book_recommend.recommend_idx
-			FROM user, book, book_recommend
-			WHERE user.user_idx = book_recommend.user_idx = #{userIdx}
-			AND book.book_idx = book_recommend.book_idx
-			AND book.deleted_yn = 'N'
-			ORDER BY book_recommend.recommend_idx DESC;
+			SELECT DISTINCT u.user_idx, b.book_idx, b.book_title, b.book_price, b.deleted_yn, b.sold_yn, r.recommend_idx
+			FROM user u, book b, book_recommend r
+			WHERE u.user_idx = r.user_idx 
+			AND u.user_idx = #{userIdx}
+			AND b.book_idx = r.book_idx
+			AND b.deleted_yn = 'N'
+			ORDER BY r.recommend_idx DESC;
 		]]>
 	</select>
 
