@@ -19,6 +19,26 @@
 			location.href = "/main";
 		}
 	})
+    
+    <script>
+	$(document).ready(function() {
+		$("#btn-mypage").on("click", function() {
+			location.href="/user/myPage"
+		});
+	});
+	
+	$(document).ready(function() {
+		$("#btn-myArticle").on("click", function() {
+			location.href="/user/myArticle"
+		});
+	});
+	
+    $(document).ready(function() {
+		$("#btn-myRecommend").on("click", function() {
+			location.href="/user/myRecommend"
+		});
+	});
+</script>
 </script>
 
 <style>
@@ -36,6 +56,19 @@
 	<main>
 		<div class="container mt-5">
 			<div class="row">
+                <div class="my-5">
+					<div>
+                        <!-- 마이 페이지 -->
+                        <button type="button" id="btn-mypage" class="btn btn-outline-dark me-2">마이 페이지</button>
+                        
+                        <!-- 작성한 판매글 갯수 -->
+                        <button type="button" id="btn-myArticle" class="btn btn-outline-dark me-2"><i class="bi bi-book-fill"></i> 판매글</button>
+                        
+                        <!-- recommend 갯수 -->
+                        <button type="button" id="btn-myRecommend" class="btn btn-outline-dark me-2"><i class="bi bi-star-fill"></i> 좋아요</button>
+					</div>
+				</div>
+                
 				<div class="col-sm">
 					<input type="hidden" id="userIdx" th:value="${session.userIdx}">
 					<table class="table table-hover table-striped text-center">

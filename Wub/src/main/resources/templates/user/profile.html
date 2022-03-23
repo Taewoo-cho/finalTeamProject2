@@ -13,12 +13,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
-	/* $(document).ready(function() {
-		if($("#userIdx").val() == uIdx) {
+	$(document).ready(function() {
+		if($("#userIdx").val() == 0) {
 			alert("잘못된 접근입니다.");
 			location.href = "/main";
 		}
-	}) */
+	})
 	
 	$(document).ready(function() {
 		var userIdx = $("#userIdx").val();
@@ -31,11 +31,151 @@
 			frm.submit();
 		});
 	});
+    
+    /* 유효성 검사 통과유무 변수 */
+	var idCheck = false;            
+	var idOverlapCheck = false;           
+	var pwCheck = false;           
+	var pwDobleCheck = false;           
+	var pwOverlapCheck = false;        
+	var nameCheck = false; 
+	var emailCheck = false;
+	var localCheck = false;
+	
+	var id = $('.id-input').val();
+	var pw = $('pw-input').val();
+	var pwDouble = $('pwDouble-input').val();
+	var name = $('name-input').val();
+	var email = $('email-input').val();
+	var local = $('local-input').val();
+	
+	//아이디 중복검사
+	$('.id-input').on("propertychange change keyup paste input", function(){
+		var data = {userId : userId}
+		
+		$.ajax({
+			type : "post",
+			url : "/user/idCheck",
+			data : data,
+			success : function(result) {
+				if(result != 'fail') {
+					$('.id-re1').css("display", "inline-block");
+					$('.id-re2').css("display", "none");
+					idOverlapCheck = true;	
+				}
+				else {
+					$('.id-re1').css("display", "none");
+					$('.id-re2').css("display", "inline-block");
+					idOverlapCheck = false;
+				}
+			}
+		});
+	});
+	
+	//비밀번호 확인
+	$('.pwDouble-input').on("propertychange change keyup paste input", function(){
+	    $('.final-pwDouble-check').css('display', 'none');
+	    
+	    if(pw == pw){
+	        $('.pw-re1').css('display','block');
+	        $('.pw-re2').css('display','none');
+	        pwOverlapCheck = true;
+	    }else{
+	        $('.pw-re1').css('display','none');
+	        $('.pw-re2').css('display','block');
+	        pwOverlapCheck = false;
+	    }   
+    
+	});   
+	
+	//회원가입 버튼
+	$(document).ready(function(){
+		$(".btn-signup").click(function() {
+			
+			// 아이디
+			if(id == ""){
+	            $('.final-id-check').css('display','block');
+	            idCheck = false;
+	        }else{
+	            $('.final-id-check').css('display', 'none');
+	            idCheck = true;
+	        }
+			
+			// 비밀번호
+			if(pw == ""){
+	            $('.final-pw-check').css('display','block');
+	            pwCheck = false;
+	        }
+			else{
+	            $('.final-pw-check').css('display', 'none');
+	            pwCheck = true;
+	        }
+			
+			// 비밀번호
+			if(pwck == ""){
+	            $('.final-pwDouble-check').css('display','block');
+	            pwDoubleCheck = false;
+	        }else{
+	            $('.final-pwDouble-check').css('display', 'none');
+	            pwDoubleCheck = true;
+	        }
+			
+			// 이름
+			if(name == ""){
+	            $('.final-name-check').css('display','block');
+	            nameCheck = false;
+	        }
+			else{
+	            $('.final-name-check').css('display', 'none');
+	            nameCheck = true;
+	        }
+			
+			// 이메일
+			if(email == ""){
+	            $('.final-email-check').css('display','block');
+	            emailCheck = false;
+	        }
+			else{
+	            $('.final-email-check').css('display', 'none');
+	            emailCheck = true;
+	        }
+			
+			// 주소
+			if(local == ""){
+	            $('.final-local-check').css('display','block');
+	            localCheck = false;
+	        }
+			else{
+	            $('.final-local-check').css('display', 'none');
+	            localCheck = true;
+	        }
+			
+			// 최종
+			if(idCheck && idOverlapCheck && pwCheck && pwDoubleCheck && pwOverlapCheck && nameCheck && emailCheck && localCheck ){
+				$("#form-signup").attr("action", "/user/signUp");
+	            $("#form-signup").submit(); 
+	        }   
+			
+			return false;
+		});
+	});
 </script>
 
 <link rel="stylesheet" href="/css/style.css">
 
 <style>
+	.id-re1{color: green; display: none;}
+	.id-re2{color: red; display: none;}
+	.pw-re1{color: green; display: none;}
+	.pw-re2{color: red; display: none;}
+	
+	.final-id-check {display: none;}
+	.final-pw-check {display: none;}
+	.final-pwDouble-check {display: none;}
+	.final-email-check {display: none;}
+	.final-name-check {display: none;}
+	.final-local-check {display: none;}
+
 	body {margin: 0; padding: 0; background-color: #F7E2E2;}
     header {background-color: #1A132F;}
     main {color: #5B7DB1;}
