@@ -110,10 +110,8 @@ public class WubUserController {
 	
 	
 	
-	
-	
 //	회원 탈퇴
-	@RequestMapping(value="user/delete", method=RequestMethod.DELETE)
+	@RequestMapping(value="/user/delete", method=RequestMethod.DELETE)
 	public String deleteUser(@RequestParam("userIdx") int userIdx) throws Exception {
 		userService.deleteUser(userIdx);
 		return "redirect:/main";
