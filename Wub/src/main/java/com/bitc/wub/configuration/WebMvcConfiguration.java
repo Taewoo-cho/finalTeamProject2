@@ -25,5 +25,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/img/**").addResourceLocations("file:///C:/WakeUpBooks/img/");
 		registry.addResourceHandler("/WakeUpBooks/img/**").addResourceLocations("file:///C:/WakeUpBooks/img/");
+		//registry.addResourceHandler("/img/**").addResourceLocations("file:///C:/JAVA/spring/team2/Wub/WakeUpBooks/img/");
+		//registry.addResourceHandler("/WakeUpBooks/img/**").addResourceLocations("file:///C:/JAVA/spring/team2/Wub/WakeUpBooks/img/");
+		//JAVA\spring\team2\Wub
 	}
 }

@@ -89,6 +89,15 @@
 	});
 </script>
 	<style>
+		#warp {
+			min-height: 100vh;
+			position: relative;
+
+		}
+		html {
+			margin: 0;
+			padding: 0;
+		}
 		body {
 			margin: 0;
 			padding: 0;
@@ -99,19 +108,30 @@
 			background-color: #1A132F;
 		}
 		main {
+			padding-bottom: 140px;
 			color: #5B7DB1;
 			height: 100%;
 		}
 		footer {
-
+			width: 100%;
+			height: 120px;
+			bottom: 0px;
+			position: absolute;
 			background-color: #1A132F;
+		}
+		span {
+			color: red !important;
+		}
+
+		textarea {
+			resize:none;
 		}
 	</style>
 
 </head>
 
 <body>
-
+<div id="warp">
 	<header th:replace="layout/header :: header">
 	</header>
 
@@ -192,11 +212,11 @@
 
 					<!-- 글쓰기 취소 버튼 -->
 
-					<div class="row my-4">
-						<div class="col-lg-6 col-sm-6 d-grid">
+					<div class="row my-4 pb-5">
+						<div class="col-lg-6 col-sm-6 d-grid pb-3">
 							<button type="submit" class="btn btn-primary float-end" id="btn-submit">수정</button>
 						</div>
-						<div class="col-lg-6 col-sm-6 d-grid">
+						<div class="col-lg-6 col-sm-6 d-grid pb-3">
 							<button type="button" class="btn btn-secondary float-start" id="btn-back">취소</button>
 						</div>
 					</div>
@@ -207,5 +227,6 @@
 
 	<footer th:replace="layout/footer :: footer">
 	</footer>
+</div>
 </body>
 </html>

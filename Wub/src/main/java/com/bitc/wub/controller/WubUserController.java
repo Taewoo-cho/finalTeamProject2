@@ -7,11 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -111,10 +107,17 @@ public class WubUserController {
 	
 	
 //	회원 탈퇴
-	@RequestMapping(value="/user/delete", method=RequestMethod.DELETE)
+	@RequestMapping(value="/user/delete", method=RequestMethod.GET)
 	public String deleteUser(@RequestParam("userIdx") int userIdx) throws Exception {
-		userService.deleteUser(userIdx);
-		return "redirect:/main";
+		//userService.deleteUser(userIdx);
+		return "/user/delete";
+	}
+
+//	회원 탈퇴 db
+	@RequestMapping(value="/user/userDelete", method=RequestMethod.DELETE)
+	@ResponseBody
+	public int userDelete(UserDto user) throws Exception {
+		return userService.deleteUser(user);
 	}
 
 	

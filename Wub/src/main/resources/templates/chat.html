@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Wake Up Books</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<style>
+
+	.container{
+		width: 500px;
+		margin: 0 auto;
+		padding: 25px
+	}
+	.container h1{
+		text-align: left;
+		padding: 5px 5px 5px 15px;
+		color: #FFBB00;
+		border-left: 3px solid #FFBB00;
+		margin-bottom: 20px;
+	}
+	.chating{
+		background-color: #000;
+		width: 500px;
+		height: 500px;
+		overflow: auto;
+	}
+	.chating .me{
+		color: #F6F6F6;
+		text-align: right;
+	}
+	.chating .others{
+		color: #FFE400;
+		text-align: left;
+	}
+	input{
+		width: 330px;
+		height: 25px;
+	}
+	#yourMsg{
+		display: none;
+	}
+	#warp {
+		min-height: 100vh;
+		position: relative;
+
+	}
+	html {
+		margin: 0;
+		padding: 0;
+	}
+	body {
+		margin: 0;
+		padding: 0;
+		background-color: #F7E2E2;
+
+	}
+	header {
+		background-color: #1A132F;
+	}
+	main {
+		padding-bottom: 140px;
+		color: #5B7DB1;
+		height: 100%;
+	}
+	footer {
+		width: 100%;
+		height: 120px;
+		bottom: 0px;
+		position: absolute;
+		background-color: #1A132F;
+	}
+</style>
+
+<script>
+	var ws;
+	
+	function wsOpen(){
+		//웹소켓 전송시 현재 방의 번호를 넘겨서 보낸다.
+		ws = new WebSocket("ws://" + location.host +"/chating/"+$("#roomNumber").val());
+		wsEvt();
+	}
+
+	// 웹 소켓 이벤트
+	function wsEvt() {
+		//소켓이 열리면 동작
+		ws.onopen = function(data){
+
+		}
+
+		// 메시지를 받으면 동작
+		// 전송된 메시지는 json 방식이지만 문자열로 넘어옴
+		ws.onmessage = function(data) {
+			var msg = data.data;
+			if(msg != null && msg.trim() != ''){
+				// json 방식의 데이터로 파싱하여 변환
+				var d = JSON.parse(msg);
+
+				// 받아온 데이터의 타입을 확인
+				if(d.type == "getId"){
+					// 세션확인
+					var si = d.sessionId != null ? d.sessionId : "";
+					if(si != ''){
+						$("#sessionId").val(si); 
+					}
+				}else if(d.type == "message"){
+					if(d.sessionId == $("#sessionId").val()){
+						$("#chating").append("<p class='me'>나 :" + d.msg + "</p>");
+					}else{
+						$("#chating").append("<p class='others'>" + d.userName + " :" + d.msg + "</p>");
+					}
+						
+				}else{
+					console.warn("unknown type!")
+				}
+			}
+		}
+
+		// 입력된 키 중 엔터키가 들어오면 send() 함수 실행
+		document.addEventListener("keypress", function(e){
+			if(e.keyCode == 13){ //enter press
+				send();
+			}
+		});
+	}
+
+	// 사용자 입력 설정 후 사용자 이름 부분을 숨기고, 채팅글 입력창을 보여줌
+	function chatName(){
+		var userName = $("#userName").val();
+		if(userName == null || userName.trim() == ""){
+			alert("사용자 이름을 입력해주세요.");
+			$("#userName").focus();
+		}else{
+			wsOpen();
+			$("#yourName").hide();
+			$("#yourMsg").show();
+		}
+	}
+
+	// 데이터 전송
+	function send() {
+		// 데이터 전송 부분을 json 방식으로 변경
+		var option ={
+			type: "message",
+			roomNumber: $("#roomNumber").val(),
+			sessionId : $("#sessionId").val(),
+			userName : $("#userName").val(),
+			msg : $("#chatting").val()
+		}
+		// 메시지 전송
+		ws.send(JSON.stringify(option))
+		$('#chatting').val("");
+	}
+</script>
+</head>
+<body>
+<div id="warp">
+	<header></header>
+	<main></main>
+	<footer></footer>
+
+</div>
+	<div id="container" class="container">
+		<h1 th:text="|${roomName}의 채팅방|">의 채팅방</h1>
+		<input type="hidden" id="sessionId" value="">
+		<input type="hidden" id="roomNumber" value="1" th:value="${roomNumber}">
+		
+		<div id="chating" class="chating">
+		</div>
+		
+		<div id="yourName">
+			<table class="inputTable">
+				<tr>
+					<th>사용자명</th>
+					<th><input type="text" name="userName" id="userName" th:value="${session.userId}" readonly></th>
+					<th><button onclick="chatName()" id="startBtn">이름 등록</button></th>
+				</tr>
+			</table>
+		</div>
+		<div id="yourMsg">
+			<table class="inputTable">
+				<tr>
+					<th>메시지</th>
+					<th><input id="chatting" placeholder="보내실 메시지를 입력하세요."></th>
+					<th><button onclick="send()" id="sendBtn">보내기</button></th>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

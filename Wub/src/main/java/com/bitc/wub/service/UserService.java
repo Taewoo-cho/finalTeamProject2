@@ -29,7 +29,7 @@ public interface UserService {
 	public void updateUser(UserDto user) throws Exception;
 	
 //	회원 탈퇴
-	public void deleteUser(int userIdx) throws Exception;
+	public int deleteUser(UserDto user) throws Exception;
 
 
 //	내가 작성한 글

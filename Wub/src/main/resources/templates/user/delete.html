@@ -21,7 +21,23 @@
     
     $(document).ready(function() {
 		$("#btn-delete").on("click", function() {
-			location.href="/user/userDelete"
+            $.ajax({
+                url: "/user/userDelete",
+                type: "delete",
+                data: {
+                    userId: $("#userId").val(), userPw: $("#userPw").val(), userIdx: $("#userIdx").val()
+                },
+                success: function(data) {
+                    if(data != 0) {
+                        alert("회원정보가 삭제 되었습니다.");
+                        location.href = "/user/logout";
+                    } else {
+                        alert("비밀번호가 일치하지 않습니다.")
+                    }
+                }, error: function() {
+                    alert("통신실패");
+                }
+            });
 		});
 	});
 </script>
@@ -29,14 +45,41 @@
 <link rel="stylesheet" href="/css/style.css">
 
 <style>
-	body {margin: 0; padding: 0; background-color: #F7E2E2;}
-    header {background-color: #1A132F;}
-    main {color: #5B7DB1;}
-    footer {height: 100px; background-color: #1A132F;}
+    #warp {
+        min-height: 100vh;
+        position: relative;
+
+    }
+    html {
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #F7E2E2;
+
+    }
+    header {
+        background-color: #1A132F;
+    }
+    main {
+        padding-bottom: 140px;
+        color: #5B7DB1;
+        height: 100%;
+    }
+    footer {
+        width: 100%;
+        height: 120px;
+        bottom: 0px;
+        position: absolute;
+        background-color: #1A132F;
+    }
 </style>
 
 </head>
 <body>
+<div id="warp">
 
 	<header th:replace="layout/header :: header"></header>
 	
@@ -50,7 +93,7 @@
                         
                         <!-- userIdx -->
                         <div>
-                            <input type="hidden" class="form-control" id="userIdx" name="userIdx" readonly th:value="${user.userIdx}">
+                            <input type="hidden" class="form-control" id="userIdx" name="userIdx" readonly th:value="${session.userIdx}">
                         </div>
                         <div>
 							<input type="hidden" id="method" name="_method">
@@ -60,7 +103,7 @@
                         <!-- 아이디 -->
                         <div class="my-3">
                             <label for="userId" class="form-label">아이디</label>
-                            <input type="text" class="form-control" id="userId" name="userId" readonly th:value="${user.userId}">
+                            <input type="text" class="form-control" id="userId" name="userId" readonly th:value="${session.userId}">
                         </div>
                         
                         <!-- 비밀번호 -->
@@ -85,6 +128,6 @@
 	</main>
 	
 	<footer th:replace="layout/footer :: footer"></footer>
-
+</div>
 </body>
 </html>

@@ -15,10 +15,36 @@
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 
 <style>
-      body {margin: 0; padding: 0; background-color: #F7E2E2;}
-      header {background-color: #1A132F;}
-      main {color: #5B7DB1;}
-      footer {height: 100px; background-color: #1A132F;}
+	#warp {
+		min-height: 100vh;
+		position: relative;
+
+	}
+	html {
+		margin: 0;
+		padding: 0;
+	}
+	body {
+		margin: 0;
+		padding: 0;
+		background-color: #F7E2E2;
+
+	}
+	header {
+		background-color: #1A132F;
+	}
+	main {
+		padding-bottom: 140px;
+		color: #5B7DB1;
+		height: 100%;
+	}
+	footer {
+		width: 100%;
+		height: 120px;
+		bottom: 0px;
+		position: absolute;
+		background-color: #1A132F;
+	}
 </style>
 
 <script>
@@ -27,12 +53,12 @@
 			alert("잘못된 접근입니다.");
 			location.href = "/main";
 		}
-	})
+	});
     
-    <script>
+
 	$(document).ready(function() {
 		$("#btn-mypage").on("click", function() {
-			location.href="/user/myPage"
+			location.href="/user/mypage"
 		});
 	});
 	
@@ -47,12 +73,12 @@
 			location.href="/user/myComment"
 		});
 	});
-</script>
+
 </script>
 
 </head>
 <body>
-	
+	<div id="warp">
 	<header th:replace="layout/header :: header"></header>
 	
 	<main>
@@ -118,7 +144,7 @@
 	</main>
 
 	<footer th:replace="layout/footer :: footer"></footer>
-	
+	</div>
 	
 </body>
 </html>

@@ -46,9 +46,13 @@ public class UserServiceImpl implements UserService {
 	
 //	회원 탈퇴
 	@Override
-	public void deleteUser(int userIdx) throws Exception {
-		userMapper.deleteUser(userIdx);
-		
+	public int deleteUser(UserDto user) throws Exception {
+		if(userMapper.login(user) != 0) {
+			userMapper.deleteUser(user);
+			return 1;
+		}
+
+		return 0;
 	}
 	
 // 회원 정보 수정 페이지

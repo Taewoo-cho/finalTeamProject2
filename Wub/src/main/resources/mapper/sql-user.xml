@@ -57,7 +57,7 @@
 	</update>
 	
 	<!-- deleteUser -->
-	<update id="deleteUser" parameterType="int">
+	<update id="deleteUser" parameterType="com.bitc.wub.dto.UserDto">
 		<![CDATA[
 			UPDATE user
 			SET deleted_yn = 'Y'

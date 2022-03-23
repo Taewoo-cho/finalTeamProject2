@@ -19,6 +19,12 @@
 			location.href = "/main";
 		}
 	})
+
+    $(document).ready(function() {
+        $("#btn-back").on("click", function() {
+            location.href="/user/mypage"
+        });
+    });
 	
 	$(document).ready(function() {
 		var userIdx = $("#userIdx").val();
@@ -36,7 +42,7 @@
 	var idCheck = false;            
 	var idOverlapCheck = false;           
 	var pwCheck = false;           
-	var pwDobleCheck = false;           
+	var pwDoubleCheck = false;
 	var pwOverlapCheck = false;        
 	var nameCheck = false; 
 	var emailCheck = false;
@@ -184,7 +190,7 @@
 
 </head>
 <body>
-
+<div id="warp">
 	<header th:replace="layout/header :: header"></header>
 	
 	<main>
@@ -261,6 +267,6 @@
 	</main>
 	
 	<footer th:replace="layout/footer :: footer"></footer>
-
+</div>
 </body>
 </html>

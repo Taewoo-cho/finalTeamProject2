@@ -14,14 +14,15 @@
 
 <script>
 	$(document).ready(function() {
+        var userIdx = $("#userIdx").val();
+
 		$("#btn-profile").on("click", function() {
 			location.href="/user/profile/" + userIdx
 		});
-	});
-    
-    $(document).ready(function() {
+
+
 		$("#btn-delete").on("click", function() {
-			location.href="/user/delete"
+			location.href="/user/delete?userIdx=" + userIdx
 		});
 	});
 	
@@ -45,15 +46,42 @@
 </script>
     
 <style>
-    body {margin: 0; padding: 0; background-color: #F7E2E2;}
-    header {background-color: #1A132F;}
-    main {color: #5B7DB1;}
-    footer {height: 100px; background-color: #1A132F;}
+    #warp {
+        min-height: 100vh;
+        position: relative;
+
+    }
+    html {
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #F7E2E2;
+
+    }
+    header {
+        background-color: #1A132F;
+    }
+    main {
+        padding-bottom: 140px;
+        color: #5B7DB1;
+        height: 100%;
+    }
+    footer {
+        width: 100%;
+        height: 120px;
+        bottom: 0px;
+        position: absolute;
+        background-color: #1A132F;
+    }
     .profile {background-color: aliceblue;}
  </style>
 
 </head>
 <body>
+<div id="warp">
 	
 	<header th:replace="layout/header :: header"></header>
 
@@ -61,8 +89,8 @@
 		<div class="container my-5">
 			<div class="mt-5 row profile text-center">
 				<input type="hidden" id="userIdx" class="userIdx" th:value="${session.userIdx}">
-                <input type="text" class="form-control" id="userId" th:value="${session.userId}">
-                <strong> 님, 안녕하세요!</strong>
+                <p></p>
+                <strong th:text="${session.userId} + ' 님 안녕하세요&#33;'"></strong>
                 <p></p>
                 <p>Wake Up Books에서 원하는 책을 찾고</p>
                 <p>잠들어 있던 책장을 완성하세요!</p>
@@ -77,25 +105,25 @@
             
             <div class="row">
                 <div class="my-5">
-					<div>
-                        
+					<div class="clearfix">
+
+                        <!-- 회원 탈퇴 버튼 -->
+                        <button type="button" id="btn-delete" class="btn btn-outline-danger m-2 me-0 float-end"><i class="bi bi-box-arrow-left"></i> 회원 탈퇴</button>
+
                         <!-- 회원 정보 수정 버튼 -->
-                        <button type="button" id="btn-profile" class="btn btn-outline-dark me-2">
-                        <a href="/user/profile/" th:attrappend="href=${session.userIdx}" class="text-decoration-none"><i class="bi bi-box-arrow-right"></i> 정보 수정
-                        </a>
+                        <button type="button" id="btn-profile" class="btn btn-outline-dark m-2 float-end">
+                            <a href="/user/profile/" th:attrappend="href=${session.userIdx}" class="text-decoration-none"><i class="bi bi-box-arrow-right"></i> 정보 수정
+                            </a>
                         </button>
                         
-                        <!-- 회원 탈퇴 버튼 -->
-                        <button type="button" id="btn-delete" class="btn btn-outline-dark me-2"><i class="bi bi-box-arrow-left"></i> 회원 탈퇴</button>
-                        
                         <!-- 작성한 판매글 갯수 -->
-                        <button type="button" id="btn-myArticle" class="btn btn-outline-dark me-2"><i class="bi bi-book-fill"></i> 판매글</button>
+                        <button type="button" id="btn-myArticle" class="btn btn-outline-dark m-2 ms-0 float-start"><i class="bi bi-book-fill"></i> 판매글</button>
                         
                         <!-- 작성한 댓글 갯수 -->
-                        <button type="button" id="btn-myComment" class="btn btn-outline-dark me-2"><i class="bi bi-pen-fill"></i> 댓글</button>
+                        <button type="button" id="btn-myComment" class="btn btn-outline-dark m-2 float-start"><i class="bi bi-pen-fill"></i> 댓글</button>
                         
                         <!-- recommend 갯수 -->
-                        <button type="button" id="btn-myRecommend" class="btn btn-outline-dark me-2"><i class="bi bi-star-fill"></i> 좋아요</button>
+                        <button type="button" id="btn-myRecommend" class="btn btn-outline-dark m-2 float-start"><i class="bi bi-star-fill"></i> 좋아요</button>
 					</div>
 				</div>
 			</div>
@@ -104,6 +132,7 @@
 	</main>
 
 	<footer th:replace="layout/footer :: footer"></footer>
+</div>
 
 </body>
 </html>

@@ -25,7 +25,7 @@ public interface UserMapper {
 	public int idCheck(String userId) throws Exception;
 
 //	회원 탈퇴
-	public void deleteUser(int userIdx) throws Exception;
+	public void deleteUser(UserDto user) throws Exception;
 	
 //	회원 정보 수정 페이지
 	public UserDto openUser(int userIdx) throws Exception;

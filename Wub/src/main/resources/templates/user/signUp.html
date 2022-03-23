@@ -68,10 +68,17 @@
 	        pwOverlapCheck = false;
 	    }   
     
-	});   
+	});
 	
-	//회원가입 버튼
+
 	$(document).ready(function(){
+
+        // 뒤로가기
+        $("#btn-back").on("click", function() {
+            location.href="/user/login";
+        });
+
+        //회원가입 버튼
 		$(".btn-signup").click(function() {
 			
 			// 아이디
