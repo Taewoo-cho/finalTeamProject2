@@ -6,7 +6,7 @@
 	<select id="openSearchResultNew" parameterType="String" resultType="com.bitc.wub.dto.SearchDto">
 		<![CDATA[ 
 			SELECT
-				b.book_idx, SUBSTRING(b.book_title, 1, 12) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 15) AS book_contents,
+				distinct b.book_idx, SUBSTRING(b.book_title, 1, 12) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 15) AS book_contents,
 			    t.tag_content, b.user_idx, u.user_local, f.stored_file_path, b.hit_cnt, b.create_date, u.user_name
 			FROM
 				book b
@@ -38,8 +38,6 @@
 				OR
 					u.user_name LIKE CONCAT('%', #{searchContent}, '%')
 				)
-			GROUP BY
-				b.book_title 
 			ORDER BY
 				b.create_date DESC;
 		]]>
@@ -49,8 +47,8 @@
 	<select id="openSearchResultHit" parameterType="String" resultType="com.bitc.wub.dto.SearchDto">
 		<![CDATA[ 
 			SELECT
-				b.book_idx, SUBSTRING(b.book_title, 1, 12) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 15) AS book_contents,
-			    t.tag_content, b.user_idx, u.user_local, f.stored_file_path, b.hit_cnt, b.create_date, u.user_name
+				distinct b.book_idx, SUBSTRING(b.book_title, 1, 12) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 15) AS book_contents,
+			    t.tag_content, b.user_idx, u.user_local, f.stored_file_path, b.hit_cnt, b.create_date, u.user_name, b.hit_cnt
 			FROM
 				book b
 			JOIN
@@ -81,8 +79,6 @@
 				OR
 					u.user_name LIKE CONCAT('%', #{searchContent}, '%')
 				)
-			GROUP BY
-				b.book_title 
 			ORDER BY
 				b.hit_cnt DESC;
 		]]>

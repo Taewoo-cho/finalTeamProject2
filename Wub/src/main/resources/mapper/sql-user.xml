@@ -50,7 +50,7 @@
 	<update id="updateUser" parameterType="com.bitc.wub.dto.UserDto">
 		<![CDATA[
 			UPDATE user
-			SET user_pw = #{userPw}, user_email = #{userEmail}, user_name = #{userName}, user_local = #{userLocal}
+			SET WHERE user_pw = #{userPw}, user_email = #{userEmail}, user_name = #{userName}, user_local = #{userLocal}
 			where user_idx = #{userIdx}
 			AND deleted_yn = 'N'
 		]]>

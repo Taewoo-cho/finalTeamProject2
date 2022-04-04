@@ -24,13 +24,13 @@ public class SearchController {
 //	검색 페이지 열기(임시용)
 	@RequestMapping(value="/startsearch", method=RequestMethod.GET)
 	public String openheader() throws Exception {
-		return "/search/startSearch";
+		return "search/startSearch";
 	}
 	
 //	검색 결과 페이지(기본 최신순 정렬)
 	@RequestMapping(value="/search", method=RequestMethod.GET)
 	public ModelAndView openSearchResult(HttpServletRequest request, String searchContent) throws Exception {
-		ModelAndView mv = new ModelAndView("/search/searchResult");
+		ModelAndView mv = new ModelAndView("search/searchResult");
 		HttpSession session = request.getSession();
 		String search = searchContent;
 		session.setAttribute("searchContent", search);
@@ -42,7 +42,7 @@ public class SearchController {
 //	검색 결과 정렬
 	@RequestMapping(value="/searchorder", method=RequestMethod.GET)
 	public ModelAndView openSearchResultFilter(@RequestParam("order") String order, HttpServletRequest request) throws Exception {
-		ModelAndView mv = new ModelAndView("/search/searchResult");
+		ModelAndView mv = new ModelAndView("search/searchResult");
 		HttpSession session = request.getSession();
 		String searchContent = (String)session.getAttribute("searchContent");
 		System.out.println("============");

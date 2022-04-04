@@ -23,10 +23,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	// 외부 이미지 경로
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/img/**").addResourceLocations("file:///C:/WakeUpBooks/img/");
-		registry.addResourceHandler("/WakeUpBooks/img/**").addResourceLocations("file:///C:/WakeUpBooks/img/");
-		//registry.addResourceHandler("/img/**").addResourceLocations("file:///C:/JAVA/spring/team2/Wub/WakeUpBooks/img/");
-		//registry.addResourceHandler("/WakeUpBooks/img/**").addResourceLocations("file:///C:/JAVA/spring/team2/Wub/WakeUpBooks/img/");
-		//JAVA\spring\team2\Wub
+		//registry.addResourceHandler("/img/**").addResourceLocations("file:///C:/WakeUpBooks/img/");
+		//registry.addResourceHandler("/WakeUpBooks/img/**").addResourceLocations("file:///C:/WakeUpBooks/img/");
+		// aws 서버용
+		registry.addResourceHandler("/img/**").addResourceLocations("file:/home/ec2-user/WakeUpBooks/img/");
+		registry.addResourceHandler("/WakeUpBooks/img/**").addResourceLocations("file:/home/ec2-user/WakeUpBooks/img/");
+
 	}
 }

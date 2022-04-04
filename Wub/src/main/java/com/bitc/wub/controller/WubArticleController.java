@@ -88,7 +88,7 @@ public class WubArticleController {
 	// 주제별 메인 페이지
 	@RequestMapping(value="/main/list", method=RequestMethod.GET)
 	public ModelAndView mainPostPage(@RequestParam("post") String post) throws Exception {
-		ModelAndView mv = new ModelAndView("/board/mainList");
+		ModelAndView mv = new ModelAndView("board/mainList");
 
 		List<ArticleDto> list = null;
 		switch(post) {
@@ -110,7 +110,7 @@ public class WubArticleController {
 	// 상세 글 읽기
 	@RequestMapping(value = "/article/openArticle", method=RequestMethod.GET)
 	public ModelAndView article(@RequestParam("bookIdx") int bookIdx) throws Exception {
-		ModelAndView mv = new ModelAndView("/board/article");
+		ModelAndView mv = new ModelAndView("board/article");
 		
 		// 게시글(이미지 조회)
 		ArticleDto article = articleService.selectArticleDetail(bookIdx);
@@ -146,7 +146,7 @@ public class WubArticleController {
 	// 글 수정 페이지
 	@RequestMapping(value="/article/edit", method=RequestMethod.GET)
 	public ModelAndView articleEdit(@RequestParam("bookIdx") int bookIdx) throws Exception {
-		ModelAndView mv = new ModelAndView("/board/editArticle");
+		ModelAndView mv = new ModelAndView("board/editArticle");
 		
 		List<TagDto> tagList = articleService.tagMainCategory();
 		ArticleDto article = articleService.selectArticleDetail(bookIdx);

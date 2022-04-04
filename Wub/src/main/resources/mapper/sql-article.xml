@@ -291,7 +291,7 @@
 	<select id="selectLatestPost" resultType="com.bitc.wub.dto.ArticleDto">
 		<![CDATA[
 			SELECT
-				b.book_idx, SUBSTRING(b.book_title, 1, 10) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 8) AS book_contents, b.create_date,
+				distinct b.book_idx, SUBSTRING(b.book_title, 1, 10) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 8) AS book_contents, b.create_date,
 			    t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path
 			FROM
 				book b
@@ -313,10 +313,8 @@
 			    f.deleted_yn = 'N'
 			AND
 			    b.sold_yn = 'N'
-			GROUP BY
-				b.book_idx
 			ORDER BY
-				create_date DESC
+				b.create_date DESC
 			LIMIT 4
 
 		]]>
@@ -326,7 +324,7 @@
 	<select id="selectLatestPosts" resultType="com.bitc.wub.dto.ArticleDto">
 		<![CDATA[
 		SELECT
-			b.book_idx, SUBSTRING(b.book_title, 1, 12) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 15) AS book_contents, b.create_date,
+			distinct b.book_idx, SUBSTRING(b.book_title, 1, 12) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 15) AS book_contents, b.create_date,
 			t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path
 		FROM
 			book b
@@ -348,10 +346,8 @@
 			f.deleted_yn = 'N'
 		  AND
 			b.sold_yn = 'N'
-		GROUP BY
-			b.book_idx
 		ORDER BY
-			create_date DESC
+			b.create_date DESC
 		]]>
 	</select>
 
@@ -359,7 +355,7 @@
 	<select id="selectHitPost" resultType="com.bitc.wub.dto.ArticleDto">
 		<![CDATA[
 		SELECT
-			b.book_idx, SUBSTRING(b.book_title, 1, 10) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 8) AS book_contents, b.create_date,
+			distinct b.book_idx, SUBSTRING(b.book_title, 1, 10) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 8) AS book_contents, b.create_date,
 			t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path, b.hit_cnt
 		FROM
 			book b
@@ -381,8 +377,6 @@
 			f.deleted_yn = 'N'
 		  AND
 			b.sold_yn = 'N'
-		GROUP BY
-			b.book_idx
 		ORDER BY
 			b.hit_cnt DESC
 		LIMIT 4
@@ -393,7 +387,7 @@
 	<select id="selectHitPosts" resultType="com.bitc.wub.dto.ArticleDto">
 		<![CDATA[
 		SELECT
-			b.book_idx, SUBSTRING(b.book_title, 1, 12) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 15) AS book_contents, b.create_date,
+			distinct b.book_idx, SUBSTRING(b.book_title, 1, 12) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 15) AS book_contents, b.create_date,
 			t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path, b.hit_cnt
 		FROM
 			book b
@@ -415,8 +409,6 @@
 			f.deleted_yn = 'N'
 		  AND
 			b.sold_yn = 'N'
-		GROUP BY
-			b.book_idx
 		ORDER BY
 			b.hit_cnt DESC
 		]]>
@@ -426,8 +418,8 @@
 	<select id="selectFollowPost" resultType="com.bitc.wub.dto.ArticleDto">
 		<![CDATA[
 		SELECT
-			b.book_idx, SUBSTRING(b.book_title, 1, 10) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 8) AS book_contents, b.create_date,
-			t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path, b.hit_cnt
+			distinct b.book_idx, SUBSTRING(b.book_title, 1, 10) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 8) AS book_contents, b.create_date,
+			t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path, b.hit_cnt, b.book_recommend
 		FROM
 			book b
 		JOIN
@@ -448,8 +440,6 @@
 			f.deleted_yn = 'N'
 		  AND
 			b.sold_yn = 'N'
-		GROUP BY
-			b.book_idx
 		ORDER BY
 			b.book_recommend DESC
 		LIMIT 4
@@ -460,8 +450,8 @@
 	<select id="selectFollowPosts" resultType="com.bitc.wub.dto.ArticleDto">
 		<![CDATA[
 		SELECT
-			b.book_idx, SUBSTRING(b.book_title, 1, 12) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 15) AS book_contents, b.create_date,
-			t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path, b.hit_cnt
+			distinct b.book_idx, SUBSTRING(b.book_title, 1, 12) AS book_title, SUBSTRING(REPLACE(book_contents, '\r\n', ''), 1, 15) AS book_contents, b.create_date,
+			t.tag_content, b.user_idx, u.user_name, u.user_local, f.stored_file_path, b.hit_cnt, b.book_recommend
 		FROM
 			book b
 		JOIN
@@ -482,8 +472,6 @@
 			f.deleted_yn = 'N'
 		  AND
 			b.sold_yn = 'N'
-		GROUP BY
-			b.book_idx
 		ORDER BY
 			b.book_recommend DESC
 		]]>

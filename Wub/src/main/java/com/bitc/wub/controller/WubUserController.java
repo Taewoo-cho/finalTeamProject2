@@ -27,7 +27,7 @@ public class WubUserController {
 //	로그인
 	@RequestMapping(value="/user/login", method=RequestMethod.GET)
 	public String login() throws Exception {
-		return "/user/login";
+		return "user/login";
 	}
 
 	
@@ -35,7 +35,7 @@ public class WubUserController {
 	@RequestMapping(value="/user/loginCheck", method=RequestMethod.POST)
 	public String login(UserDto user, HttpServletRequest request, RedirectAttributes rttr) throws Exception {
 		int idx = userService.login(user);
-		System.out.println("user_idx : " + idx);
+		//System.out.println("user_idx : " + idx);
 		
 		if (idx == 0) {
 			// 로그인 실패
@@ -56,7 +56,7 @@ public class WubUserController {
 			session.setAttribute("userIdx", user.getUserIdx());
 			
 			session.setMaxInactiveInterval(30*60);
-			System.out.println(user);
+			//System.out.println(user);
 			
 			return "redirect:/main";
 		}
@@ -70,7 +70,7 @@ public class WubUserController {
 		session.removeAttribute("userIdx");
 		session.invalidate();
 		
-		System.out.println("로그아웃 성공");
+		//System.out.println("로그아웃 성공");
 		
 		// 로그아웃시 메인 페이지 이동
 		return "redirect:/main";
@@ -81,14 +81,14 @@ public class WubUserController {
 //	마이페이지
 	@RequestMapping(value="/user/mypage", method=RequestMethod.GET)
 	public String mypage() throws Exception {
-		System.out.println();
-		return "/user/mypage";
+		//System.out.println();
+		return "user/myPage";
 	}
 	
 //	회원 정보 수정 페이지
 	@RequestMapping(value="/user/profile/{userIdx}", method=RequestMethod.GET)
 	public ModelAndView openUser(@PathVariable("userIdx") int userIdx) throws Exception {
-		ModelAndView mv = new ModelAndView("/user/profile");
+		ModelAndView mv = new ModelAndView("user/profile");
 		
 		UserDto user = userService.openUser(userIdx);
 		mv.addObject("user", user);
@@ -98,8 +98,8 @@ public class WubUserController {
 	
 
 	// 회원 정보 수정
-	@RequestMapping(value="/user/profile/{userIdx}", method=RequestMethod.PUT)
-	public String updateUser(UserDto user) throws Exception {
+	@RequestMapping(value="/user/profile", method=RequestMethod.PUT)
+	public String updateUser(UserDto user, @RequestParam("userIdx") int userIdx) throws Exception {
 		userService.updateUser(user);
 		return "redirect:/user/mypage";
 	}
@@ -110,7 +110,7 @@ public class WubUserController {
 	@RequestMapping(value="/user/delete", method=RequestMethod.GET)
 	public String deleteUser(@RequestParam("userIdx") int userIdx) throws Exception {
 		//userService.deleteUser(userIdx);
-		return "/user/delete";
+		return "user/delete";
 	}
 
 //	회원 탈퇴 db
@@ -167,25 +167,25 @@ public class WubUserController {
 //	회원가입
 	@RequestMapping(value="/user/signUp", method=RequestMethod.GET)
 	public String signUp() throws Exception {
-		return "/user/signUp";
+		return "user/signUp";
 	}
 	
 	@RequestMapping(value="/user/signUp", method=RequestMethod.POST)
 	public String insertUser(UserDto user) throws Exception {
 		userService.insertUser(user);
 		
-		return "redirect:/user/signUpOk";
+		return "user/signUpOk";
 	}
 	
 //	가입 시 아이디 중복 검사
 	@RequestMapping(value="/user/idCheck", method=RequestMethod.POST)
 	@ResponseBody
 	public String userIdCheckPOST (String userId) throws Exception {
-		System.out.println("idCheck() 진입");
+		//System.out.println("idCheck() 진입");
 		
 		int result = userService.idCheck(userId);
 		
-		System.out.println("결과값 = " + result);
+		//System.out.println("결과값 = " + result);
 		
 		if(result != 0) {
 			return "fail";

@@ -31,8 +31,11 @@ public class FileUtils {
 		
 		// 파일 경로
 		String path = "/WakeUpBooks/img/" + current.format(format);
+
+		// aws 파일 경로
+		String awsPath = "/home/ec2-user/WakeUpBooks/img/" +current.format(format);
 		
-		File file = new File(path);
+		File file = new File(awsPath);
 		
 		// 폴더가 존재하지 않을 시 폴더 생성
 		if(file.exists() == false) {
@@ -66,8 +69,9 @@ public class FileUtils {
 							break;
 						}
 					}
-					
-					newFileName = Long.toString(System.nanoTime()) + originalFileExtension;
+
+					// 저장 되는 이름 = 시간.확장자자
+				newFileName = Long.toString(System.nanoTime()) + originalFileExtension;
 					
 					ImgDto imgDto = new ImgDto();
 					
@@ -75,12 +79,13 @@ public class FileUtils {
 					imgDto.setBookIdx(bookIdx);
 					imgDto.setFileSize(Long.toString(mFile.getSize()));
 					imgDto.setOriginalFileName(mFile.getOriginalFilename());
+					// db에 저장되는 이름
 					imgDto.setStoredFilePath(path + "/" + newFileName);
 					
 					// 데이터베이스에 저장할 목록에 저장
 					fileList.add(imgDto);
 					
-					file = new File(path + "/" + newFileName);
+					file = new File(awsPath + "/" + newFileName);
 					// 현재 파일(메모리에만 존재함)을 지정한 위치에 이동하여 저장
 					mFile.transferTo(file);
 					
